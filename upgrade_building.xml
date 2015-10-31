@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resource_file type="PackedScene" subresource_count="4" version="1.1" version_name="Godot Engine v1.1.stable.d3b42e41b0">
+	<ext_resource path="res://droid_big.fnt" type="Font"></ext_resource>
+	<ext_resource path="res://droid_small.fnt" type="Font"></ext_resource>
+	<ext_resource path="res://droid_med.fnt" type="Font"></ext_resource>
+	<main_resource>
+		<dictionary name="_bundled" shared="false">
+			<string> "conn_count" </string>
+			<int> 0 </int>
+			<string> "conns" </string>
+			<int_array  len="0"> 				 </int_array>
+			<string> "names" </string>
+			<string_array  len="54">
+				<string> "WindowDialog" </string>
+				<string> "_import_path" </string>
+				<string> "visibility/visible" </string>
+				<string> "visibility/opacity" </string>
+				<string> "visibility/self_opacity" </string>
+				<string> "visibility/light_mask" </string>
+				<string> "margin/left" </string>
+				<string> "margin/top" </string>
+				<string> "margin/right" </string>
+				<string> "margin/bottom" </string>
+				<string> "focus_neighbour/left" </string>
+				<string> "focus_neighbour/top" </string>
+				<string> "focus_neighbour/right" </string>
+				<string> "focus_neighbour/bottom" </string>
+				<string> "focus/ignore_mouse" </string>
+				<string> "focus/stop_mouse" </string>
+				<string> "size_flags/horizontal" </string>
+				<string> "size_flags/vertical" </string>
+				<string> "size_flags/stretch_ratio" </string>
+				<string> "popup/exclusive" </string>
+				<string> "window/title" </string>
+				<string> "__meta__" </string>
+				<string> "Label" </string>
+				<string> "custom_fonts/font" </string>
+				<string> "range/min" </string>
+				<string> "range/max" </string>
+				<string> "range/step" </string>
+				<string> "range/page" </string>
+				<string> "range/value" </string>
+				<string> "range/exp_edit" </string>
+				<string> "rounded_values" </string>
+				<string> "text" </string>
+				<string> "align" </string>
+				<string> "valign" </string>
+				<string> "autowrap" </string>
+				<string> "uppercase" </string>
+				<string> "percent_visible" </string>
+				<string> "Label 2" </string>
+				<string> "Label3" </string>
+				<string> "Label4" </string>
+				<string> "Label5" </string>
+				<string> "metal_cost" </string>
+				<string> "crystal_cost" </string>
+				<string> "fuel_cost" </string>
+				<string> "Label 3" </string>
+				<string> "Button" </string>
+				<string> "disabled" </string>
+				<string> "toggle_mode" </string>
+				<string> "is_pressed" </string>
+				<string> "click_on_press" </string>
+				<string> "icon" </string>
+				<string> "flat" </string>
+				<string> "clip_text" </string>
+				<string> "Label6" </string>
+			</string_array>
+			<string> "node_count" </string>
+			<int> 12 </int>
+			<string> "nodes" </string>
+			<int_array  len="790"> 				-1, -1, 0, 0, -1, 21, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 4, 7, 5, 8, 6, 9, 7, 10, 0, 11, 0, 12, 0, 13, 0, 14, 8, 15, 1, 16, 9, 17, 9, 18, 2, 19, 8, 20, 10, 21, 11, 0, 0, 0, 22, 22, -1, 31, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 12, 7, 12, 8, 5, 9, 13, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 23, 14, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 16, 32, 17, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 37, -1, 30, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 12, 7, 13, 8, 19, 9, 20, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 21, 32, 17, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 38, -1, 30, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 22, 7, 23, 8, 24, 9, 25, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 26, 32, 3, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 39, -1, 30, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 24, 7, 23, 8, 19, 9, 25, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 27, 32, 3, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 40, -1, 30, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 19, 7, 23, 8, 28, 9, 25, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 29, 32, 3, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 41, -1, 31, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 12, 7, 25, 8, 24, 9, 19, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 23, 30, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 31, 32, 3, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 42, -1, 31, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 24, 7, 25, 8, 19, 9, 19, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 23, 30, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 31, 32, 3, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 43, -1, 31, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 19, 7, 25, 8, 28, 9, 19, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 23, 30, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 31, 32, 3, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 22, 44, -1, 30, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 12, 7, 19, 8, 32, 9, 5, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 33, 32, 17, 33, 17, 34, 8, 35, 8, 36, 18, 0, 0, 0, 45, 45, -1, 28, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 34, 7, 35, 8, 36, 9, 37, 10, 0, 11, 0, 12, 0, 13, 0, 14, 8, 15, 1, 16, 9, 17, 9, 18, 2, 23, 38, 46, 8, 47, 8, 48, 8, 49, 8, 31, 39, 50, 40, 51, 8, 52, 8, 32, 3, 0, 0, 0, 22, 53, -1, 30, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 32, 7, 19, 8, 41, 9, 5, 10, 0, 11, 0, 12, 0, 13, 0, 14, 1, 15, 1, 16, 9, 18, 2, 24, 15, 25, 2, 26, 2, 27, 2, 28, 15, 29, 8, 30, 8, 31, 42, 32, 17, 33, 17, 34, 8, 35, 8, 36, 18, 0 </int_array>
+			<string> "variants" </string>
+			<array  len="43" shared="false">
+				<node_path> "" </node_path>
+				<bool> True </bool>
+				<real> 1 </real>
+				<int> 1 </int>
+				<real> 160 </real>
+				<real> 140 </real>
+				<real> 650 </real>
+				<real> 470 </real>
+				<bool> False </bool>
+				<int> 2 </int>
+				<string> "Building" </string>
+				<dictionary  shared="false">
+					<string> "__editor_plugin_screen__" </string>
+					<string> "2D" </string>
+					<string> "__editor_plugin_states__" </string>
+					<dictionary  shared="false">
+						<string> "2D" </string>
+						<dictionary  shared="false">
+							<string> "ofs" </string>
+							<vector2> -105.52, 70.9058 </vector2>
+							<string> "snap_grid" </string>
+							<bool> True </bool>
+							<string> "snap_offset" </string>
+							<vector2> 0, 0 </vector2>
+							<string> "snap_pixel" </string>
+							<bool> False </bool>
+							<string> "snap_relative" </string>
+							<bool> False </bool>
+							<string> "snap_rotation" </string>
+							<bool> False </bool>
+							<string> "snap_rotation_offset" </string>
+							<real> 0 </real>
+							<string> "snap_rotation_step" </string>
+							<real> 0.261799 </real>
+							<string> "snap_show_grid" </string>
+							<bool> True </bool>
+							<string> "snap_step" </string>
+							<vector2> 10, 10 </vector2>
+							<string> "zoom" </string>
+							<real> 1.227738 </real>
+						</dictionary>
+						<string> "3D" </string>
+						<dictionary  shared="false">
+							<string> "ambient_light_color" </string>
+							<color> 0.15, 0.15, 0.15, 1 </color>
+							<string> "default_light" </string>
+							<bool> True </bool>
+							<string> "default_srgb" </string>
+							<bool> False </bool>
+							<string> "deflight_rot_x" </string>
+							<real> 0.942478 </real>
+							<string> "deflight_rot_y" </string>
+							<real> 0.628319 </real>
+							<string> "fov" </string>
+							<real> 45 </real>
+							<string> "show_grid" </string>
+							<bool> True </bool>
+							<string> "show_origin" </string>
+							<bool> True </bool>
+							<string> "viewport_mode" </string>
+							<int> 1 </int>
+							<string> "viewports" </string>
+							<array  len="4" shared="false">
+								<dictionary  shared="false">
+									<string> "distance" </string>
+									<real> 4 </real>
+									<string> "listener" </string>
+									<bool> True </bool>
+									<string> "pos" </string>
+									<vector3> 0, 0, 0 </vector3>
+									<string> "use_environment" </string>
+									<bool> False </bool>
+									<string> "use_orthogonal" </string>
+									<bool> False </bool>
+									<string> "x_rot" </string>
+									<real> 0 </real>
+									<string> "y_rot" </string>
+									<real> 0 </real>
+								</dictionary>
+								<dictionary  shared="false">
+									<string> "distance" </string>
+									<real> 4 </real>
+									<string> "listener" </string>
+									<bool> False </bool>
+									<string> "pos" </string>
+									<vector3> 0, 0, 0 </vector3>
+									<string> "use_environment" </string>
+									<bool> False </bool>
+									<string> "use_orthogonal" </string>
+									<bool> False </bool>
+									<string> "x_rot" </string>
+									<real> 0 </real>
+									<string> "y_rot" </string>
+									<real> 0 </real>
+								</dictionary>
+								<dictionary  shared="false">
+									<string> "distance" </string>
+									<real> 4 </real>
+									<string> "listener" </string>
+									<bool> False </bool>
+									<string> "pos" </string>
+									<vector3> 0, 0, 0 </vector3>
+									<string> "use_environment" </string>
+									<bool> False </bool>
+									<string> "use_orthogonal" </string>
+									<bool> False </bool>
+									<string> "x_rot" </string>
+									<real> 0 </real>
+									<string> "y_rot" </string>
+									<real> 0 </real>
+								</dictionary>
+								<dictionary  shared="false">
+									<string> "distance" </string>
+									<real> 4 </real>
+									<string> "listener" </string>
+									<bool> False </bool>
+									<string> "pos" </string>
+									<vector3> 0, 0, 0 </vector3>
+									<string> "use_environment" </string>
+									<bool> False </bool>
+									<string> "use_orthogonal" </string>
+									<bool> False </bool>
+									<string> "x_rot" </string>
+									<real> 0 </real>
+									<string> "y_rot" </string>
+									<real> 0 </real>
+								</dictionary>
+							</array>
+							<string> "zfar" </string>
+							<real> 500 </real>
+							<string> "znear" </string>
+							<real> 0.1 </real>
+						</dictionary>
+					</dictionary>
+					<string> "__editor_run_settings__" </string>
+					<dictionary  shared="false">
+						<string> "custom_args" </string>
+						<string> "-l $scene" </string>
+						<string> "run_mode" </string>
+						<int> 0 </int>
+					</dictionary>
+				</dictionary>
+				<real> 20 </real>
+				<real> 60 </real>
+				<resource  resource_type="Font" path="res://droid_big.fnt">  </resource>
+				<real> 0 </real>
+				<string> "Level 1" </string>
+				<int> 0 </int>
+				<real> -1 </real>
+				<real> 120 </real>
+				<real> 73 </real>
+				<string> "Cost to upgrade:" </string>
+				<real> 30 </real>
+				<real> 80 </real>
+				<real> 70 </real>
+				<real> 100 </real>
+				<string> "metal" </string>
+				<string> "crystal" </string>
+				<real> 170 </real>
+				<string> "fuel" </string>
+				<resource  resource_type="Font" path="res://droid_small.fnt">  </resource>
+				<string> "9999999" </string>
+				<real> 110 </real>
+				<string> "Upgrade time:" </string>
+				<real> 190 </real>
+				<real> 10 </real>
+				<real> 300 </real>
+				<real> 40 </real>
+				<resource  resource_type="Font" path="res://droid_med.fnt">  </resource>
+				<string> "UPGRADE" </string>
+				<resource name=""></resource>				<real> 200 </real>
+				<string> "00:00:00" </string>
+			</array>
+			<string> "version" </string>
+			<int> 1 </int>
+		</dictionary>
+
+	</main_resource>
+</resource_file>
