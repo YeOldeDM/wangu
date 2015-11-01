@@ -1,6 +1,7 @@
 extends Node
 
 var building_class = preload('res://building_classes.gd')
+var building_dialog = preload('res://upgrade_building_dialog.xml')
 
 var Time = 0
 
@@ -16,22 +17,25 @@ class Colony:
 	var buildings = []
 	var facilities = []
 	
-	var my_metal= 1000
-	var my_crystal = 1000
-	var my_fuel = 50
+	var my_metal= 10000
+	var my_crystal = 5000
+	var my_fuel = 0
 	var my_energy = 0
+	var energy_used = 0
 	
 	var metal_rate = 0
 	var crystal_rate = 0
 	var fuel_rate = 0
-	
+
 	func set_energy():
-		var e = 0
-		e += self.center.get('production','energy',self.center.level)
+		my_energy = 0
+		energy_used = 0
+		my_energy += self.center.get('production','energy',self.center.level)
+		energy_used += self.center.get('upkeep','energy',self.center.level)
 		for i in self.buildings:
-			e += i.get('production','energy',i.level)
-		self.my_energy = e
-		
+			my_energy += i.get('production','energy',i.level)
+			energy_used += i.get('upkeep','energy',i.level)
+
 	func set_slots():
 		var slots = 0
 		for i in self.buildings:
@@ -46,11 +50,11 @@ class Colony:
 	func add_building(building):
 		self.buildings.append(building)
 		print(str("Added Building: ", building.name))
-		
+
 	func add_facility(facility):
 		self.facilities.append(facility)
 		print(str("Added Facility: ", facility.name))
-	
+
 	func set_rates():
 		var m= self.center.get('production','metal',center.level)
 		var c= self.center.get('production','crystal',center.level)
@@ -73,7 +77,7 @@ class Colony:
 		r.get_node('Fuel/Amount').text = str(int(self.my_fuel))
 		r.get_node('Fuel/rate').text = str('+',self.fuel_rate,'/m')
 		
-		r.get_node('Energy/Amount').text = str(self.my_energy)
+		r.get_node('Energy/Amount').text = str(self.my_energy - self.energy_used)
 
 
 
@@ -88,8 +92,27 @@ func _ready():
 	var pcc = make_planetaryCommandCenter()
 	colony.center = pcc
 	
-
-	get_node('Global/World/Tab/Buildings/Center').set_text(str('Lv',colony.center.level,' ',colony.center.name))
+	var mine = make_metalMine()
+	mine.is_upgrading = true
+	mine.build_timer = mine.get_build_time(mine.level+1)
+	colony.add_building(mine)
+	
+	var crystal = make_crystalMine()
+	crystal.is_upgrading = true
+	crystal.build_timer = crystal.get_build_time(crystal.level+1)
+	colony.add_building(crystal)
+	
+	var fuel = make_fuelMine()
+	fuel.is_upgrading = true
+	fuel.build_timer = fuel.get_build_time(fuel.level+1)
+	colony.add_building(fuel)
+	
+	var solar = make_solarFarm()
+	solar.is_upgrading = true
+	solar.build_timer = solar.get_build_time(solar.level+1)
+	colony.add_building(solar)
+	
+	#get_node('Global/World/Tab/Buildings/Center').set_text(str('Lv',colony.center.level,' ',colony.center.name))
 	colony.set_energy()
 	colony.set_rates()
 
@@ -113,7 +136,26 @@ func _process(delta):
 	Time += delta
 	get_node('Timer').set_text(str("Time: ",get_node('/root/global').format_time(int(Time))))
 	
-
+	if colony.center.is_upgrading:
+		colony.center.build_timer -= delta
+		get_node('./Global/World/Tab/Buildings/Center').set_text(str("Lv ",colony.center.level," ",colony.center.name," (Upgrading: ",get_node('/root/global').format_time(int(colony.center.build_timer)),")"))
+		if colony.center.build_timer <= 0.0:
+			colony.center.is_upgrading = false
+			colony.center.level += 1
+			colony.set_rates()
+			colony.set_energy()
+	else:
+		get_node('./Global/World/Tab/Buildings/Center').set_text(str("Lv ",colony.center.level," ",colony.center.name))
+	
+	for building in colony.buildings:
+		if building.is_upgrading:
+			building.build_timer -= delta
+			if building.build_timer <= 0.0:
+				building.is_upgrading=false
+				building.level += 1
+				colony.set_rates()
+				colony.set_energy()
+			draw_buildings()
 
 
 
@@ -123,8 +165,12 @@ func _process(delta):
 
 func draw_buildings():
 	var buttons = get_node('/root/Game/Global/World/Tab/Buildings/cont/energy/cont/energy buildings')
+	buttons.clear()
 	for building in colony.buildings:
-		buttons.add_button(str("Lv",building.level," ",building.name))
+		var label = str("Lv",building.level," ",building.name)
+		if building.is_upgrading:
+			label += str(" (upgrading: ",get_node('/root/global').format_time(int(building.build_timer)))
+		buttons.add_button(label)
 	var add_building = buttons.add_button("ADD BUILDING")
 
 
@@ -135,19 +181,29 @@ func draw_buildings():
 
 
 func _on_energy_buildings_button_selected( button ):
-	if colony.buildings.empty() or button > colony.buildings.size():
+	if colony.buildings.empty() or button == colony.buildings.size():
 		
 		#
 		# Bring up Add Building dialog
 		#
 		print("ADD energy building")
-		
+
+
 	else:
 		#
 		# Bring up Building dialog
 		#
-		print(colony.buildings[button].name)
+		var window = building_dialog.instance()
+		window.set_pos(Vector2(100,100))
+		add_child(window)
+		window.draw_window(colony,colony.buildings[button])
 
+
+func _on_Center_pressed():
+	var window = building_dialog.instance()
+	window.set_pos(Vector2(100,100))
+	window.draw_window(colony,colony.center)
+	add_child(window)
 
 
 
@@ -157,28 +213,126 @@ func _on_energy_buildings_button_selected( button ):
 
 
 func make_planetaryCommandCenter():
-	var pcc = building_class.Building.new()
+	var building = building_class.Building.new()
 	
-	pcc.name = "Planetary Command Center"
-	pcc.level = 1
-	
-	pcc.build_time['base'] = 30
-	pcc.build_time['rate'] = 64
-	
-	pcc.cost['metal']['base'] = 100
-	pcc.cost['metal']['rate'] = 120
-	
-	pcc.cost['crystal']['base'] = 100
-	pcc.cost['crystal']['rate'] = 114
-	
-	pcc.production['metal']['base'] = 5
-	pcc.production['metal']['rate'] = 8
-	
-	pcc.production['crystal']['base'] = 4
-	pcc.production['crystal']['rate'] = 6
+	building.name = "Planetary Command Center"
 	
 	
-	return pcc
+	building.level = 1
 	
+	building.build_time['base'] = 30
+	building.build_time['rate'] = 10
+	
+	building.cost['metal']['base'] = 1000
+	building.cost['metal']['rate'] = 1200
+	
+	building.cost['crystal']['base'] = 500
+	building.cost['crystal']['rate'] = 750
+	
+	building.cost['fuel']['base'] = 10
+	building.cost['fuel']['rate'] = 5
+	
+	building.production['metal']['base'] = 5
+	building.production['metal']['rate'] = 8
+	
+	building.production['crystal']['base'] = 4
+	building.production['crystal']['rate'] = 6
+	
+	building.production['fuel']['base'] = 2
+	building.production['fuel']['rate'] = 4
+	
+	return building
+	
+func make_solarFarm():
+	var building = building_class.Building.new()
+	
+	building.name = "Solar Farm"
 
+	building.level = 0
+	
+	building.build_time['base'] = 3
+	building.build_time['rate'] = 1
+	
+	building.cost['metal']['base'] = 150
+	building.cost['metal']['rate'] = 25
+	
+	building.cost['crystal']['base'] = 100
+	building.cost['crystal']['rate'] = 16
+	
+	building.production['energy']['base'] = 15
+	building.production['energy']['rate'] = 8
+
+	return building
+	
+func make_metalMine():
+	var building = building_class.Building.new()
+	
+	building.name = "Metal Mine"
+
+	building.level = 0
+	
+	building.build_time['base'] = 4
+	building.build_time['rate'] = 3
+	
+	building.cost['metal']['base'] = 500
+	building.cost['metal']['rate'] = 30
+	
+	building.cost['crystal']['base'] = 200
+	building.cost['crystal']['rate'] = 18
+	
+	building.production['metal']['base'] = 25
+	building.production['metal']['rate'] = 4
+	
+	building.upkeep['energy']['base'] = 2
+	building.upkeep['energy']['rate'] = 3
+
+	return building
+
+func make_crystalMine():
+	var building = building_class.Building.new()
+	
+	building.name = "Crystal Mine"
+
+	building.level = 0
+	
+	building.build_time['base'] = 5
+	building.build_time['rate'] = 2
+	
+	building.cost['metal']['base'] = 500
+	building.cost['metal']['rate'] = 25
+	
+	building.cost['crystal']['base'] = 50
+	building.cost['crystal']['rate'] = 24
+	
+	building.production['crystal']['base'] = 14
+	building.production['crystal']['rate'] = 4
+	
+	building.upkeep['energy']['base'] = 3
+	building.upkeep['energy']['rate'] = 2
+
+	return building
+
+func make_fuelMine():
+	var building = building_class.Building.new()
+	
+	building.name = "Deuterium Still"
+
+	building.level = 0
+	
+	building.build_time['base'] = 8
+	building.build_time['rate'] = 4
+	
+	building.cost['metal']['base'] = 1200
+	building.cost['metal']['rate'] = 75
+	
+	building.cost['crystal']['base'] = 500
+	building.cost['crystal']['rate'] = 70
+	
+	building.production['fuel']['base'] = 6
+	building.production['fuel']['rate'] = 3
+	
+	building.upkeep['energy']['base'] = 4
+	building.upkeep['energy']['rate'] = 5
+
+	return building
 

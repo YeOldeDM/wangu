@@ -1,0 +1,11 @@
+::res://::1446307026
+building_classes.gd::GDScript::1446307026::
+droid_big.fnt::Font::1446235903::font<>../../../../../usr/share/fonts/truetype/droid/DroidSans.ttf<>9e94decf013d3e2c9adcc0b97cc5ce44<>1353949177
+droid_med.fnt::Font::1446263903::font<>../../../../../usr/share/fonts/truetype/droid/DroidSans.ttf<>9e94decf013d3e2c9adcc0b97cc5ce44<>1353949177
+droid_small.fnt::Font::1446272447::font<>../../../../../usr/share/fonts/truetype/droid/DroidSans.ttf<>9e94decf013d3e2c9adcc0b97cc5ce44<>1353949177
+global.gd::GDScript::1446307026::
+icon.png::ImageTexture::1446097320::
+new_scene.scn::PackedScene::1446307022::
+upgrade_building_dialog.gd::GDScript::1446307026::
+upgrade_building_dialog.xml::PackedScene::1446306582::
+world.gd::GDScript::1446307026::
