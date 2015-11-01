@@ -11,10 +11,10 @@ func draw_window(colony,building):
 	var metal_cost = building.get('cost','metal',building.level+1)
 	var crystal_cost = building.get('cost','crystal',building.level+1)
 	var fuel_cost = building.get('cost','fuel',building.level+1)
-	var energy_cost = building.get('upkeep','energy',building.level+1)
+	var energy_cost = building.get('upkeep','energy',building.level+1) - building.get('upkeep','energy',building.level)
 	var free_energy = colony.my_energy - colony.energy_used
 	
-	if colony.my_metal < metal_cost or colony.my_crystal < crystal_cost or colony.my_fuel < fuel_cost or this_building.is_upgrading:
+	if colony.my_metal < metal_cost or colony.my_crystal < crystal_cost or colony.my_fuel < fuel_cost or this_building.is_upgrading or energy_cost > free_energy:
 		get_node('Upgrade').set_disabled(true)
 	
 	set_title(building.name)

@@ -78,6 +78,7 @@ class Colony:
 		r.get_node('Fuel/rate').text = str('+',self.fuel_rate,'/m')
 		
 		r.get_node('Energy/Amount').text = str(self.my_energy - self.energy_used)
+		r.get_node('Energy/rate').text = str(self.my_energy)
 
 
 
@@ -250,17 +251,17 @@ func make_solarFarm():
 
 	building.level = 0
 	
-	building.build_time['base'] = 3
-	building.build_time['rate'] = 1
+	building.build_time['base'] = 10
+	building.build_time['rate'] = 4
 	
-	building.cost['metal']['base'] = 150
-	building.cost['metal']['rate'] = 25
+	building.cost['metal']['base'] = 50
+	building.cost['metal']['rate'] = 50
 	
-	building.cost['crystal']['base'] = 100
-	building.cost['crystal']['rate'] = 16
+	building.cost['crystal']['base'] = 25
+	building.cost['crystal']['rate'] = 25
 	
 	building.production['energy']['base'] = 15
-	building.production['energy']['rate'] = 8
+	building.production['energy']['rate'] = 1
 
 	return building
 	
@@ -274,14 +275,14 @@ func make_metalMine():
 	building.build_time['base'] = 4
 	building.build_time['rate'] = 3
 	
-	building.cost['metal']['base'] = 500
-	building.cost['metal']['rate'] = 30
+	building.cost['metal']['base'] = 100
+	building.cost['metal']['rate'] = 10
 	
-	building.cost['crystal']['base'] = 200
+	building.cost['crystal']['base'] = 50
 	building.cost['crystal']['rate'] = 18
 	
 	building.production['metal']['base'] = 25
-	building.production['metal']['rate'] = 4
+	building.production['metal']['rate'] = 12
 	
 	building.upkeep['energy']['base'] = 2
 	building.upkeep['energy']['rate'] = 3
@@ -298,14 +299,14 @@ func make_crystalMine():
 	building.build_time['base'] = 5
 	building.build_time['rate'] = 2
 	
-	building.cost['metal']['base'] = 500
-	building.cost['metal']['rate'] = 25
+	building.cost['metal']['base'] = 200
+	building.cost['metal']['rate'] = 12
 	
 	building.cost['crystal']['base'] = 50
-	building.cost['crystal']['rate'] = 24
+	building.cost['crystal']['rate'] = 16
 	
 	building.production['crystal']['base'] = 14
-	building.production['crystal']['rate'] = 4
+	building.production['crystal']['rate'] = 10
 	
 	building.upkeep['energy']['base'] = 3
 	building.upkeep['energy']['rate'] = 2
@@ -322,11 +323,11 @@ func make_fuelMine():
 	building.build_time['base'] = 8
 	building.build_time['rate'] = 4
 	
-	building.cost['metal']['base'] = 1200
-	building.cost['metal']['rate'] = 75
+	building.cost['metal']['base'] = 500
+	building.cost['metal']['rate'] = 22
 	
-	building.cost['crystal']['base'] = 500
-	building.cost['crystal']['rate'] = 70
+	building.cost['crystal']['base'] = 200
+	building.cost['crystal']['rate'] = 24
 	
 	building.production['fuel']['base'] = 6
 	building.production['fuel']['rate'] = 3
