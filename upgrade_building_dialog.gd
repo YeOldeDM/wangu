@@ -17,7 +17,9 @@ func draw_window(colony,building):
 	if colony.my_metal < metal_cost or colony.my_crystal < crystal_cost or colony.my_fuel < fuel_cost or this_building.is_upgrading or energy_cost > free_energy:
 		get_node('Upgrade').set_disabled(true)
 	
-	set_title(building.name)
+	set_title(str("Lv",building.level," ",building.name))
+	get_node('level').set_text(str("Level ",this_building.level))
+	
 	
 	get_node('metal_cost').set_text(str(metal_cost))
 	get_node('crystal_cost').set_text(str(crystal_cost))

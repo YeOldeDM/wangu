@@ -234,13 +234,13 @@ func make_planetaryCommandCenter():
 	building.cost['fuel']['rate'] = 5
 	
 	building.production['metal']['base'] = 5
-	building.production['metal']['rate'] = 8
+	building.production['metal']['rate'] = 18
 	
 	building.production['crystal']['base'] = 4
-	building.production['crystal']['rate'] = 6
+	building.production['crystal']['rate'] = 16
 	
 	building.production['fuel']['base'] = 2
-	building.production['fuel']['rate'] = 4
+	building.production['fuel']['rate'] = 14
 	
 	return building
 	
@@ -261,7 +261,7 @@ func make_solarFarm():
 	building.cost['crystal']['rate'] = 25
 	
 	building.production['energy']['base'] = 15
-	building.production['energy']['rate'] = 1
+	building.production['energy']['rate'] = 10
 
 	return building
 	
