@@ -31,11 +31,36 @@ func draw_window(colony,building):
 	get_node('description').clear()
 	get_node('description').add_text(building.description)
 	
-	get_node('production/metal rate').set_text(str(building.get('production','metal',building.level)))
-	get_node('production/crystal rate').set_text(str(building.get('production','crystal',building.level)))
-	get_node('production/fuel rate').set_text(str(building.get('production','fuel',building.level)))
-	get_node('production/energy rate').set_text(str(building.get('production','energy',building.level)))
+	var metal_prod = building.get('production','metal',building.level) - building.get('upkeep','metal',building.level)
+	var metal_prod1 = building.get('production','metal',building.level+1) - building.get('upkeep','metal',building.level+1)
+	var metal_diff = metal_prod1 - metal_prod
 	
+	var crystal_prod = building.get('production','crystal',building.level) - building.get('upkeep','crystal',building.level)
+	var crystal_prod1 = building.get('production','crystal',building.level+1) - building.get('upkeep','crystal',building.level+1)
+	var crystal_diff = crystal_prod1 - crystal_prod
+	
+	var fuel_prod = building.get('production','fuel',building.level) - building.get('upkeep','fuel',building.level)
+	var fuel_prod1 = building.get('production','fuel',building.level+1) - building.get('upkeep','fuel',building.level+1)
+	var fuel_diff = fuel_prod1 - fuel_prod
+	
+	var energy_prod = building.get('production','energy',building.level) - building.get('upkeep','energy',building.level)
+	var energy_prod1 = building.get('production','energy',building.level+1) - building.get('upkeep','energy',building.level+1)
+	var energy_diff = energy_prod1 - energy_prod
+	
+	get_node('production/metal rate').set_text(str(metal_prod))
+	get_node('production/crystal rate').set_text(str(crystal_prod))
+	get_node('production/fuel rate').set_text(str(fuel_prod))
+	get_node('production/energy rate').set_text(str(energy_prod))
+	
+	get_node('production/metal rate1').set_text(str(metal_prod1))
+	get_node('production/crystal rate1').set_text(str(crystal_prod1))
+	get_node('production/fuel rate1').set_text(str(fuel_prod1))
+	get_node('production/energy rate1').set_text(str(energy_prod1))
+	
+	get_node('production/metal diff').set_text(str(metal_diff))
+	get_node('production/crystal diff').set_text(str(crystal_diff))
+	get_node('production/fuel diff').set_text(str(fuel_diff))
+	get_node('production/energy diff').set_text(str(energy_diff))
 func _ready():
 	pass
 
