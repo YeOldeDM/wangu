@@ -1,0 +1,25 @@
+BANK 	DONE
+
+WORKERS		mon
+	-track total workers
+	-divvy between jobs
+	-draw to gui
+
+POPULATION	tue
+	-bot storage (total workers)
+	-bot growth rate
+	-make new bots
+
+BUILDINGS	wed
+	-unlock buildings
+	-upgrade buildings
+		-upgrade benefit & cost algo
+	-gui controls
+
+COMBAT		thu
+
+WORLD		fri
+
+UNLOCKS
+'STORY'
+FLESHOUT
