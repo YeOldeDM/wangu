@@ -1,15 +1,15 @@
 BANK 	DONE
 
 WORKERS		mon
-	-track total workers
-	-divvy between jobs
-	-draw to gui
+	-track total workers	DONE
+	-divvy between jobs	DONE
+	-draw to gui		DONE
 	-dev tools
 
 POPULATION	tue
-	-bot storage (total workers)
+	-bot storage (total workers)	DONE
 	-bot growth rate
-	-make new bots
+	-make new bots  		DONE
 	-dev tools
 
 BUILDINGS	wed
