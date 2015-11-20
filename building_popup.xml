@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resource_file type="PackedScene" subresource_count="4" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
-	<ext_resource path="res://droid_normal.fnt" type="Font" index="1"></ext_resource>
 	<ext_resource path="res://droid_small.fnt" type="Font" index="2"></ext_resource>
+	<ext_resource path="res://droid_med.fnt" type="Font" index="1"></ext_resource>
 	<ext_resource path="res://building_popup.gd" type="Script" index="0"></ext_resource>
 	<main_resource>
 		<dictionary name="_bundled" shared="false">
 			<string> "conn_count" </string>
 			<int> 1 </int>
 			<string> "conns" </string>
-			<int_array  len="6"> 				0, 0, 26, 25, 2, 0 </int_array>
+			<int_array  len="6"> 				0, 0, 41, 40, 2, 0 </int_array>
 			<string> "names" </string>
-			<string_array  len="27">
+			<string_array  len="42">
 				<string> "PopupPanel" </string>
 				<string> "margin/right" </string>
 				<string> "margin/bottom" </string>
@@ -28,6 +28,7 @@
 				<string> "custom_fonts/font" </string>
 				<string> "text" </string>
 				<string> "align" </string>
+				<string> "valign" </string>
 				<string> "percent_visible" </string>
 				<string> "lines_skipped" </string>
 				<string> "max_lines_visible" </string>
@@ -36,15 +37,29 @@
 				<string> "bbcode/enabled" </string>
 				<string> "bbcode/bbcode" </string>
 				<string> "visible_characters" </string>
+				<string> "costs" </string>
+				<string> "Panel" </string>
+				<string> "title" </string>
+				<string> "Label1" </string>
+				<string> "Label2" </string>
+				<string> "Label3" </string>
+				<string> "metal_cost" </string>
+				<string> "crystal_cost" </string>
+				<string> "nanium_cost" </string>
+				<string> "tech_cost" </string>
+				<string> "upgrade" </string>
+				<string> "Button" </string>
+				<string> "toggle_mode" </string>
+				<string> "flat" </string>
 				<string> "_on_PopupPanel_about_to_show" </string>
 				<string> "about_to_show" </string>
 			</string_array>
 			<string> "node_count" </string>
-			<int> 4 </int>
+			<int> 15 </int>
 			<string> "nodes" </string>
-			<int_array  len="120"> 				-1, -1, 0, 0, -1, 9, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 6, 4, 7, 2, 8, 5, 9, 6, 0, 0, 0, 11, 10, -1, 13, 12, 7, 13, 8, 1, 9, 2, 10, 3, 3, 4, 3, 5, 4, 14, 11, 15, 12, 16, 4, 17, 13, 18, 14, 19, 15, 0, 0, 0, 11, 20, -1, 13, 12, 7, 13, 10, 1, 9, 2, 16, 3, 3, 4, 3, 5, 4, 14, 17, 15, 12, 16, 4, 17, 13, 18, 14, 19, 15, 0, 0, 0, 21, 15, -1, 11, 12, 7, 13, 10, 1, 1, 2, 18, 3, 3, 4, 3, 5, 4, 6, 4, 22, 3, 23, 19, 24, 15, 0 </int_array>
+			<int_array  len="473"> 				-1, -1, 0, 0, -1, 9, 1, 0, 2, 1, 3, 2, 4, 3, 5, 4, 6, 4, 7, 2, 8, 5, 9, 6, 0, 0, 0, 11, 10, -1, 14, 12, 7, 13, 7, 1, 8, 2, 9, 3, 3, 4, 3, 5, 4, 14, 10, 15, 11, 16, 4, 17, 12, 18, 13, 19, 14, 20, 15, 0, 0, 0, 11, 21, -1, 14, 12, 16, 13, 9, 1, 8, 2, 17, 3, 3, 4, 3, 5, 4, 14, 18, 15, 19, 16, 4, 17, 12, 18, 13, 19, 14, 20, 15, 0, 0, 0, 22, 15, -1, 11, 12, 7, 13, 9, 1, 1, 2, 20, 3, 3, 4, 3, 5, 4, 6, 4, 23, 3, 24, 21, 25, 15, 0, 0, 0, 27, 26, -1, 8, 12, 22, 13, 17, 1, 23, 2, 24, 3, 2, 4, 3, 5, 4, 6, 4, 0, 4, 0, 11, 28, -1, 12, 1, 25, 2, 26, 3, 3, 4, 3, 5, 4, 14, 18, 15, 27, 16, 12, 17, 4, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 11, -1, 12, 13, 26, 1, 28, 2, 9, 3, 3, 4, 3, 5, 4, 14, 18, 15, 29, 17, 12, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 29, -1, 12, 13, 9, 1, 28, 2, 17, 3, 3, 4, 3, 5, 4, 14, 18, 15, 30, 17, 12, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 30, -1, 12, 13, 17, 1, 28, 2, 25, 3, 3, 4, 3, 5, 4, 14, 18, 15, 31, 17, 12, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 31, -1, 12, 13, 25, 1, 28, 2, 32, 3, 3, 4, 3, 5, 4, 14, 18, 15, 33, 17, 12, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 32, -1, 14, 12, 9, 13, 26, 1, 25, 2, 9, 3, 3, 4, 3, 5, 4, 14, 18, 15, 34, 16, 4, 17, 12, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 33, -1, 14, 12, 9, 13, 9, 1, 25, 2, 17, 3, 3, 4, 3, 5, 4, 14, 18, 15, 34, 16, 4, 17, 12, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 34, -1, 14, 12, 9, 13, 17, 1, 25, 2, 25, 3, 3, 4, 3, 5, 4, 14, 18, 15, 34, 16, 4, 17, 12, 18, 13, 19, 14, 20, 15, 0, 4, 0, 11, 35, -1, 14, 12, 9, 13, 25, 1, 25, 2, 32, 3, 3, 4, 3, 5, 4, 14, 18, 15, 34, 16, 4, 17, 12, 18, 13, 19, 14, 20, 15, 0, 0, 0, 37, 36, -1, 12, 12, 22, 13, 24, 1, 23, 2, 35, 3, 2, 4, 3, 5, 4, 6, 4, 14, 18, 38, 2, 15, 36, 39, 2, 0 </int_array>
 			<string> "variants" </string>
-			<array  len="20" shared="false">
+			<array  len="37" shared="false">
 				<real> 232 </real>
 				<real> 152 </real>
 				<bool> False </bool>
@@ -53,13 +68,13 @@
 				<resource  external="0">  </resource>
 				<dictionary  shared="false">
 					<string> "__editor_plugin_screen__" </string>
-					<string> "2D" </string>
+					<string> "Script" </string>
 					<string> "__editor_plugin_states__" </string>
 					<dictionary  shared="false">
 						<string> "2D" </string>
 						<dictionary  shared="false">
 							<string> "ofs" </string>
-							<vector2> -143.584, -20.4662 </vector2>
+							<vector2> -133.831, -53.1404 </vector2>
 							<string> "snap_grid" </string>
 							<bool> True </bool>
 							<string> "snap_offset" </string>
@@ -188,18 +203,35 @@
 					</dictionary>
 				</dictionary>
 				<real> 8 </real>
-				<real> 16 </real>
 				<real> 216 </real>
 				<real> 32 </real>
 				<resource  external="1">  </resource>
 				<string> "STUFF" </string>
+				<int> 1 </int>
 				<real> 1 </real>
 				<int> 0 </int>
 				<int> -1 </int>
+				<real> 168 </real>
 				<real> 48 </real>
 				<resource  external="2">  </resource>
+				<string> "level 0" </string>
 				<real> 144 </real>
 				<string> "" </string>
+				<real> 160 </real>
+				<real> 224 </real>
+				<real> 128 </real>
+				<real> 64 </real>
+				<real> 16 </real>
+				<string> "upgrade costs" </string>
+				<real> 40 </real>
+				<string> "Metal" </string>
+				<string> "Crystal" </string>
+				<string> "Nanium" </string>
+				<real> 80 </real>
+				<string> "Tech" </string>
+				<string> "0" </string>
+				<real> 146 </real>
+				<string> "Upgrade" </string>
 			</array>
 			<string> "version" </string>
 			<int> 1 </int>
