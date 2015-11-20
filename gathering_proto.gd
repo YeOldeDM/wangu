@@ -152,7 +152,7 @@ func _draw_gui():
 		panels[i].get_node('bank').set_text(mat_txt)
 		
 		if i < 3:
-			var per = int(mat_amt/max(1,mat_max)*100)
+			var per = mat_amt/max(1,mat_max)
 
 			panels[i].get_node('fillbar').set_value(per)
 		
@@ -165,7 +165,7 @@ func _draw_gui():
 		
 		var xp_needed = get_skill_level(real_lvl+1) - get_skill_level(real_lvl)
 		var xp_progress = your_skills[i]['xp'] - get_skill_level(real_lvl)
-		var skill_per = int((xp_progress / max(1,xp_needed))*100)
+		var skill_per = xp_progress / max(1,xp_needed)
 		if show_per != skill_per:
 			skill_panels[i].get_node('fillbar').set_value(skill_per)
 		
