@@ -8,13 +8,13 @@ const tech=3
 
 var time = 0.0
 
-var bank = {0:	{'current': 0, 'max': 5000, 
+var bank = {0:	{'current': 0, 'max': 100, 
 			'rate': 0, 'producers':	{'you':0,
 									'workers':0}},
-			1:	{'current': 0, 'max': 5000, 
+			1:	{'current': 0, 'max': 100, 
 			'rate': 0, 'producers':	{'you':0,
 									'workers':0}},
-			2:	{'current': 0, 'max': 5000, 
+			2:	{'current': 0, 'max': 100, 
 			'rate': 0, 'producers':	{'you':0,
 									'workers':0}},
 			3:	{'current': 0, 'max': null,
@@ -103,6 +103,7 @@ func _ready():
 	set_process(true)
 
 func _process(delta):
+	#adjust resource levels by income
 	for i in range(4):
 		var mat_amt = bank[i]['current']
 		var mat_max = bank[i]['max']
@@ -120,6 +121,7 @@ func _process(delta):
 			gain_xp(i,your_production_rate*boost_rate*delta)	#don't gain xp if this bank is full!
 		bank[i]['current'] = new_amt
 		
+	#count up time	
 	time += delta
 		
 	
