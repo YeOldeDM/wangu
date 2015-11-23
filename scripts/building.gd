@@ -1,7 +1,7 @@
 
 extends TextureButton
 
-var popup = preload('building_popup.xml')
+var popup = preload('res://building_popup.xml')
 
 var window = null
 

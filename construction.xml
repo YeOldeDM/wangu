@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<resource_file type="PackedScene" subresource_count="4" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
-	<ext_resource path="res://construction.gd" type="Script" index="1"></ext_resource>
-	<ext_resource path="res://droid_normal.fnt" type="Font" index="0"></ext_resource>
-	<resource type="Theme" path="local://1">
-		<resource name="default_font" external="0">  </resource>
-
-	</resource>
+<resource_file type="PackedScene" subresource_count="2" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
+	<ext_resource path="res://scripts/construction.gd" type="Script" index="0"></ext_resource>
 	<main_resource>
 		<dictionary name="_bundled" shared="false">
 			<string> "conn_count" </string>
@@ -13,14 +8,13 @@
 			<string> "conns" </string>
 			<int_array  len="0"> 				 </int_array>
 			<string> "names" </string>
-			<string_array  len="33">
+			<string_array  len="32">
 				<string> "construction" </string>
 				<string> "Control" </string>
 				<string> "focus/ignore_mouse" </string>
 				<string> "focus/stop_mouse" </string>
 				<string> "size_flags/horizontal" </string>
 				<string> "size_flags/vertical" </string>
-				<string> "theme/theme" </string>
 				<string> "script/script" </string>
 				<string> "__meta__" </string>
 				<string> "Buildings" </string>
@@ -51,17 +45,16 @@
 			<string> "node_count" </string>
 			<int> 10 </int>
 			<string> "nodes" </string>
-			<int_array  len="252"> 				-1, -1, 1, 0, -1, 7, 2, 0, 3, 1, 4, 2, 5, 2, 6, 3, 7, 4, 8, 5, 0, 0, 0, 10, 9, -1, 9, 11, 6, 12, 7, 13, 8, 14, 9, 15, 10, 2, 0, 3, 1, 4, 2, 5, 2, 0, 1, 0, 10, 16, -1, 8, 12, 11, 13, 11, 14, 12, 15, 13, 2, 0, 3, 1, 4, 2, 5, 2, 0, 1, 0, 18, 17, -1, 10, 12, 11, 13, 14, 14, 15, 15, 16, 2, 0, 3, 1, 4, 2, 5, 2, 19, 17, 20, 1, 0, 3, 0, 21, 9, -1, 10, 22, 17, 23, 17, 12, 18, 13, 19, 14, 18, 15, 18, 2, 0, 3, 1, 4, 2, 5, 2, 0, 4, 0, 24, 17, -1, 9, 12, 18, 14, 20, 15, 21, 2, 0, 3, 1, 4, 2, 5, 2, 25, 1, 26, 1, 0, 5, 0, 27, 17, -1, 5, 2, 0, 3, 0, 4, 2, 5, 2, 28, 2, 0, 3, 0, 21, 29, -1, 11, 30, 0, 22, 17, 23, 17, 12, 18, 13, 19, 14, 18, 15, 18, 2, 0, 3, 1, 4, 2, 5, 2, 0, 3, 0, 21, 31, -1, 11, 30, 0, 22, 17, 23, 17, 12, 18, 13, 19, 14, 18, 15, 18, 2, 0, 3, 1, 4, 2, 5, 2, 0, 3, 0, 21, 32, -1, 11, 30, 0, 22, 17, 23, 17, 12, 18, 13, 19, 14, 18, 15, 18, 2, 0, 3, 1, 4, 2, 5, 2, 0 </int_array>
+			<int_array  len="250"> 				-1, -1, 1, 0, -1, 6, 2, 0, 3, 1, 4, 2, 5, 2, 6, 3, 7, 4, 0, 0, 0, 9, 8, -1, 9, 10, 5, 11, 6, 12, 7, 13, 8, 14, 9, 2, 0, 3, 1, 4, 2, 5, 2, 0, 1, 0, 9, 15, -1, 8, 11, 10, 12, 10, 13, 11, 14, 12, 2, 0, 3, 1, 4, 2, 5, 2, 0, 1, 0, 17, 16, -1, 10, 11, 10, 12, 13, 13, 14, 14, 15, 2, 0, 3, 1, 4, 2, 5, 2, 18, 16, 19, 1, 0, 3, 0, 20, 8, -1, 10, 21, 16, 22, 16, 11, 17, 12, 18, 13, 17, 14, 17, 2, 0, 3, 1, 4, 2, 5, 2, 0, 4, 0, 23, 16, -1, 9, 11, 17, 13, 19, 14, 20, 2, 0, 3, 1, 4, 2, 5, 2, 24, 1, 25, 1, 0, 5, 0, 26, 16, -1, 5, 2, 0, 3, 0, 4, 2, 5, 2, 27, 2, 0, 3, 0, 20, 28, -1, 11, 29, 0, 21, 16, 22, 16, 11, 17, 12, 18, 13, 17, 14, 17, 2, 0, 3, 1, 4, 2, 5, 2, 0, 3, 0, 20, 30, -1, 11, 29, 0, 21, 16, 22, 16, 11, 17, 12, 18, 13, 17, 14, 17, 2, 0, 3, 1, 4, 2, 5, 2, 0, 3, 0, 20, 31, -1, 11, 29, 0, 21, 16, 22, 16, 11, 17, 12, 18, 13, 17, 14, 17, 2, 0, 3, 1, 4, 2, 5, 2, 0 </int_array>
 			<string> "variants" </string>
-			<array  len="22" shared="false">
+			<array  len="21" shared="false">
 				<bool> False </bool>
 				<bool> True </bool>
 				<int> 2 </int>
-				<resource  resource_type="Theme" path="local://1">  </resource>
-				<resource  external="1">  </resource>
+				<resource  external="0">  </resource>
 				<dictionary  shared="false">
 					<string> "__editor_plugin_screen__" </string>
-					<string> "2D" </string>
+					<string> "Script" </string>
 					<string> "__editor_plugin_states__" </string>
 					<dictionary  shared="false">
 						<string> "2D" </string>
@@ -208,7 +201,7 @@
 				<real> 264 </real>
 				<int> 1 </int>
 				<real> 4 </real>
-				<real> 30 </real>
+				<real> 31 </real>
 				<real> 444 </real>
 				<real> 154 </real>
 			</array>
