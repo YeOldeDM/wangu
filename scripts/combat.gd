@@ -21,7 +21,7 @@ class Mob:
 	var total_health = 0
 	var current_health = 0
 	
-	var is_dead = false
+	var is_dead = true
 	
 	func new_mob():
 		self.get_total_health()
@@ -70,7 +70,7 @@ class Army:
 	
 	var current_health = 0
 	
-	var is_dead = false
+	var is_dead = true
 	
 	func new_army():
 		self.current_health = self.total_health()
@@ -172,7 +172,7 @@ func _ready():
 	army = Army.new()
 	mob = Mob.new()
 	
-	army.new_army()
+	
 	bots_panel = get_node('Battle/cont/bots')
 	mob_panel = get_node('Battle/cont/mobs')
 	
@@ -181,9 +181,6 @@ func _ready():
 	
 	
 	set_process(true)
-
-
-
 
 
 func _process(delta):
@@ -198,10 +195,13 @@ func _process(delta):
 		battle_clock = 0.0
 		print("Tick!")
 		if not army.is_dead and not mob.is_dead:
-			var army_dmg = army.attack()
-			var mob_dmg = mob.attack()
-			army.get_hit(mob_dmg)
-			mob.get_hit(army_dmg)
+			if not army.is_dead:
+				var army_dmg = army.attack()
+				mob.get_hit(army_dmg)
+				if not mob.is_dead:
+					var mob_dmg = mob.attack()
+					army.get_hit(mob_dmg)
+			
 		else:
 			if army.is_dead:
 				army.new_army()
