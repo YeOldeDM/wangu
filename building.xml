@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<resource_file type="PackedScene" subresource_count="5" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
+<resource_file type="PackedScene" subresource_count="7" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
 	<ext_resource path="res://fonts/freesans_18.fnt" type="Font" index="2"></ext_resource>
 	<ext_resource path="res://fonts/freesans_10.fnt" type="Font" index="3"></ext_resource>
 	<ext_resource path="res://gfx/building_button.png" type="Texture" index="0"></ext_resource>
 	<ext_resource path="res://scripts/building.gd" type="Script" index="1"></ext_resource>
+	<ext_resource path="res://scripts/building_popup.gd" type="Script" index="4"></ext_resource>
+	<ext_resource path="res://fonts/freesans_10b.fnt" type="Font" index="5"></ext_resource>
 	<main_resource>
 		<dictionary name="_bundled" shared="false">
 			<string> "conn_count" </string>
-			<int> 2 </int>
+			<int> 3 </int>
 			<string> "conns" </string>
-			<int_array  len="12"> 				0, 0, 23, 22, 2, 0, 0, 0, 25, 24, 2, 0 </int_array>
+			<int_array  len="18"> 				0, 0, 46, 45, 2, 0, 0, 0, 48, 47, 2, 0, 3, 3, 50, 49, 2, 0 </int_array>
 			<string> "names" </string>
-			<string_array  len="26">
+			<string_array  len="51">
 				<string> "Button" </string>
 				<string> "TextureButton" </string>
 				<string> "margin/right" </string>
@@ -34,17 +36,42 @@
 				<string> "lines_skipped" </string>
 				<string> "max_lines_visible" </string>
 				<string> "level" </string>
+				<string> "Popup" </string>
+				<string> "margin/left" </string>
+				<string> "popup/exclusive" </string>
+				<string> "Panel" </string>
+				<string> "description" </string>
+				<string> "RichTextLabel" </string>
+				<string> "custom_fonts/bold_font" </string>
+				<string> "custom_fonts/normal_font" </string>
+				<string> "bbcode/enabled" </string>
+				<string> "bbcode/bbcode" </string>
+				<string> "visible_characters" </string>
+				<string> "costs" </string>
+				<string> "GridContainer" </string>
+				<string> "columns" </string>
+				<string> "metal" </string>
+				<string> "metal_cost" </string>
+				<string> "crystal" </string>
+				<string> "crystal_cost" </string>
+				<string> "nanium" </string>
+				<string> "nanium_cost" </string>
+				<string> "tech" </string>
+				<string> "tech_cost" </string>
+				<string> "valign" </string>
 				<string> "_on_Button_mouse_enter" </string>
 				<string> "mouse_enter" </string>
 				<string> "_on_Button_mouse_exit" </string>
 				<string> "mouse_exit" </string>
+				<string> "_on_Popup_about_to_show" </string>
+				<string> "about_to_show" </string>
 			</string_array>
 			<string> "node_count" </string>
-			<int> 3 </int>
+			<int> 18 </int>
 			<string> "nodes" </string>
-			<int_array  len="89"> 				-1, -1, 1, 0, -1, 10, 2, 0, 3, 1, 4, 2, 5, 3, 6, 4, 7, 4, 8, 2, 9, 5, 10, 6, 11, 7, 0, 0, 0, 13, 12, -1, 12, 14, 8, 2, 9, 3, 10, 4, 3, 5, 3, 6, 11, 15, 12, 16, 13, 17, 14, 18, 15, 19, 16, 20, 17, 0, 0, 0, 13, 21, -1, 12, 14, 18, 2, 19, 3, 1, 4, 3, 5, 3, 6, 11, 15, 20, 16, 21, 17, 11, 18, 15, 19, 16, 20, 17, 0 </int_array>
+			<int_array  len="540"> 				-1, -1, 1, 0, -1, 10, 2, 0, 3, 1, 4, 2, 5, 3, 6, 4, 7, 4, 8, 2, 9, 5, 10, 6, 11, 7, 0, 0, 0, 13, 12, -1, 12, 14, 8, 2, 9, 3, 10, 4, 3, 5, 3, 6, 11, 15, 12, 16, 13, 17, 14, 18, 15, 19, 16, 20, 17, 0, 0, 0, 13, 21, -1, 12, 14, 18, 2, 19, 3, 1, 4, 3, 5, 3, 6, 11, 15, 20, 16, 21, 17, 11, 18, 15, 19, 16, 20, 17, 0, 0, 0, 22, 22, -1, 10, 23, 0, 14, 1, 2, 22, 3, 23, 4, 2, 5, 3, 6, 11, 7, 11, 24, 2, 10, 24, 0, 3, 0, 25, 25, -1, 6, 2, 25, 3, 26, 4, 2, 5, 3, 6, 11, 7, 11, 0, 4, 0, 13, 12, -1, 13, 23, 8, 14, 8, 2, 22, 3, 18, 4, 3, 5, 3, 6, 11, 15, 12, 16, 27, 17, 11, 18, 15, 19, 16, 20, 17, 0, 4, 0, 13, 21, -1, 13, 23, 28, 14, 18, 2, 22, 3, 1, 4, 3, 5, 3, 6, 11, 15, 29, 16, 21, 17, 11, 18, 15, 19, 16, 20, 17, 0, 4, 0, 27, 26, -1, 13, 23, 8, 14, 18, 2, 26, 3, 28, 4, 2, 5, 3, 6, 11, 7, 11, 28, 29, 29, 20, 30, 3, 31, 30, 32, 17, 0, 4, 0, 34, 33, -1, 10, 23, 31, 14, 32, 2, 22, 3, 33, 4, 2, 5, 2, 6, 4, 7, 4, 35, 11, 11, 34, 0, 8, 0, 13, 36, -1, 10, 2, 35, 3, 36, 4, 3, 5, 3, 6, 4, 15, 20, 16, 37, 18, 15, 19, 16, 20, 17, 0, 8, 0, 13, 37, -1, 12, 23, 38, 2, 32, 3, 36, 4, 3, 5, 3, 6, 4, 15, 20, 16, 39, 17, 11, 18, 15, 19, 16, 20, 17, 0, 8, 0, 13, 38, -1, 11, 14, 40, 2, 35, 3, 41, 4, 3, 5, 3, 6, 4, 15, 20, 16, 42, 18, 15, 19, 16, 20, 17, 0, 8, 0, 13, 39, -1, 13, 23, 38, 14, 40, 2, 32, 3, 41, 4, 3, 5, 3, 6, 4, 15, 20, 16, 39, 17, 11, 18, 15, 19, 16, 20, 17, 0, 8, 0, 13, 40, -1, 11, 14, 43, 2, 35, 3, 44, 4, 3, 5, 3, 6, 4, 15, 20, 16, 45, 18, 15, 19, 16, 20, 17, 0, 8, 0, 13, 41, -1, 13, 23, 38, 14, 43, 2, 32, 3, 44, 4, 3, 5, 3, 6, 4, 15, 20, 16, 39, 17, 11, 18, 15, 19, 16, 20, 17, 0, 8, 0, 13, 42, -1, 11, 14, 46, 2, 35, 3, 47, 4, 3, 5, 3, 6, 4, 15, 20, 16, 48, 18, 15, 19, 16, 20, 17, 0, 8, 0, 13, 43, -1, 13, 23, 38, 14, 46, 2, 32, 3, 47, 4, 3, 5, 3, 6, 4, 15, 20, 16, 39, 17, 11, 18, 15, 19, 16, 20, 17, 0, 4, 0, 13, 13, -1, 14, 23, 31, 14, 1, 2, 25, 3, 32, 4, 3, 5, 3, 6, 11, 15, 29, 16, 49, 17, 14, 44, 14, 18, 15, 19, 16, 20, 17, 0 </int_array>
 			<string> "variants" </string>
-			<array  len="22" shared="false">
+			<array  len="50" shared="false">
 				<real> 176 </real>
 				<real> 48 </real>
 				<bool> False </bool>
@@ -60,7 +87,7 @@
 						<string> "2D" </string>
 						<dictionary  shared="false">
 							<string> "ofs" </string>
-							<vector2> -84.1664, -64.0948 </vector2>
+							<vector2> -85.8936, -76.1618 </vector2>
 							<string> "snap_grid" </string>
 							<bool> True </bool>
 							<string> "snap_offset" </string>
@@ -78,9 +105,9 @@
 							<string> "snap_show_grid" </string>
 							<bool> True </bool>
 							<string> "snap_step" </string>
-							<vector2> 16, 16 </vector2>
+							<vector2> 8, 8 </vector2>
 							<string> "zoom" </string>
-							<real> 2.050546 </real>
+							<real> 1.108033 </real>
 						</dictionary>
 						<string> "3D" </string>
 						<dictionary  shared="false">
@@ -202,6 +229,37 @@
 				<real> 168 </real>
 				<resource  external="3">  </resource>
 				<string> "Level 0" </string>
+				<real> 216 </real>
+				<real> 88 </real>
+				<resource  external="4">  </resource>
+				<real> 224 </real>
+				<real> 144 </real>
+				<string> "Building" </string>
+				<real> 136 </real>
+				<resource  external="5">  </resource>
+				<string> "This is a generic building. It&apos;s description should not exceed the limits of this panel." </string>
+				<real> 152 </real>
+				<real> 64 </real>
+				<real> 120 </real>
+				<dictionary  shared="false">
+					<string> "_editor_collapsed" </string>
+					<bool> True </bool>
+				</dictionary>
+				<real> 43 </real>
+				<real> 10 </real>
+				<string> "Metal" </string>
+				<real> 47 </real>
+				<string> "0" </string>
+				<real> 14 </real>
+				<real> 24 </real>
+				<string> "Crystal" </string>
+				<real> 28 </real>
+				<real> 38 </real>
+				<string> "Nanium" </string>
+				<real> 42 </real>
+				<real> 52 </real>
+				<string> "Tech" </string>
+				<string> "Upgrade Cost" </string>
 			</array>
 			<string> "version" </string>
 			<int> 1 </int>
