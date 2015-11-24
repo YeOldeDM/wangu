@@ -72,9 +72,13 @@ class Army:
 	
 	var is_dead = true
 	
+	var combat_ready = false
+	var autofight = false
+	
 	func new_army():
 		self.current_health = self.total_health()
 		self.is_dead = false
+		self.combat_ready = true
 	
 	func damage():
 		var base_damage = (self.damage+self.weapons) * self.troops
@@ -104,6 +108,8 @@ class Army:
 	
 	func die():
 		self.is_dead = true
+		if not self.autofight:
+			self.combat_ready = false
 
 
 
@@ -129,6 +135,7 @@ func draw_bots_combat_info():
 	var shields = str("Shields: ",format._number(army.shields()))
 	
 	bots_panel.get_node('troops').set_text(troops)
+
 	bots_panel.get_node('damage').set_text(damage)
 	bots_panel.get_node('shields').set_text(shields)
 
@@ -165,7 +172,6 @@ func check_mob_healthbar(per):
 	bar.get_node('health').set_text(h)
 
 
-
 func _ready():
 	format = get_node('/root/formats')
 	
@@ -182,8 +188,10 @@ func _ready():
 	
 	set_process(true)
 
+var combat_ready = false
 
 func _process(delta):
+	#UPDATE HEALTHBARS
 	var b_per = (army.current_health*1.0) / (army.total_health()*1.0)
 	check_bots_healthbar(b_per)
 	
@@ -193,19 +201,38 @@ func _process(delta):
 	battle_clock += delta
 	if battle_clock >= turn_duration:
 		battle_clock = 0.0
-		print("Tick!")
-		if not army.is_dead and not mob.is_dead:
-			if not army.is_dead:
-				var army_dmg = army.attack()
-				mob.get_hit(army_dmg)
-				if not mob.is_dead:
-					var mob_dmg = mob.attack()
-					army.get_hit(mob_dmg)
-			
-		else:
-			if army.is_dead:
+		if army.autofight:
+			army.combat_ready = true
+		if army.combat_ready:
+			combat()
+
+func combat():
+	#COMBAT ENGINE
+	print("Tick!")
+	if not army.is_dead and not mob.is_dead:
+		if not army.is_dead:
+			var army_dmg = army.attack()
+			mob.get_hit(army_dmg)
+			if not mob.is_dead:
+				var mob_dmg = mob.attack()
+				army.get_hit(mob_dmg)
+
+	else:
+		if army.is_dead:
+			if army.combat_ready:
 				army.new_army()
-			if mob.is_dead:
-				mob.new_mob()
+		if mob.is_dead:
+			mob.new_mob()
 
 
+
+
+func _on_auto_fight_toggled( pressed ):
+	if pressed:
+		army.autofight = true
+	else:
+		army.autofight = false
+
+
+func _on_fight_pressed():
+	army.combat_ready = true
