@@ -2,6 +2,9 @@
 extends Control
 var format
 
+var battle_clock = 0.0
+var turn_duration = 1.0
+
 class Mob:
 	var name = "Bob the Mob"
 	
@@ -11,25 +14,29 @@ class Mob:
 	var health = 25
 	var current_health = health
 	
-	func mob_damage():
+	func new_mob():
+		self.current_health = health
+		
+	func damage():
 		var min_dmg = ceil(damage*damage_var)
 		var max_dmg = ceil(damage*(1.0+damage_var))
 		return [min_dmg,max_dmg]
 		
-	func mob_attack():
-		var dmg = self.mob_damage()
+	func attack():
+		var dmg = self.damage()
 		return round(rand_range(dmg[0],dmg[1]))
 		
-	func mob_get_hit(dmg):
-		var damage = max(0,dmg-self.army_defense())
+	func get_hit(dmg):
+		var damage = max(0,dmg)
 		var new_health = self.current_health - damage
 		if new_health <= 0:
+			self.current_health = 0
 			self.die()
 		else:
 			self.current_health = new_health
 	
 	func die():
-		pass	#mob death function
+		self.new_mob()
 
 class Army:
 	var troops = 1
@@ -44,27 +51,27 @@ class Army:
 	var current_health = 0
 	
 	func new_army():
-		self.current_health = self.army_health()
+		self.current_health = self.total_health()
 	
-	func army_damage():
+	func damage():
 		var base_damage = (self.damage+self.weapons) * self.troops
 		var min_dmg = ceil(base_damage*damage_var)
 		var max_dmg = ceil(base_damage * (1.0+damage_var))
 		return [min_dmg,max_dmg]
 		
 		
-	func army_attack():
-		var dmg = self.army_damage()
+	func attack():
+		var dmg = self.damage()
 		return round(rand_range(dmg[0],dmg[1]))
 	
-	func army_health():
+	func total_health():
 		return (self.unit_health+self.armor) * self.troops
 
-	func army_shields():
+	func shields():
 		return self.shields * self.troops
 	
-	func army_get_hit(dmg):
-		var damage = max(0,dmg-self.army_defense())
+	func get_hit(dmg):
+		var damage = max(0,dmg-self.shields())
 		var new_health = self.current_health - damage
 		if new_health <= 0:
 			self.die()
@@ -93,16 +100,16 @@ func draw_map_info():
 
 func draw_bots_combat_info():
 	var troops = str("Troopers (",format._number(army.troops),")")
-	var d = army.army_damage()
+	var d = army.damage()
 	var damage = str("Damage: ",format._number(d[0]),"-",format._number(d[1]))
-	var shields = str("Shields: ",format._number(army.army_shields()))
+	var shields = str("Shields: ",format._number(army.shields()))
 	
 	bots_panel.get_node('troops').set_text(troops)
 	bots_panel.get_node('damage').set_text(damage)
 	bots_panel.get_node('shields').set_text(shields)
 
 func draw_mob_combat_info():
-	var d = mob.mob_damage()
+	var d = mob.damage()
 	var level = str("Level ", mob.level)
 	var damage = str("Damage: ", format._number(d[0]),"-",format._number(d[1]))
 
@@ -114,21 +121,21 @@ func draw_mob_combat_info():
 func check_bots_healthbar(per):
 	var bar = bots_panel.get_node('healthbar')
 	var bar_per = bar.get_value()
-	if per-0.1 < bar_per < per+0.1:
+	if per-0.05 < bar_per < per+0.05:
 		bar.set_value(per)
 	else:
-		bar_per += sign(per-bar_per) * (abs(per-bar_per)*0.05)
+		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
 		bar.set_value(bar_per)
-	var h = str(format._number(army.current_health),"/",format._number(army.army_health()))
+	var h = str(format._number(army.current_health),"/",format._number(army.total_health()))
 	bar.get_node('health').set_text(h)
 
 func check_mob_healthbar(per):
 	var bar = mob_panel.get_node('healthbar')
 	var bar_per = bar.get_value()
-	if per-0.1 < bar_per < per+0.1:
+	if per-0.05 < bar_per < per+0.05:
 		bar.set_value(per)
 	else:
-		bar_per += sign(per-bar_per) * (abs(per-bar_per)*0.05)
+		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
 		bar.set_value(bar_per)
 	var h = str(format._number(mob.current_health),"/",format._number(mob.health))
 	bar.get_node('health').set_text(h)
@@ -156,10 +163,19 @@ func _ready():
 
 
 func _process(delta):
-	var b_per = (army.current_health*1.0) / (army.army_health()*1.0)
+	var b_per = (army.current_health*1.0) / (army.total_health()*1.0)
 	check_bots_healthbar(b_per)
 	
 	var m_per = (mob.current_health*1.0) / (mob.health*1.0)
 	check_mob_healthbar(m_per)
+	
+	battle_clock += delta
+	if battle_clock >= turn_duration:
+		battle_clock = 0.0
+		print("Tick!")
+		var army_dmg = army.attack()
+		var mob_dmg = mob.attack()
+		army.get_hit(mob_dmg)
+		mob.get_hit(army_dmg)
 
 
