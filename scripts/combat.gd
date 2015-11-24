@@ -9,17 +9,32 @@ class Mob:
 	var name = "Bob the Mob"
 	
 	var level = 1
-	var damage = 1
+	
+	var strength = 1
+	var vitality = 1
+	
+	var damage_factor = 1.6
 	var damage_var = 0.4
-	var health = 25
-	var current_health = health
+	var health_factor = 25
+	var health_var = 0.05
+	
+	var total_health = 0
+	var current_health = 0
 	
 	func new_mob():
-		self.current_health = health
-		
+		self.get_total_health()
+		self.current_health = self.total_health
+	
+	func get_total_health():
+		var base_health = self.vitality * self.health_factor
+		var min_health = ceil(base_health*self.health_var)
+		var max_health = ceil(base_health*(1.0+self.health_var))
+		self.total_health = round(rand_range(min_health,max_health))
+	
 	func damage():
-		var min_dmg = ceil(damage*damage_var)
-		var max_dmg = ceil(damage*(1.0+damage_var))
+		var base_damage = self.strength * self.damage_factor
+		var min_dmg = ceil(base_damage*self.damage_var)
+		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
 		return [min_dmg,max_dmg]
 		
 	func attack():
@@ -137,7 +152,7 @@ func check_mob_healthbar(per):
 	else:
 		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
 		bar.set_value(bar_per)
-	var h = str(format._number(mob.current_health),"/",format._number(mob.health))
+	var h = str(format._number(mob.current_health),"/",format._number(mob.total_health))
 	bar.get_node('health').set_text(h)
 
 
@@ -166,7 +181,7 @@ func _process(delta):
 	var b_per = (army.current_health*1.0) / (army.total_health()*1.0)
 	check_bots_healthbar(b_per)
 	
-	var m_per = (mob.current_health*1.0) / (mob.health*1.0)
+	var m_per = (mob.current_health*1.0) / (mob.total_health*1.0)
 	check_mob_healthbar(m_per)
 	
 	battle_clock += delta
