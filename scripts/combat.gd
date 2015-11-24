@@ -15,24 +15,27 @@ class Mob:
 	
 	var damage_factor = 1.6
 	var damage_var = 0.4
-	var health_factor = 25
+	var health_factor = 12
 	var health_var = 0.05
 	
 	var total_health = 0
 	var current_health = 0
 	
+	var is_dead = false
+	
 	func new_mob():
 		self.get_total_health()
 		self.current_health = self.total_health
+		self.is_dead = false
 	
 	func get_total_health():
 		var base_health = self.vitality * self.health_factor
 		var min_health = ceil(base_health*self.health_var)
 		var max_health = ceil(base_health*(1.0+self.health_var))
-		self.total_health = round(rand_range(min_health,max_health))
+		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.1))
 	
 	func damage():
-		var base_damage = self.strength * self.damage_factor
+		var base_damage = (self.strength * self.damage_factor) + exp(self.level*0.1)
 		var min_dmg = ceil(base_damage*self.damage_var)
 		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
 		return [min_dmg,max_dmg]
@@ -51,7 +54,9 @@ class Mob:
 			self.current_health = new_health
 	
 	func die():
-		self.new_mob()
+		self.is_dead = true
+
+
 
 class Army:
 	var troops = 1
@@ -65,8 +70,11 @@ class Army:
 	
 	var current_health = 0
 	
+	var is_dead = false
+	
 	func new_army():
 		self.current_health = self.total_health()
+		self.is_dead = false
 	
 	func damage():
 		var base_damage = (self.damage+self.weapons) * self.troops
@@ -89,12 +97,13 @@ class Army:
 		var damage = max(0,dmg-self.shields())
 		var new_health = self.current_health - damage
 		if new_health <= 0:
+			self.current_health = 0
 			self.die()
 		else:
 			self.current_health = new_health
 	
 	func die():
-		self.new_army()
+		self.is_dead = true
 
 
 
@@ -188,9 +197,15 @@ func _process(delta):
 	if battle_clock >= turn_duration:
 		battle_clock = 0.0
 		print("Tick!")
-		var army_dmg = army.attack()
-		var mob_dmg = mob.attack()
-		army.get_hit(mob_dmg)
-		mob.get_hit(army_dmg)
+		if not army.is_dead and not mob.is_dead:
+			var army_dmg = army.attack()
+			var mob_dmg = mob.attack()
+			army.get_hit(mob_dmg)
+			mob.get_hit(army_dmg)
+		else:
+			if army.is_dead:
+				army.new_army()
+			if mob.is_dead:
+				mob.new_mob()
 
 
