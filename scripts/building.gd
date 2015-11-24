@@ -10,7 +10,7 @@ class Building:
 	This is words that describe the building you are mousing over right now!\n 
 	You should have no more text than this."""
 	
-	var cost_factor = 1.25
+	var cost_factor = 1.75
 
 	
 	var base_production = {}
@@ -28,12 +28,15 @@ class Building:
 		
 		self.level += 1
 	
+	func cost_multiplier(L):
+		return ceil(self.cost_factor * L + exp(L*0.33))
+		
 	func get_cost(L):
 		var cost = {
-			'metal':	self.base_cost['metal'] * ceil(self.cost_factor * L),
-			'crystal':	self.base_cost['crystal'] * ceil(self.cost_factor * L),
-			'nanium':	self.base_cost['nanium'] * ceil(self.cost_factor * L),
-			'tech':		self.base_cost['tech'] * ceil(self.cost_factor * L)
+			'metal':	self.base_cost['metal'] * cost_multiplier(L),
+			'crystal':	self.base_cost['crystal'] * cost_multiplier(L),
+			'nanium':	self.base_cost['nanium'] * cost_multiplier(L),
+			'tech':		self.base_cost['tech'] * cost_multiplier(L)
 				}
 		return cost
 	
