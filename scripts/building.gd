@@ -10,8 +10,8 @@ class Building:
 	This is words that describe the building you are mousing over right now!\n 
 	You should have no more text than this."""
 	
-	var cost_factor = 1.75
-	var production_factor = 1.55
+	var cost_factor = 1.25
+
 	
 	var base_production = {}
 	
@@ -21,6 +21,12 @@ class Building:
 		'nanium':	0,
 		'tech':		0
 			}
+	
+	func upgrade():
+		#subtract costs
+		#
+		
+		self.level += 1
 	
 	func get_cost(L):
 		var cost = {
@@ -43,12 +49,6 @@ class Building:
 
 var building
 
-func _ready():
-	building = Building.new()
-
-
-
-
 func draw_button():
 	if building:
 		get_node('name').set_text(building.name)
@@ -59,5 +59,11 @@ func draw_button():
 func _on_Button_mouse_enter():
 	get_node('Popup').popup()
 
+
 func _on_Button_mouse_exit():
 	get_node('Popup').hide()
+
+
+func _on_Button_pressed():
+	building.upgrade()
+	draw_button()
