@@ -162,7 +162,7 @@ func Metallurgy():
 	b.building.level = 0
 	b.building.skill_buffed = 0
 	b.building.base_cost[0] = 30
-	b.building.base_cost[3] = 50
+	b.building.base_cost[3] = 25
 	return b
 
 func Attunement():
@@ -174,7 +174,7 @@ func Attunement():
 	b.building.skill_buffed = 1
 	b.building.base_cost[0] = 20
 	b.building.base_cost[1] = 30
-	b.building.base_cost[3] = 70
+	b.building.base_cost[3] = 30
 	return b
 
 func NanoSynth():
@@ -186,7 +186,7 @@ func NanoSynth():
 	b.building.skill_buffed = 2
 	b.building.base_cost[1] = 40
 	b.building.base_cost[2] = 50
-	b.building.base_cost[3] = 80
+	b.building.base_cost[3] = 35
 	return b
 
 func Knowledge():
@@ -196,7 +196,7 @@ func Knowledge():
 	b.building.description = "Increased general knowledge allows you to research more efficiently."
 	b.building.level = 0
 	b.building.skill_buffed = 3
-	b.building.base_cost[3] = 90
+	b.building.base_cost[3] = 40
 	return b
 	
 #EQUIPMENT
@@ -227,10 +227,10 @@ func Armor():
 	var b = building_button.instance()
 	b.building = b.EquipmentBuilding.new()
 	b.building.name = "Armor Plating"
-	b.building.description = "Rudimentary Bot protection. Each level of Armor Plating adds 4 Health to each Trooper."
+	b.building.description = "Rudimentary Bot protection. Each level of Armor Plating adds 6 Health to each Trooper."
 	b.building.level = 0
 	b.building.skill_buffed = 'armor'
-	b.building.buff_factor = 4
+	b.building.buff_factor = 6
 	b.building.base_cost[0] = 34
 	b.building.base_cost[2] = 24
 	return b

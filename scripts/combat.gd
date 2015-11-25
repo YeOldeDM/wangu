@@ -27,7 +27,13 @@ class Mob:
 		self.get_total_health()
 		self.current_health = self.total_health
 		self.is_dead = false
-	
+		
+		#HACKY level up system
+		self.level += 1
+		randomize()
+		self.strength += int(rand_range(0,2))
+		self.vitality += int(rand_range(0,4))
+		
 	func get_total_health():
 		var base_health = self.vitality * self.health_factor
 		var min_health = ceil(base_health*self.health_var)
