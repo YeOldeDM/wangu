@@ -75,10 +75,18 @@ class Army:
 	var combat_ready = false
 	var autofight = false
 	
+	var population
+	
 	func new_army():
-		self.current_health = self.total_health()
-		self.is_dead = false
-		self.combat_ready = true
+		var pop = int(self.population.population['current'])
+		print(pop)
+		if pop > self.troops:
+			self.population._change_current_population(-1*self.troops)
+			self.population.refresh()
+			self.current_health = self.total_health()
+			self.is_dead = false
+			self.combat_ready = true
+			
 	
 	func damage():
 		var base_damage = (self.damage+self.weapons) * self.troops
@@ -176,6 +184,8 @@ func _ready():
 	format = get_node('/root/formats')
 	
 	army = Army.new()
+	army.population = get_node('/root/Game/population')
+	
 	mob = Mob.new()
 	
 	

@@ -80,6 +80,9 @@ func refresh():
 func _set_max_workforce():
 	workforce['max'] = min(int(population['max']/2), int(population['current']))
 
+func _change_current_population(n):
+	population['current'] += n
+
 func _set_current_workforce():
 	var total = workers[0]+workers[1]+workers[2]+workers[3]
 	workforce['current'] = total	#current workforce cannot exceed current population
