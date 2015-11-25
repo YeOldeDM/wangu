@@ -7,6 +7,7 @@ var building_button = load('res://building.xml')
 
 var buildings = []
 var facilities = []
+var sciences = []
 
 func _ready():
 	for i in range(1):
@@ -24,6 +25,15 @@ func _ready():
 		var bays = NanoBays()
 		add_facility(bays)
 		
+		var metal = Metallurgy()
+		add_science(metal)
+		var tune = Attunement()
+		add_science(tune)
+		var synth = NanoSynth()
+		add_science(synth)
+		var know = Knowledge()
+		add_science(know)
+		
 func add_building(building):
 	building.building.construction = self
 	building.building.bank = get_node('/root/Game/Bank')
@@ -38,6 +48,12 @@ func add_facility(facility):
 	facility.draw_button()
 	get_node('Buildings/cont/Facilities/cont/cont').add_child(facility)
 	
+func add_science(science):
+	science.building.construction = self
+	science.building.bank = get_node('/root/Game/Bank')
+	sciences.append(science)
+	science.draw_button()
+	get_node('Buildings/cont/Science/cont/cont').add_child(science)
 
 func set_population():
 	var n = 0
@@ -58,8 +74,8 @@ func set_storage():
 			amts[i] += a[i]
 	get_node('/root/Game/Bank').set_storage(amts)
 
-#BUILDINGS#
 
+#BOT HOUSING
 func Shack():
 	var b = building_button.instance()
 	b.building = b.Building.new()
@@ -92,7 +108,8 @@ func CargoBay():
 	b.building.base_cost['crystal'] = 225
 	b.building.base_cost['nanium'] = 100
 	return b
-	
+
+#RESOURCE STORAGE FACILITIES
 func Scrapyard():
 	var b = building_button.instance()
 	b.building = b.StorageBuilding.new()
@@ -118,4 +135,50 @@ func NanoBays():
 	b.building.level = 0
 	b.building.description = "Storage space for Nanium. Each level of Nano-Bays doubles your holding capacity for Nanium."
 	b.building.base_storage[2] = 100
+	return b
+	
+#SCIENCE
+func Metallurgy():
+	var b = building_button.instance()
+	b.building = b.BuffBuilding.new()
+	b.building.name = "Metallurgy"
+	b.building.description = "Increased knowledge of the nature of metals allows you to salvage the stuff faster."
+	b.building.level = 0
+	b.building.skill_buffed = 0
+	b.building.base_cost[0] = 30
+	b.building.base_cost[3] = 50
+	return b
+
+func Attunement():
+	var b = building_button.instance()
+	b.building = b.BuffBuilding.new()
+	b.building.name = "Attunement"
+	b.building.description = "Increased attunement to the vibration of Crystals allows you to harvest the stuff faster."
+	b.building.level = 0
+	b.building.skill_buffed = 1
+	b.building.base_cost[0] = 20
+	b.building.base_cost[1] = 30
+	b.building.base_cost[3] = 70
+	return b
+
+func NanoSynth():
+	var b = building_button.instance()
+	b.building = b.BuffBuilding.new()
+	b.building.name = "Nano-Synthesis"
+	b.building.description = "Increased ability to synthesis Nanium allows you to mine the stuff faster."
+	b.building.level = 0
+	b.building.skill_buffed = 2
+	b.building.base_cost[1] = 40
+	b.building.base_cost[2] = 50
+	b.building.base_cost[3] = 80
+	return b
+
+func Knowledge():
+	var b = building_button.instance()
+	b.building = b.BuffBuilding.new()
+	b.building.name = "Knowledge"
+	b.building.description = "Increased general knowledge allows you to research more efficiently."
+	b.building.level = 0
+	b.building.skill_buffed = 3
+	b.building.base_cost[3] = 90
 	return b

@@ -196,7 +196,14 @@ func get_boost(material):
 	for i in range(boost[material]['level']):
 		value += value*boost[material]['rate']
 	return value
-	
+
+func set_boost():
+	var boosts = {0:0,1:0,2:0,3:0}
+	var buildings = get_node('/root/Game/construction').sciences
+	for b in buildings:
+		boosts[b.building.skill_buffed] += b.building.level
+	for i in range(4):
+		boost[i]['level'] = boosts[i]
 
 func get_workers(material):
 	var pro = bank[material]['producers']
