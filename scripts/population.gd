@@ -6,7 +6,7 @@ var format
 var population = {
 			'current': 0,
 			'max': 10,
-			'rate': 0.1
+			'rate': 0.01
 			}
 var workforce = {
 			'current': 0,
@@ -40,13 +40,13 @@ func set_max_pop(n):
 
 func process(delta):
 	var rate = 0.0
-	if population['current'] >= 2 and int(population['current']) < population['max']:
+	if 2 <= int(population['current']):
 		rate = population['current'] * population['rate']
-	var new_pop = population['current'] + population['rate'] * delta
-	if int(new_pop) != int(population['current']):
+	var new_pop = population['current'] + (rate * delta)
+	if new_pop >= int(population['current']):
 		_set_max_workforce()
 		refresh()
-	population['current'] = new_pop
+	population['current'] = clamp(new_pop, 0, population['max'])
 	
 func refresh():
 	if int(population['current']) >= population['max']:
@@ -82,6 +82,7 @@ func _set_max_workforce():
 
 func _change_current_population(n):
 	population['current'] += n
+
 
 func _set_current_workforce():
 	var total = workers[0]+workers[1]+workers[2]+workers[3]

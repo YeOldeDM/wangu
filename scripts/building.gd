@@ -5,6 +5,7 @@ extends TextureButton
 
 class Building:
 	var construction
+	var bank
 	var name = "Loveshack"
 	var level = 0
 	var description = """This is a generic building.\n\n  
@@ -23,12 +24,31 @@ class Building:
 		'tech':		0
 			}
 	
+	func can_build(cost):
+		var go = true
+		if cost['metal'] > int(self.bank.bank[0]['current']):
+			go = false
+		if cost['crystal'] > int(self.bank.bank[1]['current']):
+			go = false
+		if cost['nanium'] > int(self.bank.bank[2]['current']):
+			go = false
+		if cost['tech'] > int(self.bank.bank[3]['current']):
+			go = false
+		return go
+
+
 	func upgrade():
-		#subtract costs
-		#
+		var cost = self.get_cost(self.level+1)
+		if self.can_build(cost):
 		
-		self.level += 1
-		self.construction.set_population()
+			#subtract costs
+			self.bank.bank[0]['current'] -= cost['metal']
+			self.bank.bank[1]['current'] -= cost['crystal']
+			self.bank.bank[2]['current'] -= cost['nanium']
+			self.bank.bank[3]['current'] -= cost['tech']
+			
+			self.level += 1
+			self.construction.set_population()
 		
 	func cost_multiplier(L):
 		return ceil(self.cost_factor * L + exp(L*0.33))

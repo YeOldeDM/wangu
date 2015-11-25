@@ -18,6 +18,7 @@ func _ready():
 
 func add_building(building):
 	building.building.construction = self
+	building.building.bank = get_node('/root/Game/Bank')
 	buildings.append(building)
 	building.draw_button()
 	get_node('Buildings/cont/Buildings/cont/cont').add_child(building)
