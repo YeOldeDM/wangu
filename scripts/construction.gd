@@ -37,6 +37,10 @@ func _ready():
 		
 		var shields = Shields()
 		add_equipment(shields)
+		var claws = Claws()
+		add_equipment(claws)
+		var armor = Armor()
+		add_equipment(armor)
 		
 func add_building(building):
 	building.building.construction = self
@@ -204,6 +208,28 @@ func Shields():
 	b.building.level = 0
 	b.building.skill_buffed = 'shields'
 	b.building.buff_factor = 6
-	b.building.base_cost[1] = 1
+	b.building.base_cost[1] = 40
 	return b
-	
+
+func Claws():
+	var b = building_button.instance()
+	b.building = b.EquipmentBuilding.new()
+	b.building.name = "Claws"
+	b.building.description = "The better to rip you shreds with, my dear!\n Each level of Claws adds 4 points to your Troopers' base damage."
+	b.building.level = 0
+	b.building.skill_buffed = 'weapon'
+	b.building.buff_factor = 4
+	b.building.base_cost[0] = 28
+	return b
+
+func Armor():
+	var b = building_button.instance()
+	b.building = b.EquipmentBuilding.new()
+	b.building.name = "Armor Plating"
+	b.building.description = "Rudimentary Bot protection. Each level of Armor Plating adds 4 Health to each Trooper."
+	b.building.level = 0
+	b.building.skill_buffed = 'armor'
+	b.building.buff_factor = 4
+	b.building.base_cost[0] = 34
+	b.building.base_cost[1] = 24
+	return b
