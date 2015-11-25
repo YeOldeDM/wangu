@@ -1,8 +1,55 @@
 
 extends TextureButton
 
-
-
+class StorageBuilding:
+	var construction
+	var bank
+	var name = "Storage Building"
+	var description = """This is a building which stores resources"""
+	var level = 0
+	var base_storage = {
+			0:	0,
+			1:	0,
+			2:	0,
+			3:	0}	#Tech has no storage limit, but placeholder needed for clean communication w/ bank
+	
+	func get_storage():
+		var store = {
+			0:	0,
+			1:	0,
+			2:	0,
+			3:	0}
+		for i in range(4):
+			if self.base_storage[i] > 0:
+				var amt = self.base_storage[i]
+				for i in range(self.level):
+					amt *= 2
+				store[i] = amt
+		return store
+	
+	func get_cost(L):	#HACK: L needed for clean communication. Not needed in this func
+		var cost = self.get_storage()
+		for c in cost:
+			cost[c] /= 2
+		return cost
+	
+	func can_build():
+		var go = true
+		var cost = self.get_cost(0)	#HACK: argument shouldn't be needed here
+		for i in range(4):
+			if cost[i] > int(self.bank.bank[i]['current']):
+				go = false
+		return go
+	
+	func upgrade():
+		if self.can_build():
+			var cost = self.get_cost(0)
+			for i in range(4):
+				self.bank.bank[i]['current'] -= cost[i]
+			self.level += 1
+			self.construction.set_storage()
+		
+	
 class Building:
 	var construction
 	var bank
@@ -26,13 +73,13 @@ class Building:
 	
 	func can_build(cost):
 		var go = true
-		if cost['metal'] > int(self.bank.bank[0]['current']):
+		if cost[0] > int(self.bank.bank[0]['current']):
 			go = false
-		if cost['crystal'] > int(self.bank.bank[1]['current']):
+		if cost[1] > int(self.bank.bank[1]['current']):
 			go = false
-		if cost['nanium'] > int(self.bank.bank[2]['current']):
+		if cost[2] > int(self.bank.bank[2]['current']):
 			go = false
-		if cost['tech'] > int(self.bank.bank[3]['current']):
+		if cost[3] > int(self.bank.bank[3]['current']):
 			go = false
 		return go
 
@@ -42,10 +89,10 @@ class Building:
 		if self.can_build(cost):
 		
 			#subtract costs
-			self.bank.bank[0]['current'] -= cost['metal']
-			self.bank.bank[1]['current'] -= cost['crystal']
-			self.bank.bank[2]['current'] -= cost['nanium']
-			self.bank.bank[3]['current'] -= cost['tech']
+			self.bank.bank[0]['current'] -= cost[0]
+			self.bank.bank[1]['current'] -= cost[1]
+			self.bank.bank[2]['current'] -= cost[2]
+			self.bank.bank[3]['current'] -= cost[3]
 			
 			self.level += 1
 			self.construction.set_population()
@@ -55,10 +102,10 @@ class Building:
 		
 	func get_cost(L):
 		var cost = {
-			'metal':	self.base_cost['metal'] * cost_multiplier(L),
-			'crystal':	self.base_cost['crystal'] * cost_multiplier(L),
-			'nanium':	self.base_cost['nanium'] * cost_multiplier(L),
-			'tech':		self.base_cost['tech'] * cost_multiplier(L)
+			0:	self.base_cost['metal'] * cost_multiplier(L),
+			1:	self.base_cost['crystal'] * cost_multiplier(L),
+			2:	self.base_cost['nanium'] * cost_multiplier(L),
+			3:	self.base_cost['tech'] * cost_multiplier(L)
 				}
 		return cost
 	

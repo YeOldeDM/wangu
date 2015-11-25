@@ -1,10 +1,7 @@
 
 extends Control
 
-const metal=0
-const crystal=1
-const nanium=2
-const tech=3
+
 
 var time = 0.0
 
@@ -182,6 +179,12 @@ func gain_xp(i,amt):
 		your_skills[i]['lvl'] += 1
 		your_skills[i]['to-next'] = get_skill_level(your_skills[i]['lvl']+1)
 	
+func set_storage(amts):
+	print(amts)
+	for i in range(3):
+
+		bank[i]['max'] = amts[i]
+	_draw_gui()
 
 func set_resource(material,amt):
 	if amt >= bank[material]['max']:

@@ -28,10 +28,10 @@ func _on_Popup_about_to_show():
 	panel.get_node('description').clear()
 	panel.get_node('description').add_text(desc)
 	
-	costpan.get_node('metal_cost').set_text(format._number(costs['metal']))
-	costpan.get_node('crystal_cost').set_text(format._number(costs['crystal']))
-	costpan.get_node('nanium_cost').set_text(format._number(costs['nanium']))
-	costpan.get_node('tech_cost').set_text(format._number(costs['tech']))
+	costpan.get_node('metal_cost').set_text(format._number(costs[0]))
+	costpan.get_node('crystal_cost').set_text(format._number(costs[1]))
+	costpan.get_node('nanium_cost').set_text(format._number(costs[2]))
+	costpan.get_node('tech_cost').set_text(format._number(costs[3]))
 	
 	#get position for popup (lower right corner of parent)
 	var pos = get_parent().get_global_pos() + get_parent().get_size()
