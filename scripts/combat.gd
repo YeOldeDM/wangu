@@ -32,6 +32,7 @@ class Mob:
 		var base_health = self.vitality * self.health_factor
 		var min_health = ceil(base_health*self.health_var)
 		var max_health = ceil(base_health*(1.0+self.health_var))
+		randomize()
 		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.1))
 	
 	func damage():
@@ -42,6 +43,7 @@ class Mob:
 		
 	func attack():
 		var dmg = self.damage()
+		randomize()
 		return round(rand_range(dmg[0],dmg[1]))
 		
 	func get_hit(dmg):
@@ -81,8 +83,8 @@ class Army:
 	var equipment
 	
 	func new_army():
-		var pop = int(self.population.population['current'])
-		if pop > self.troops:
+		var pop = (self.population.population['current']*1.0) / (self.population.population['max']*1.0)
+		if pop >= 0.9:
 			self.population._change_current_population(-1*self.troops)
 			self.population.refresh()
 			self.current_health = self.total_health()
@@ -99,6 +101,7 @@ class Army:
 		
 	func attack():
 		var dmg = self.damage()
+		randomize()
 		return round(rand_range(dmg[0],dmg[1]))
 	
 	func total_health():
@@ -200,6 +203,7 @@ func _ready():
 	army.equipment = get_node('/root/Game/construction').equipments
 	
 	mob = Mob.new()
+	mob.name = get_node('/root/random').random_animal()
 	
 	
 	bots_panel = get_node('Battle/cont/bots')
@@ -245,6 +249,8 @@ func combat():
 				army.new_army()
 		if mob.is_dead:
 			mob.new_mob()
+			mob.name = get_node('/root/random').random_animal()
+			draw_mob_combat_info()
 
 
 

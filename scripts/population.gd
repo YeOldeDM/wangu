@@ -82,6 +82,7 @@ func _set_max_workforce():
 
 func _change_current_population(n):
 	population['current'] += n
+	_set_max_workforce()
 
 
 func _set_current_workforce():

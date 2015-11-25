@@ -220,6 +220,7 @@ func Claws():
 	b.building.skill_buffed = 'weapon'
 	b.building.buff_factor = 4
 	b.building.base_cost[0] = 28
+	b.building.base_cost[2] = 22
 	return b
 
 func Armor():
@@ -231,5 +232,5 @@ func Armor():
 	b.building.skill_buffed = 'armor'
 	b.building.buff_factor = 4
 	b.building.base_cost[0] = 34
-	b.building.base_cost[1] = 24
+	b.building.base_cost[2] = 24
 	return b
