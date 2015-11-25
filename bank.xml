@@ -10,7 +10,7 @@
 	<ext_resource path="res://gfx/resource_bar_base.png" type="Texture" index="4"></ext_resource>
 	<ext_resource path="res://fonts/freesans_12.fnt" type="Font" index="8"></ext_resource>
 	<ext_resource path="res://gfx/resource_button_up.png" type="Texture" index="9"></ext_resource>
-	<ext_resource path="res://scripts/gathering_proto.gd" type="Script" index="1"></ext_resource>
+	<ext_resource path="res://scripts/bank.gd" type="Script" index="1"></ext_resource>
 	<resource type="Theme" path="local://1">
 		<resource name="default_font" external="0">  </resource>
 
@@ -102,7 +102,7 @@
 				<resource  external="1">  </resource>
 				<dictionary  shared="false">
 					<string> "__editor_plugin_screen__" </string>
-					<string> "2D" </string>
+					<string> "Script" </string>
 					<string> "__editor_plugin_states__" </string>
 					<dictionary  shared="false">
 						<string> "2D" </string>

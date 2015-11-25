@@ -100,9 +100,9 @@ func _ready():
 	get_node('skills/total')]
 	
 	format = get_node('/root/formats')
-	set_process(true)
+	#set_process(true)
 
-func _process(delta):
+func process(delta):
 	#adjust resource levels by income
 	for i in range(4):
 		var mat_amt = bank[i]['current']

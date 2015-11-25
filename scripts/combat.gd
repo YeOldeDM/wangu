@@ -186,18 +186,18 @@ func _ready():
 	draw_mob_combat_info()
 	
 	
-	set_process(true)
+	#set_process(true)
 
 var combat_ready = false
 
-func _process(delta):
+func process(delta):
 	#UPDATE HEALTHBARS
 	var b_per = (army.current_health*1.0) / (army.total_health()*1.0)
 	check_bots_healthbar(b_per)
-	
+
 	var m_per = (mob.current_health*1.0) / (mob.total_health*1.0)
 	check_mob_healthbar(m_per)
-	
+
 	battle_clock += delta
 	if battle_clock >= turn_duration:
 		battle_clock = 0.0
@@ -208,7 +208,6 @@ func _process(delta):
 
 func combat():
 	#COMBAT ENGINE
-	print("Tick!")
 	if not army.is_dead and not mob.is_dead:
 		if not army.is_dead:
 			var army_dmg = army.attack()

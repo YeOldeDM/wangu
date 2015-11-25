@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resource_file type="PackedScene" subresource_count="6" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
+	<ext_resource path="res://scripts/population.gd" type="Script" index="0"></ext_resource>
 	<ext_resource path="res://fonts/freesans_18.fnt" type="Font" index="3"></ext_resource>
 	<ext_resource path="res://fonts/freesans_24.fnt" type="Font" index="2"></ext_resource>
 	<ext_resource path="res://fonts/freesans_12.fnt" type="Font" index="1"></ext_resource>
-	<ext_resource path="res://scripts/population.gd" type="Script" index="0"></ext_resource>
 	<resource type="Theme" path="local://1">
 		<resource name="default_font"></resource>
 	</resource>
@@ -81,13 +81,13 @@
 				<resource  external="0">  </resource>
 				<dictionary  shared="false">
 					<string> "__editor_plugin_screen__" </string>
-					<string> "2D" </string>
+					<string> "Script" </string>
 					<string> "__editor_plugin_states__" </string>
 					<dictionary  shared="false">
 						<string> "2D" </string>
 						<dictionary  shared="false">
 							<string> "ofs" </string>
-							<vector2> -233.675, -236.784 </vector2>
+							<vector2> -44.7507, -82.3704 </vector2>
 							<string> "snap_grid" </string>
 							<bool> True </bool>
 							<string> "snap_offset" </string>
@@ -107,7 +107,7 @@
 							<string> "snap_step" </string>
 							<vector2> 8, 8 </vector2>
 							<string> "zoom" </string>
-							<real> 0.598736 </real>
+							<real> 0.814505 </real>
 						</dictionary>
 						<string> "3D" </string>
 						<dictionary  shared="false">

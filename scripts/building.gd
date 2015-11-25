@@ -4,6 +4,7 @@ extends TextureButton
 
 
 class Building:
+	var construction
 	var name = "Loveshack"
 	var level = 0
 	var description = """This is a generic building.\n\n  
@@ -27,7 +28,8 @@ class Building:
 		#
 		
 		self.level += 1
-	
+		self.construction.set_population()
+		
 	func cost_multiplier(L):
 		return ceil(self.cost_factor * L + exp(L*0.33))
 		
@@ -52,6 +54,7 @@ class Building:
 
 var building
 
+
 func draw_button():
 	if building:
 		get_node('name').set_text(building.name)
@@ -70,3 +73,4 @@ func _on_Button_mouse_exit():
 func _on_Button_pressed():
 	building.upgrade()
 	draw_button()
+

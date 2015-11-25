@@ -1,6 +1,8 @@
 
 extends Control
 
+
+
 var building_button = load('res://building.xml')
 
 var buildings = []
@@ -15,10 +17,17 @@ func _ready():
 		add_building(cargo)
 
 func add_building(building):
+	building.building.construction = self
 	buildings.append(building)
 	building.draw_button()
 	get_node('Buildings/cont/Buildings/cont/cont').add_child(building)
 
+func set_population():
+	var n = 0
+	for b in buildings:
+		if 'population' in b.building.base_production:
+			n += b.building.get_production('population',b.building.level)
+	get_node('/root/Game').population.set_max_pop(n)
 
 #BUILDINGS#
 
