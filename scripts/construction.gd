@@ -19,7 +19,11 @@ func _ready():
 		
 		var yard = Scrapyard()
 		add_facility(yard)
-
+		var caves = CrystalCaves()
+		add_facility(caves)
+		var bays = NanoBays()
+		add_facility(bays)
+		
 func add_building(building):
 	building.building.construction = self
 	building.building.bank = get_node('/root/Game/Bank')
@@ -96,5 +100,22 @@ func Scrapyard():
 	b.building.level = 0
 	b.building.description = "Storage space for salvaged Metal. Each level of Scrapyard doubles your holding capacity for Metal."
 	b.building.base_storage[0] = 100
+	return b
 
+func CrystalCaves():
+	var b = building_button.instance()
+	b.building = b.StorageBuilding.new()
+	b.building.name = "Crystal Caves"
+	b.building.level = 0
+	b.building.description = "Storage space for harvested Crystal. Each level of Caves doubles your holding capacity for Crystal."
+	b.building.base_storage[1] = 100
+	return b
+
+func NanoBays():
+	var b = building_button.instance()
+	b.building = b.StorageBuilding.new()
+	b.building.name = "Nano-Bays"
+	b.building.level = 0
+	b.building.description = "Storage space for Nanium. Each level of Nano-Bays doubles your holding capacity for Nanium."
+	b.building.base_storage[2] = 100
 	return b
