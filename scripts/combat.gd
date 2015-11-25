@@ -64,9 +64,11 @@ class Army:
 	var damage_var = 0.4
 	var unit_health = 10
 	
-	var weapons = 0
-	var armor = 0
-	var shields = 0
+	var skill = {
+		'weapon':	0,
+		'armor':	0,
+		'shields':	0}
+		
 	
 	var current_health = 0
 	
@@ -76,10 +78,10 @@ class Army:
 	var autofight = false
 	
 	var population
+	var equipment
 	
 	func new_army():
 		var pop = int(self.population.population['current'])
-		print(pop)
 		if pop > self.troops:
 			self.population._change_current_population(-1*self.troops)
 			self.population.refresh()
@@ -89,7 +91,7 @@ class Army:
 			
 	
 	func damage():
-		var base_damage = (self.damage+self.weapons) * self.troops
+		var base_damage = (self.damage+self.skill['weapon']) * self.troops
 		var min_dmg = ceil(base_damage*damage_var)
 		var max_dmg = ceil(base_damage * (1.0+damage_var))
 		return [min_dmg,max_dmg]
@@ -100,10 +102,11 @@ class Army:
 		return round(rand_range(dmg[0],dmg[1]))
 	
 	func total_health():
-		return (self.unit_health+self.armor) * self.troops
+		return (self.unit_health+self.skill['armor']) * self.troops
 
 	func shields():
-		return self.shields * self.troops
+		return self.skill['shields'] * self.troops
+
 	
 	func get_hit(dmg):
 		var damage = max(0,dmg-self.shields())
@@ -120,6 +123,8 @@ class Army:
 			self.combat_ready = false
 
 
+		
+
 
 var army
 var mob
@@ -134,7 +139,14 @@ func draw_map_info():
 	get_node('Battle/map/sector').set_text(str("Sector ",format.greek_abc[sector]))
 	get_node('Battle/map/zone').set_text(str("Zone ",str(zone)))
 
-
+func set_skills():
+	army.skill = {
+		'weapon':	0,
+		'armor':	0,
+		'shields':	0}
+	for b in army.equipment:
+		army.skill[b.building.skill_buffed] += (b.building.buff_factor * b.building.level)
+	draw_bots_combat_info()
 
 func draw_bots_combat_info():
 	var troops = str("Troopers (",format._number(army.troops),")")
@@ -185,6 +197,7 @@ func _ready():
 	
 	army = Army.new()
 	army.population = get_node('/root/Game/population')
+	army.equipment = get_node('/root/Game/construction').equipments
 	
 	mob = Mob.new()
 	

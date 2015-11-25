@@ -1,6 +1,61 @@
 
 extends TextureButton
 
+class EquipmentBuilding:
+	var construction
+	var bank
+	var combat
+	var name = "Equipment"
+	var description = "This is equipment. It buffs your army's combat stats"
+	var level = 0
+	var skill_buffed = 'shields'
+	var buff_factor = 6
+	
+	var cost_factor = 1.85
+	var base_cost = {
+		0:	0,
+		1:	0,
+		2:	0,
+		3:	0}
+
+	func cost_multiplier(L):
+		return ceil(self.cost_factor * L + exp(L*0.33))
+
+	func get_cost(L):
+		var cost = {
+			0:	self.base_cost[0] * cost_multiplier(L),
+			1:	self.base_cost[1] * cost_multiplier(L),
+			2:	self.base_cost[2] * cost_multiplier(L),
+			3:	self.base_cost[3] * cost_multiplier(L)
+				}
+		return cost
+
+	func can_build(cost):
+		var go = true
+		if cost[0] > int(self.bank.bank[0]['current']):
+			go = false
+		if cost[1] > int(self.bank.bank[1]['current']):
+			go = false
+		if cost[2] > int(self.bank.bank[2]['current']):
+			go = false
+		if cost[3] > int(self.bank.bank[3]['current']):
+			go = false
+		return go
+
+
+	func upgrade():
+		var cost = self.get_cost(self.level+1)
+		if self.can_build(cost):
+			
+			#subtract costs
+			self.bank.bank[0]['current'] -= cost[0]
+			self.bank.bank[1]['current'] -= cost[1]
+			self.bank.bank[2]['current'] -= cost[2]
+			self.bank.bank[3]['current'] -= cost[3]
+			
+			self.level += 1
+			self.combat.set_skills()
+
 class BuffBuilding:
 	var construction
 	var bank

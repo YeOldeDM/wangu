@@ -8,6 +8,7 @@ var building_button = load('res://building.xml')
 var buildings = []
 var facilities = []
 var sciences = []
+var equipments = []
 
 func _ready():
 	for i in range(1):
@@ -34,6 +35,9 @@ func _ready():
 		var know = Knowledge()
 		add_science(know)
 		
+		var shields = Shields()
+		add_equipment(shields)
+		
 func add_building(building):
 	building.building.construction = self
 	building.building.bank = get_node('/root/Game/Bank')
@@ -54,6 +58,14 @@ func add_science(science):
 	sciences.append(science)
 	science.draw_button()
 	get_node('Buildings/cont/Science/cont/cont').add_child(science)
+
+func add_equipment(equip):
+	equip.building.construction = self
+	equip.building.bank = get_node('/root/Game/Bank')
+	equip.building.combat = get_node('/root/Game/combat')
+	equipments.append(equip)
+	equip.draw_button()
+	get_node('Buildings/cont/Equipment/cont/cont').add_child(equip)
 
 func set_population():
 	var n = 0
@@ -182,3 +194,16 @@ func Knowledge():
 	b.building.skill_buffed = 3
 	b.building.base_cost[3] = 90
 	return b
+	
+#EQUIPMENT
+func Shields():
+	var b = building_button.instance()
+	b.building = b.EquipmentBuilding.new()
+	b.building.name = "Shields"
+	b.building.description = "Each level of Shields increases your Shields by 6 points per Trooper."
+	b.building.level = 0
+	b.building.skill_buffed = 'shields'
+	b.building.buff_factor = 6
+	b.building.base_cost[1] = 1
+	return b
+	
