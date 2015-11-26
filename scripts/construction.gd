@@ -99,7 +99,7 @@ func Shack():
 	b.building.level = 0
 	b.building.description = "Meager accomidations for your bots.\n Each Shack increases your maximum population by 3 Bots."
 	b.building.add_production('population',3)
-	b.building.base_cost['metal'] = 25
+	b.building.base_cost['metal'] = 10
 	return b
 	
 func Hangar():
@@ -109,8 +109,8 @@ func Hangar():
 	b.building.level = 0
 	b.building.description = "Storage, service bays, and other accomidations for robotic life-forms. Each Hangar increases your population by 5 Bots."
 	b.building.add_production('population', 5)
-	b.building.base_cost['metal'] = 150
-	b.building.base_cost['crystal'] = 80
+	b.building.base_cost['metal'] = 60
+	b.building.base_cost['crystal'] = 40
 	return b
 
 func CargoBay():
@@ -120,9 +120,9 @@ func CargoBay():
 	b.building.level = 0
 	b.building.description = "Cozy accomidations. Cozy for a Bot, at least. Each Cargo Bay increases your max population by 10 Bots."
 	b.building.add_production('population', 10)
-	b.building.base_cost['metal'] = 450
-	b.building.base_cost['crystal'] = 225
-	b.building.base_cost['nanium'] = 100
+	b.building.base_cost['metal'] = 320
+	b.building.base_cost['crystal'] = 150
+	b.building.base_cost['nanium'] = 60
 	return b
 
 #RESOURCE STORAGE FACILITIES
@@ -208,7 +208,7 @@ func Shields():
 	b.building.level = 0
 	b.building.skill_buffed = 'shields'
 	b.building.buff_factor = 6
-	b.building.base_cost[1] = 40
+	b.building.base_cost[1] = 10
 	return b
 
 func Claws():
@@ -219,8 +219,8 @@ func Claws():
 	b.building.level = 0
 	b.building.skill_buffed = 'weapon'
 	b.building.buff_factor = 4
-	b.building.base_cost[0] = 28
-	b.building.base_cost[2] = 22
+	b.building.base_cost[0] = 14
+	b.building.base_cost[2] = 11
 	return b
 
 func Armor():
@@ -231,6 +231,6 @@ func Armor():
 	b.building.level = 0
 	b.building.skill_buffed = 'armor'
 	b.building.buff_factor = 6
-	b.building.base_cost[0] = 34
-	b.building.base_cost[2] = 24
+	b.building.base_cost[0] = 16
+	b.building.base_cost[2] = 12
 	return b

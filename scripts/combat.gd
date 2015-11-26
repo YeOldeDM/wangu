@@ -6,16 +6,17 @@ var battle_clock = 0.0
 var turn_duration = 1.0
 
 class Mob:
+	var own
 	var name = "Bob the Mob"
 	
-	var level = 1
+	var level = 0
 	
 	var strength = 1
 	var vitality = 1
 	
 	var damage_factor = 1.6
 	var damage_var = 0.4
-	var health_factor = 12
+	var health_factor = 6
 	var health_var = 0.05
 	
 	var total_health = 0
@@ -27,6 +28,8 @@ class Mob:
 		self.get_total_health()
 		self.current_health = self.total_health
 		self.is_dead = false
+		if self.level > 0:
+			self.own.map.next_cell()
 		
 		#HACKY level up system
 		self.level += 1
@@ -39,10 +42,10 @@ class Mob:
 		var min_health = ceil(base_health*self.health_var)
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
-		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.1))
+		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.01))
 	
 	func damage():
-		var base_damage = (self.strength * self.damage_factor) + exp(self.level*0.1)
+		var base_damage = (self.strength * self.damage_factor) + exp(self.level*0.01)
 		var min_dmg = ceil(base_damage*self.damage_var)
 		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
 		return [min_dmg,max_dmg]
@@ -63,6 +66,7 @@ class Mob:
 	
 	func die():
 		self.is_dead = true
+		
 
 
 
@@ -103,8 +107,8 @@ class Army:
 		var min_dmg = ceil(base_damage*damage_var)
 		var max_dmg = ceil(base_damage * (1.0+damage_var))
 		return [min_dmg,max_dmg]
-		
-		
+
+
 	func attack():
 		var dmg = self.damage()
 		randomize()
@@ -116,7 +120,7 @@ class Army:
 	func shields():
 		return self.skill['shields'] * self.troops
 
-	
+
 	func get_hit(dmg):
 		var damage = max(0,dmg-self.shields())
 		var new_health = self.current_health - damage
@@ -132,7 +136,6 @@ class Army:
 			self.combat_ready = false
 
 
-		
 
 
 var army
@@ -141,12 +144,55 @@ var mob
 var bots_panel
 var mob_panel
 
-var sector = 6
-var zone = 1
+var map
+
+class Map:
+	var own
+	var grid
+	var sector = 0
+	var zone = 1
+	var cells
+	var current_cell = 0
+
+	func next_cell():
+		self.cells[self.current_cell].status = 1
+		self.current_cell += 1
+		if self.current_cell > 99:
+			self.next_zone()
+		self.cells[self.current_cell].status = 2
+		self.own.draw_map_info()
+	
+	func next_zone():
+		self.zone += 1
+		if self.zone > 10:
+			self.zone = 1
+			self.next_sector()
+		self.current_cell = 0
+		for cell in self.cells:
+			cell.status = 0
+		self.cells[self.current_cell].status = 1
+	
+	func next_sector():
+		self.sector += 1
+		
+var cell_button = preload('res://map_cell.xml')
+
+func generate_map():
+	var grid_panel = get_node('Battle/map/grid')
+	for i in range(100):
+		var cell = cell_button.instance()
+		cell.set_loot_frame(5)
+		grid_panel.add_child(cell)
+	map.cells = grid_panel.get_children()
+	map.cells[map.current_cell].status = 2
+	map.cells[map.current_cell].change_color(2)
+
 
 func draw_map_info():
-	get_node('Battle/map/sector').set_text(str("Sector ",format.greek_abc[sector]))
-	get_node('Battle/map/zone').set_text(str("Zone ",str(zone)))
+	get_node('Battle/map/sector').set_text(str("Sector ",format.greek_abc[map.sector]))
+	get_node('Battle/map/zone').set_text(str("Zone ",str(map.zone)))
+	for cell in map.cells:
+		cell.change_color(cell.status)
 
 func set_skills():
 	army.skill = {
@@ -162,7 +208,7 @@ func draw_bots_combat_info():
 	var d = army.damage()
 	var damage = str("Damage: ",format._number(d[0]),"-",format._number(d[1]))
 	var shields = str("Shields: ",format._number(army.shields()))
-	
+
 	bots_panel.get_node('troops').set_text(troops)
 
 	bots_panel.get_node('damage').set_text(damage)
@@ -207,8 +253,9 @@ func _ready():
 	army = Army.new()
 	army.population = get_node('/root/Game/population')
 	army.equipment = get_node('/root/Game/construction').equipments
-	
+
 	mob = Mob.new()
+	mob.own = self
 	mob.name = get_node('/root/random').random_animal()
 	
 	
@@ -218,8 +265,10 @@ func _ready():
 	draw_bots_combat_info()
 	draw_mob_combat_info()
 	
-	
-	#set_process(true)
+	map = Map.new()
+	map.own = self
+	generate_map()
+
 
 var combat_ready = false
 
@@ -266,7 +315,6 @@ func _on_auto_fight_toggled( pressed ):
 		army.autofight = true
 	else:
 		army.autofight = false
-
 
 func _on_fight_pressed():
 	army.combat_ready = true

@@ -11,7 +11,7 @@ class EquipmentBuilding:
 	var skill_buffed = 'shields'
 	var buff_factor = 6
 	
-	var cost_factor = 1.85
+	var cost_factor = 1.55
 	var base_cost = {
 		0:	0,
 		1:	0,
