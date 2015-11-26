@@ -201,7 +201,8 @@ func set_boost():
 	var boosts = {0:0,1:0,2:0,3:0}
 	var buildings = get_node('/root/Game/construction').sciences
 	for b in buildings:
-		boosts[b.building.skill_buffed] += b.building.level
+		if 'skill_buffed' in b.building:
+			boosts[b.building.skill_buffed] += b.building.level
 	for i in range(4):
 		boost[i]['level'] = boosts[i]
 

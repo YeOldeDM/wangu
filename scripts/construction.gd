@@ -34,6 +34,8 @@ func _ready():
 		add_science(synth)
 		var know = Knowledge()
 		add_science(know)
+		var tact = Tactics()
+		add_science(tact)
 		
 		var shields = Shields()
 		add_equipment(shields)
@@ -198,6 +200,19 @@ func Knowledge():
 	b.building.skill_buffed = 3
 	b.building.base_cost[3] = 40
 	return b
+
+func Tactics():
+	var b = building_button.instance()
+	b.building = b.TacticsBuilding.new()
+	b.building.combat = get_node('/root/Game/combat')
+	b.building.name = "Battle Tactics"
+	b.building.description = "Tactical software upgrades increases the total number of Troopers you can control by one-quarter."
+	b.building.level = 0
+	b.building.base_cost[0] = 20
+	b.building.base_cost[1] = 40
+	b.building.base_cost[2] = 40
+	b.building.base_cost[3] = 10
+	return b
 	
 #EQUIPMENT
 func Shields():
@@ -219,8 +234,8 @@ func Claws():
 	b.building.level = 0
 	b.building.skill_buffed = 'weapon'
 	b.building.buff_factor = 4
-	b.building.base_cost[0] = 14
-	b.building.base_cost[2] = 11
+	b.building.base_cost[0] = 4
+	b.building.base_cost[2] = 8
 	return b
 
 func Armor():
@@ -231,6 +246,6 @@ func Armor():
 	b.building.level = 0
 	b.building.skill_buffed = 'armor'
 	b.building.buff_factor = 6
-	b.building.base_cost[0] = 16
-	b.building.base_cost[2] = 12
+	b.building.base_cost[0] = 6
+	b.building.base_cost[2] = 9
 	return b

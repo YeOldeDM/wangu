@@ -39,6 +39,10 @@ class Mob:
 		
 	func get_total_health():
 		var base_health = self.vitality * self.health_factor
+		if self.own.map.current_cell == 99:
+			base_health *= 10
+		elif str(self.own.map.current_cell).right(1) == '9':
+			base_health *= 2
 		var min_health = ceil(base_health*self.health_var)
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
@@ -46,6 +50,10 @@ class Mob:
 	
 	func damage():
 		var base_damage = (self.strength * self.damage_factor) + exp(self.level*0.01)
+		if self.own.map.current_cell == 99:
+			base_damage *= 10
+		elif str(self.own.map.current_cell).right(1) == '9':
+			base_damage *= 2
 		var min_dmg = ceil(base_damage*self.damage_var)
 		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
 		return [min_dmg,max_dmg]
@@ -250,6 +258,10 @@ func check_mob_healthbar(per):
 func _ready():
 	format = get_node('/root/formats')
 	
+	map = Map.new()
+	map.own = self
+	generate_map()
+	
 	army = Army.new()
 	army.population = get_node('/root/Game/population')
 	army.equipment = get_node('/root/Game/construction').equipments
@@ -265,9 +277,7 @@ func _ready():
 	draw_bots_combat_info()
 	draw_mob_combat_info()
 	
-	map = Map.new()
-	map.own = self
-	generate_map()
+	
 
 
 var combat_ready = false
