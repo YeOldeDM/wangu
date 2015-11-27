@@ -268,9 +268,10 @@ func check_mob_healthbar(per):
 	var h = str(format._number(mob.current_health),"/",format._number(mob.total_health))
 	bar.get_node('health').set_text(h)
 
-
+var news
 func _ready():
 	format = get_node('/root/formats')
+	news = get_node('/root/Game/news')
 	
 	map = Map.new()
 	map.own = self
@@ -328,6 +329,8 @@ func combat():
 			if army.combat_ready:
 				army.new_army()
 		if mob.is_dead:
+			if mob.boss > 0:
+				news.message("[color=red]The [b]"+mob.name+"[/b] falls heavy at your feet.[/color]")
 			mob.new_mob()
 			
 			draw_mob_combat_info()

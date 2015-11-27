@@ -284,7 +284,9 @@ class Building:
 
 
 var building
-
+var news
+func _ready():
+	news = get_node('/root/Game/news')
 
 func draw_button():
 	if building:
@@ -304,4 +306,5 @@ func _on_Button_mouse_exit():
 func _on_Button_pressed():
 	building.upgrade()
 	draw_button()
+	news.message("The [color=#66ffff]"+building.name+"[/color] has been upgraded to [b]level "+str(building.level)+"[/b]")
 
