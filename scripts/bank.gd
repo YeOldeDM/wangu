@@ -180,9 +180,7 @@ func gain_xp(i,amt):
 		your_skills[i]['to-next'] = get_skill_level(your_skills[i]['lvl']+1)
 	
 func set_storage(amts):
-	print(amts)
 	for i in range(3):
-
 		bank[i]['max'] = amts[i]
 	_draw_gui()
 

@@ -9,6 +9,8 @@ class Mob:
 	var own
 	var name = "Bob the Mob"
 	
+	var boss = 0
+	
 	var level = 0
 	
 	var strength = 1
@@ -16,43 +18,55 @@ class Mob:
 	
 	var damage_factor = 1.6
 	var damage_var = 0.4
-	var health_factor = 6
+	var health_factor = 4
 	var health_var = 0.05
 	
 	var total_health = 0
 	var current_health = 0
 	
 	var is_dead = true
+	var random 
 	
 	func new_mob():
+		if self.level > 0:
+			self.own.map.next_cell()
+		self.name = self.random.random_animal()
+		self.level += 1
+		if self.level % 100 == 0:	#Mega-Boss
+			self.boss = 2
+		elif self.level % 10 == 0:	#Mini-Boss
+			self.boss = 1
+		else:
+			self.boss = 0
 		self.get_total_health()
 		self.current_health = self.total_health
 		self.is_dead = false
-		if self.level > 0:
-			self.own.map.next_cell()
+		
 		
 		#HACKY level up system
-		self.level += 1
+		
 		randomize()
 		self.strength += int(rand_range(0,2))
 		self.vitality += int(rand_range(0,4))
 		
 	func get_total_health():
-		var base_health = self.vitality * self.health_factor
-		if self.own.map.current_cell == 99:
-			base_health *= 10
-		elif str(self.own.map.current_cell).right(1) == '9':
-			base_health *= 2
+		var base_health = (self.vitality*0.5) * self.health_factor
+		if self.boss == 2:
+			base_health *= 10.0
+			prints("MEGABOSS",self.name,self.level)
+		elif self.boss == 1:
+			base_health *= 5.0
+			prints("MINIBOSS",self.name,self.level)
 		var min_health = ceil(base_health*self.health_var)
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
 		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.01))
 	
 	func damage():
-		var base_damage = (self.strength * self.damage_factor) + exp(self.level*0.01)
-		if self.own.map.current_cell == 99:
-			base_damage *= 10
-		elif str(self.own.map.current_cell).right(1) == '9':
+		var base_damage = ((self.strength*0.5) * self.damage_factor) + exp(self.level*0.01)
+		if self.level%10 == 0 and self.level > 0:
+			base_damage *= 5
+		elif self.level%100 == 0 and self.level > 0:
 			base_damage *= 2
 		var min_dmg = ceil(base_damage*self.damage_var)
 		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
@@ -268,7 +282,8 @@ func _ready():
 
 	mob = Mob.new()
 	mob.own = self
-	mob.name = get_node('/root/random').random_animal()
+	mob.random = get_node('/root/random')
+	mob.new_mob()
 	
 	
 	bots_panel = get_node('Battle/cont/bots')
@@ -314,7 +329,7 @@ func combat():
 				army.new_army()
 		if mob.is_dead:
 			mob.new_mob()
-			mob.name = get_node('/root/random').random_animal()
+			
 			draw_mob_combat_info()
 
 

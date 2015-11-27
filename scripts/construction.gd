@@ -41,8 +41,12 @@ func _ready():
 		add_equipment(shields)
 		var claws = Claws()
 		add_equipment(claws)
+		var lasers = Lasers()
+		add_equipment(lasers)
 		var armor = Armor()
 		add_equipment(armor)
+		var hard = HardPlate()
+		add_equipment(hard)
 		
 func add_building(building):
 	building.building.construction = self
@@ -238,6 +242,18 @@ func Claws():
 	b.building.base_cost[2] = 8
 	return b
 
+func Lasers():
+	var b = building_button.instance()
+	b.building = b.EquipmentBuilding.new()
+	b.building.name = "Lasers"
+	b.building.description = "Emitted radiation! Each level of Lasers increases your Troopers damage by 8 points."
+	b.building.level = 0
+	b.building.skill_buffed = 'weapon'
+	b.building.buff_factor = 8
+	b.building.base_cost[1] = 6
+	b.building.base_cost[2] = 11
+	return b
+
 func Armor():
 	var b = building_button.instance()
 	b.building = b.EquipmentBuilding.new()
@@ -248,4 +264,16 @@ func Armor():
 	b.building.buff_factor = 6
 	b.building.base_cost[0] = 6
 	b.building.base_cost[2] = 9
+	return b
+	
+func HardPlate():
+	var b = building_button.instance()
+	b.building = b.EquipmentBuilding.new()
+	b.building.name = "Hardened Plating"
+	b.building.description = "Each level adds 12 Health to each Trooper."
+	b.building.level = 0
+	b.building.skill_buffed = 'armor'
+	b.building.buff_factor = 12
+	b.building.base_cost[2] = 10
+	b.building.base_cost[1] = 10
 	return b
