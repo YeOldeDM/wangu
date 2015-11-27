@@ -60,10 +60,10 @@ class Mob:
 		var min_health = ceil(base_health*self.health_var)
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
-		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.01))
+		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.03))
 	
 	func damage():
-		var base_damage = ((self.strength*0.5) * self.damage_factor) + exp(self.level*0.01)
+		var base_damage = ((self.strength*0.5) * self.damage_factor) + exp(self.level*0.03)
 		if self.level%10 == 0 and self.level > 0:
 			base_damage *= 5
 		elif self.level%100 == 0 and self.level > 0:
@@ -186,9 +186,12 @@ class Map:
 	
 	func next_zone():
 		self.zone += 1
+		
 		if self.zone > 10:
 			self.zone = 1
 			self.next_sector()
+		else:
+			self.own.news.message("[color=yellow]Welcome to Zone "+str(self.zone)+"[/color]")
 		self.current_cell = 0
 		for cell in self.cells:
 			cell.status = 0
@@ -196,6 +199,7 @@ class Map:
 	
 	func next_sector():
 		self.sector += 1
+		self.own.new.message("[color=yellow]Welcome to Sector "+str(self.sector)+self.sector+"[/color]")
 		
 var cell_button = preload('res://map_cell.xml')
 

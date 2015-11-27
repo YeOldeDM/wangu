@@ -2,6 +2,7 @@
 extends Control
 
 var format
+var news
 
 var population = {
 			'current': 0,
@@ -25,6 +26,7 @@ var pop_panel
 
 func _ready():
 	format = get_node('/root/formats')
+	news = get_node('/root/Game/news')
 	worker_panels = [
 		get_node('Metal'),
 		get_node('Crystal'),
@@ -35,7 +37,10 @@ func _ready():
 	refresh()
 
 func set_max_pop(n):
+	var old_pop = population['max']
 	population['max'] = n+10
+	var diff = population['max'] - old_pop
+	news.message(str(diff)+" spaces have just opened up for new Bots!")
 	refresh()
 
 func process(delta):
@@ -78,8 +83,11 @@ func refresh():
 		get_node('/root/Game/Bank').bank[i]['producers']['workers'] = workers[i]
 
 func _set_max_workforce():
+	var old_force = workforce['max']
 	workforce['max'] = min(int(population['max']/2), int(population['current']))
-
+	var diff = workforce['max'] - old_force
+	if diff > 0:
+		news.message(str(diff)+" new jobs have opened up. Get to work!")
 func _change_current_population(n):
 	population['current'] += n
 	_set_max_workforce()
