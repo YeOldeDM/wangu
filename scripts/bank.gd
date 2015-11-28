@@ -49,7 +49,8 @@ func get_skill_level(L):
 		return 0
 	else:
 		return get_skill_level(L-1) + B + (R*max(0,L-2))
-		
+
+
 var worker_base_skill = 0.5
 var worker_skills = {
 		0:	{'name':	'Salvage',
@@ -185,8 +186,9 @@ func set_storage(amts):
 	_draw_gui()
 
 func set_resource(material,amt):
-	if amt >= bank[material]['max']:
-		amt = bank[material]['max']
+	if bank[material]['max'] != null:
+		if amt >= bank[material]['max']:
+			amt = bank[material]['max']
 	bank[material]['current'] = amt
 
 func get_boost(material):

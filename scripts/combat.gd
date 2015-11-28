@@ -1,6 +1,7 @@
 
 extends Control
 var format
+var bank
 
 var battle_clock = 0.0
 var turn_duration = 1.0
@@ -88,7 +89,21 @@ class Mob:
 	
 	func die():
 		self.is_dead = true
-		
+		var cell = self.own.map.cells[self.own.map.current_cell]
+
+		if cell.loot_type < 4:
+			var loot = int(cell.loot_type)
+			print("loot=",loot)
+			var amt = self.own.bank.bank[ loot ]['current']
+			#print(amt)
+			amt += cell.loot_amt
+			self.own.bank.set_resource(int(loot),int(amt))
+			var mats = {0: "metal",
+						1: "crystal",
+						2: "nanium",
+						3: "tech"}
+			var txt = "The "+self.name+" gives up [color=#999966][b]"+str(cell.loot_amt)+" "+mats[loot]+"![/b][/color]"
+			self.own.news.message(txt)
 
 
 
@@ -280,6 +295,7 @@ var news
 func _ready():
 	format = get_node('/root/formats')
 	news = get_node('/root/Game/news')
+	bank = get_node('/root/Game/Bank')
 	
 	map = Map.new()
 	map.own = self
