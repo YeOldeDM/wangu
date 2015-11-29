@@ -4,7 +4,10 @@ var format
 var bank
 
 var battle_clock = 0.0
-var turn_duration = 1.0
+var turn_duration = 0.1
+
+var current_loot_type = 5
+var current_loot_amt = 0
 
 class Mob:
 	var own
@@ -29,8 +32,9 @@ class Mob:
 	var random 
 	
 	func new_mob():
-		if self.level > 0:
-			self.own.map.next_cell()
+		self.own.collect_loot(self)
+#		if self.level > 0:
+#			self.own.map.next_cell()
 		self.name = self.random.random_animal()
 		self.level += 1
 		if self.level % 100 == 0:	#Mega-Boss
@@ -83,33 +87,34 @@ class Mob:
 		var new_health = self.current_health - damage
 		if new_health <= 0:
 			self.current_health = 0
+			
 			self.die()
 		else:
 			self.current_health = new_health
 	
 	func die():
 		self.is_dead = true
-		var cell = self.own.map.cells[self.own.map.current_cell]
+#		var cell = self.own.map.cells[self.own.map.current_cell]
 
-		if cell.loot_type < 4:
-			var loot = int(cell.loot_type)
-			print("loot=",loot)
-			var amt = self.own.bank.bank[ loot ]['current']
-			#print(amt)
-			amt += cell.loot_amt
-			self.own.bank.set_resource(int(loot),int(amt))
-			var mats = {0: "metal",
-						1: "crystal",
-						2: "nanium",
-						3: "tech"}
-			var txt = "The "+self.name+" gives up [color=#999966][b]"+str(cell.loot_amt)+" "+mats[loot]+"![/b][/color]"
-			self.own.news.message(txt)
+#		if cell.loot_type < 4:
+#			var loot = int(cell.loot_type)
+#			print("loot=",loot)
+#			var amt = self.own.bank.bank[ loot ]['current']
+#			#print(amt)
+#			amt += cell.loot_amt
+#			self.own.bank.set_resource(int(loot),int(amt))
+#			var mats = {0: "metal",
+#						1: "crystal",
+#						2: "nanium",
+#						3: "tech"}
+#			var txt = "The "+self.name+" gives up [color=#999966][b]"+str(cell.loot_amt)+" "+mats[loot]+"![/b][/color]"
+#			self.own.news.message(txt)
 
 
 
 class Army:
 	var troops = 1
-	var damage = 3
+	var damage = 300000000
 	var damage_var = 0.4
 	var unit_health = 10
 	
@@ -197,6 +202,11 @@ class Map:
 		if self.current_cell > 99:
 			self.next_zone()
 		self.cells[self.current_cell].status = 2
+		if self.cells[self.current_cell].loot_type < 4:
+			self.own.current_loot_type = self.cells[self.current_cell].loot_type
+			self.own.current_loot_amt = self.cells[self.current_cell].loot_amt
+		else:
+			self.own.current_loot_type = 5
 		self.own.draw_map_info()
 	
 	func next_zone():
@@ -213,7 +223,7 @@ class Map:
 		for cell in self.cells:
 			cell.status = 0
 		self.cells[self.current_cell].status = 1
-	
+		
 	func next_sector():
 		self.sector += 1
 		self.own.new.message("[color=yellow]Welcome to Sector "+str(self.sector)+self.sector+"[/color]")
@@ -356,9 +366,24 @@ func combat():
 			if mob.boss > 0:
 				news.message("[color=red]The [b]"+mob.name+"[/b] falls heavy at your feet.[/color]")
 			mob.new_mob()
+			map.next_cell()
 			
 			draw_mob_combat_info()
 
+func collect_loot(mob):
+	if current_loot_type < 4:
+		var loot = int(current_loot_type)
+		print("loot=",loot)
+		var amt = bank.bank[ loot ]['current']
+		#print(amt)
+		amt += current_loot_amt
+		bank.set_resource(int(loot),int(amt))
+		var mats = {0: "metal",
+					1: "crystal",
+					2: "nanium",
+					3: "tech"}
+		var txt = "The "+mob.name+" gives up [color=#999966][b]"+str(current_loot_amt)+" "+mats[loot]+"![/b][/color]"
+		news.message(txt)
 
 
 
