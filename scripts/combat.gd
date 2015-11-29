@@ -219,7 +219,7 @@ class Map:
 			self.own.news.message("[color=yellow]Welcome to Zone "+str(self.zone)+"[/color]")
 		self.current_cell = 0
 		var l = (self.sector*1000) + (self.zone*100)
-		self.own.generate_map(l)
+		self.own.regenerate_map(l)
 		for cell in self.cells:
 			cell.status = 0
 		self.cells[self.current_cell].status = 1
@@ -230,6 +230,16 @@ class Map:
 		
 var cell_button = preload('res://map_cell.xml')
 
+func regenerate_map(level=0):
+	var cells = get_node('Battle/map/grid').get_children()
+	for cell in cells:
+		cell.status = 0
+		cell.loot_type = 5
+		cell.make_loot(level+1)
+	cells[0].status = 2
+	for cell in cells:
+		cell.change_color(cell.status)
+
 func generate_map(level=0):
 	var grid_panel = get_node('Battle/map/grid')
 	for cell in grid_panel.get_children():
@@ -239,6 +249,8 @@ func generate_map(level=0):
 		cell.make_loot(level+i)
 		grid_panel.add_child(cell)
 	map.cells = grid_panel.get_children()
+	for c in map.cells:
+		print(c)
 	map.cells[map.current_cell].status = 2
 	map.cells[map.current_cell].change_color(2)
 
