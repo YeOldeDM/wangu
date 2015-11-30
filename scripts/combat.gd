@@ -6,7 +6,9 @@ var bank
 var battle_clock = 0.0
 var turn_duration = 1.0
 
-
+#################
+#	MOB CLASS	#
+#################
 class Mob:
 	var own		#link to combat object
 	var rng		#link to random name generator
@@ -96,76 +98,83 @@ class Mob:
 			self._die()
 		else:
 			self.current_health = new_health
-	
+#####################
+#	/END MOB CLASS	#
+#####################
 
 
 
 
-
+#################
+#	ARMY CLASS	#
+#################
 class Army:
-	var troops = 1
-	var damage = 3
-	var damage_var = 0.4
-	var unit_health = 10
+	var population			#link to Population module
+	var equipment			#link to Construction -> equipments
 	
+	#	ARMY STATS	#
+	var troops = 1			#no of Troopers in your army
+	var damage = 3			#base damage per Trooper
+	var damage_var = 0.4	#damage variation
+	var unit_health = 10	#base HP per Trooper
+	
+	#modifiers from Equipment
 	var skill = {
 		'weapon':	0,
 		'armor':	0,
 		'shields':	0}
-		
 	
 	var current_health = 0
 	
 	var is_dead = true
+	var combat_ready = false	#are we okay to go into battle?
+	var autofight = false		#Auto-Fight switch
 	
-	var combat_ready = false
-	var autofight = false
+	#	PRIVATE FUNCTIONS	#
+	func _damage():
+		var base_damage = (self.damage+self.skill['weapon']) * self.troops
+		var min_dmg = ceil(base_damage*damage_var)
+		var max_dmg = ceil(base_damage * (1.0+damage_var))
+		return [min_dmg,max_dmg]
 	
-	var population
-	var equipment
+	func _die():
+		self.is_dead = true
+		if not self.autofight:
+			self.combat_ready = false
 	
+	func _get_total_health():
+		return (self.unit_health+self.skill['armor']) * self.troops
+
+	func _get_shields():
+		return self.skill['shields'] * self.troops
+	
+	#	PUBLIC FUNCTIONS	#
 	func new_army():
 		var pop = (self.population.population['current']*1.0) / (self.population.population['max']*1.0)
 		if pop >= 0.9:
 			self.population._change_current_population(-1*self.troops)
 			self.population.refresh()
-			self.current_health = self.total_health()
+			self.current_health = self._get_total_health()
 			self.is_dead = false
 			self.combat_ready = true
-			
 	
-	func damage():
-		var base_damage = (self.damage+self.skill['weapon']) * self.troops
-		var min_dmg = ceil(base_damage*damage_var)
-		var max_dmg = ceil(base_damage * (1.0+damage_var))
-		return [min_dmg,max_dmg]
-
-
 	func attack():
-		var dmg = self.damage()
+		var dmg = self._damage()
 		randomize()
 		return round(rand_range(dmg[0],dmg[1]))
 	
-	func total_health():
-		return (self.unit_health+self.skill['armor']) * self.troops
-
-	func shields():
-		return self.skill['shields'] * self.troops
-
-
 	func get_hit(dmg):
-		var damage = max(0,dmg-self.shields())
+		var damage = max(0,dmg-self._get_shields())
 		var new_health = self.current_health - damage
 		if new_health <= 0:
 			self.current_health = 0
-			self.die()
+			self._die()
 		else:
 			self.current_health = new_health
-	
-	func die():
-		self.is_dead = true
-		if not self.autofight:
-			self.combat_ready = false
+#####################
+#	/END ARMY CLASS	#
+#####################
+
 
 
 
@@ -178,6 +187,9 @@ var mob_panel
 
 var map
 
+#################
+#	MAP CLASS	#
+#################
 class Map:
 	var own
 	var grid
@@ -217,7 +229,13 @@ class Map:
 	func next_sector():
 		self.sector += 1
 		self.own.new.message("[color=yellow]Welcome to Sector "+str(self.sector)+self.sector+"[/color]")
-		
+#####################
+#	/END MAP CLASS	#
+#####################
+
+
+
+
 var cell_button = preload('res://map_cell.xml')
 
 func regenerate_map(level=0):
