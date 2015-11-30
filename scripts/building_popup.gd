@@ -38,7 +38,7 @@ func _on_Popup_about_to_show():
 	var res = get_node('/root').get_rect()
 	
 	#clamp popup to screen edges
-	pos.x = clamp(pos.x, 0, res.size.width - panel.get_size().x)
-	pos.y = clamp(pos.y, 0, res.size.height - panel.get_size().y)
+	pos.x = clamp(pos.x, 0, res.size.width - get_size().x)
+	pos.y = clamp(pos.y, 0, res.size.height - get_size().y)
 	#set that pos!
-	set_pos(pos)
+	set_global_pos(pos)

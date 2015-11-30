@@ -24,25 +24,11 @@ var workers = {
 var worker_panels
 var pop_panel
 
-func _ready():
-	format = get_node('/root/formats')
-	news = get_node('/root/Game/news')
-	worker_panels = [
-		get_node('Metal'),
-		get_node('Crystal'),
-		get_node('Nanium'),
-		get_node('Tech')]
-	pop_panel = get_node('home')
-	_set_max_workforce()
-	refresh()
 
-func set_max_pop(n):
-	var old_pop = population['max']
-	population['max'] = n+10
-	var diff = population['max'] - old_pop
-	news.message(str(diff)+" spaces have just opened up for new Bots!")
-	refresh()
 
+#################
+#	MAINLOOP	#
+#################
 func process(delta):
 	var rate = 0.0
 	if 2 <= int(population['current']):
@@ -50,10 +36,52 @@ func process(delta):
 	var new_pop = population['current'] + (rate * delta)
 	if new_pop >= int(population['current']):
 		_set_max_workforce()
-		refresh()
+		_refresh()
 	population['current'] = clamp(new_pop, 0, population['max'])
-	
-func refresh():
+
+
+
+
+#########################
+#	PUBLIC FUNCTIONS	#
+#########################
+func set_max_pop(n):
+	var old_pop = population['max']
+	population['max'] = n+10
+	var diff = population['max'] - old_pop
+	news.message(str(diff)+" spaces have just opened up for new Bots!")
+	_refresh()
+
+func is_workforce_full():
+	if workforce['current'] == workforce['max'] or workforce['current'] == int(population['current']):
+		return true
+	return false
+
+
+#########################
+#	PRIVATE FUNCTIONS	#
+#########################
+func _set_max_workforce():
+	var old_force = workforce['max']
+	workforce['max'] = min(int(population['max']/2), int(population['current']))
+	var diff = workforce['max'] - old_force
+	if diff > 0:
+		news.message(str(diff)+" new jobs have opened up. Get to work!")
+
+
+func _change_current_population(n):
+	population['current'] += n
+	_set_max_workforce()
+
+
+func _set_current_workforce():
+	var total = workers[0]+workers[1]+workers[2]+workers[3]
+	workforce['current'] = total	#current workforce cannot exceed current population
+
+#########################
+#	GUI DRAW FUNCTION	#
+#########################
+func _refresh():
 	if int(population['current']) >= population['max']:
 		get_node('home/build').set_disabled(true)
 	else:
@@ -82,40 +110,38 @@ func refresh():
 	for i in range(4):
 		get_node('/root/Game/Bank').bank[i]['producers']['workers'] = workers[i]
 
-func _set_max_workforce():
-	var old_force = workforce['max']
-	workforce['max'] = min(int(population['max']/2), int(population['current']))
-	var diff = workforce['max'] - old_force
-	if diff > 0:
-		news.message(str(diff)+" new jobs have opened up. Get to work!")
-func _change_current_population(n):
-	population['current'] += n
+#############
+#	INIT	#
+#############
+func _ready():
+	format = get_node('/root/formats')
+	news = get_node('/root/Game/news')
+	worker_panels = [
+		get_node('Metal'),
+		get_node('Crystal'),
+		get_node('Nanium'),
+		get_node('Tech')]
+	pop_panel = get_node('home')
 	_set_max_workforce()
+	_refresh()
 
 
-func _set_current_workforce():
-	var total = workers[0]+workers[1]+workers[2]+workers[3]
-	workforce['current'] = total	#current workforce cannot exceed current population
-
-func is_workforce_full():
-	if workforce['current'] == workforce['max'] or workforce['current'] == int(population['current']):
-		return true
-	return false
-	
-
+#####################
+#	CHILD SIGNALS	#
+#####################
 func _on_decrease_pressed(index):
 	workers[index] -= 1
 	_set_current_workforce()
-	refresh()
+	_refresh()
 
 
 func _on_increase_pressed(index):
 	workers[index] += 1
 	_set_current_workforce()
-	refresh()
+	_refresh()
 
 
 func _on_build_pressed():
 	population['current'] += 1
 	_set_max_workforce()
-	refresh()
+	_refresh()

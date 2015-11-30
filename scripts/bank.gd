@@ -42,30 +42,24 @@ var your_skills = {
 			'lvl':	0,	'xp':	0,
 			'to-next':	0},
 			}
-func get_skill_level(L):
-	var B = 20
-	var R = 50
-	if L <= 0:
-		return 0
-	else:
-		return get_skill_level(L-1) + B + (R*max(0,L-2))
+
 
 
 var worker_base_skill = 0.5
-var worker_skills = {
-		0:	{'name':	'Salvage',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-		1:	{'name':	'Harvest',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-		2:	{'name':	'Mine',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-		3:	{'name':	'Research',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-			}
+#var worker_skills = {
+#		0:	{'name':	'Salvage',
+#			'lvl':	0,	'xp':	0,
+#			'to-next':	0},
+#		1:	{'name':	'Harvest',
+#			'lvl':	0,	'xp':	0,
+#			'to-next':	0},
+#		2:	{'name':	'Mine',
+#			'lvl':	0,	'xp':	0,
+#			'to-next':	0},
+#		3:	{'name':	'Research',
+#			'lvl':	0,	'xp':	0,
+#			'to-next':	0},
+#			}
 
 
 var buttons
@@ -77,29 +71,9 @@ var format
 var draw_timer = 0
 var draw_tick = 0.1
 
-func _ready():
-	buttons = [
-	get_node('Metal/use'),
-	get_node('Crystal/use'),
-	get_node('Nanium/use'),
-	get_node('Tech/use')]
-	
-	panels = [
-	get_node('Metal'),
-	get_node('Crystal'),
-	get_node('Nanium'),
-	get_node('Tech')]
-	
-	skill_panels = [
-	get_node('skills/Metal'),
-	get_node('skills/Crystal'),
-	get_node('skills/Nanium'),
-	get_node('skills/Tech'),
-	get_node('skills/total')]
-	
-	format = get_node('/root/formats')
-	#set_process(true)
-
+#################
+#	MAIN-LOOP	#
+#################
 func process(delta):
 	#adjust resource levels by income
 	for i in range(4):
@@ -129,6 +103,102 @@ func process(delta):
 		draw_timer = 0
 		_draw_gui()
 
+
+
+
+#########################
+#	PUBLIC FUNCTIONS	#
+#########################
+func gain_xp(i,amt):
+	#gain XP in i skill
+	var lvl = your_skills[i]['lvl']
+	your_skills[i]['to-next'] = _get_skill_level(lvl+1)
+	your_skills[i]['xp'] += amt
+	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
+		your_skills[i]['lvl'] += 1
+		your_skills[i]['to-next'] = _get_skill_level(your_skills[i]['lvl']+1)
+	
+func set_storage(mat, amt):
+	#set max storage for resources
+	bank[mat]['max'] = amt
+	_draw_gui()
+
+func can_afford(mat, amt):
+	#check if there are currently enough of a resource to spend x amt
+	var bank_amt = bank[mat]['current']
+	return int(amt) <= int(bank_amt)
+
+func gain_resource(mat, amt):
+	#gain resources
+	var value = _get_resource(mat)
+	value += amt
+	_set_resource(mat, value)
+
+func spend_resource(mat, amt):
+	#spend resources. Assumes we can afford the cost
+	var value = _get_resource(mat,amt)
+	value -= amt
+	_set_resource(mat, value)
+
+func get_boost(mat):
+	#get current boost rate based on boost level
+	var value = 1.0
+	for i in range(boost[mat]['level']):
+		value += value*boost[mat]['rate']
+	return value
+
+func set_boosts():
+	#Define boost levels based on current buildings
+	var boosts = {0:0,1:0,2:0,3:0}
+	var buildings = get_node('/root/Game/construction').sciences
+	for b in buildings:
+		if 'skill_buffed' in b.building:
+			boosts[b.building.skill_buffed] += b.building.level
+	for i in range(4):
+		boost[i]['level'] = boosts[i]
+
+func get_workers(mat):
+	#get current amount of workers for resource
+	var pro = bank[mat]['producers']
+	return pro['workers']
+
+func set_workers(mat, amount):
+	#set amount of workers for resources
+	var pro = bank[mat]['producers']
+	pro['workers'] = amount
+
+
+
+
+
+#########################
+#	PRIVATE FUNCTIONS	#
+#########################
+func _get_skill_level(L):
+	var B = 20
+	var R = 50
+	if L <= 0:
+		return 0
+	else:
+		return get_skill_level(L-1) + B + (R*max(0,L-2))
+
+func _set_resource(mat,amt):
+	#set current resource value. Clamp to max resource storage
+	if bank[mat]['max'] != null:
+		if amt >= bank[mat]['max']:
+			amt = bank[mat]['max']
+	bank[mat]['current'] = amt
+
+func _get_resource(mat):
+	#return current resources
+	return int(bank[mat]['current'])
+
+
+
+
+#########################
+#	GUI DRAW FUNCTION	#
+#########################
 func _draw_gui():
 	get_node('time').set_text(str("Time: ",format._time(int(time))))
 	
@@ -168,53 +238,38 @@ func _draw_gui():
 		var skill_per = xp_progress / max(1,xp_needed)
 		if show_per != skill_per:
 			skill_panels[i].get_node('fillbar').set_value(skill_per)
-		
+
+
+#############
+#	INIT	#
+#############
+func _ready():
+	buttons = [
+	get_node('Metal/use'),
+	get_node('Crystal/use'),
+	get_node('Nanium/use'),
+	get_node('Tech/use')]
 	
-		
-
-func gain_xp(i,amt):
-	var lvl = your_skills[i]['lvl']
-	your_skills[i]['to-next'] = get_skill_level(lvl+1)
-	your_skills[i]['xp'] += amt
-	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
-		your_skills[i]['lvl'] += 1
-		your_skills[i]['to-next'] = get_skill_level(your_skills[i]['lvl']+1)
+	panels = [
+	get_node('Metal'),
+	get_node('Crystal'),
+	get_node('Nanium'),
+	get_node('Tech')]
 	
-func set_storage(amts):
-	for i in range(3):
-		bank[i]['max'] = amts[i]
-	_draw_gui()
+	skill_panels = [
+	get_node('skills/Metal'),
+	get_node('skills/Crystal'),
+	get_node('skills/Nanium'),
+	get_node('skills/Tech'),
+	get_node('skills/total')]
+	
+	format = get_node('/root/formats')
 
-func set_resource(material,amt):
-	if bank[material]['max'] != null:
-		if amt >= bank[material]['max']:
-			amt = bank[material]['max']
-	bank[material]['current'] = amt
-
-func get_boost(material):
-	var value = 1.0
-	for i in range(boost[material]['level']):
-		value += value*boost[material]['rate']
-	return value
-
-func set_boost():
-	var boosts = {0:0,1:0,2:0,3:0}
-	var buildings = get_node('/root/Game/construction').sciences
-	for b in buildings:
-		if 'skill_buffed' in b.building:
-			boosts[b.building.skill_buffed] += b.building.level
-	for i in range(4):
-		boost[i]['level'] = boosts[i]
-
-func get_workers(material):
-	var pro = bank[material]['producers']
-	return pro['workers']
-
-func set_workers(material, amount):
-	var pro = bank[material]['producers']
-	pro['workers'] = amount
-
+#####################
+#	CHILD SIGNALS	#
+#####################
 func _on_use_toggled( pressed,index ):
+	#toggling this material's player-grind status
 	var current_skill = null
 	if pressed:
 		current_skill = index
@@ -231,4 +286,3 @@ func _on_use_toggled( pressed,index ):
 			if buttons[i].is_pressed():
 				buttons[i].set_pressed(false)
 			bank[i]['producers']['you']=0
-		
