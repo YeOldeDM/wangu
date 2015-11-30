@@ -1,6 +1,55 @@
 
 extends TextureButton
 
+#SHINY NEW GENERIC STRUCTURE CLASS
+class Structure:
+	var name = "Structure"
+	var description = "This is a building, science project, or equipment"
+	var category = ""	#"Housing", "Storage", "Buff", "Equipment", "Tactics"
+	var level = 0
+	
+	var cost_factor = 1.75
+	var base_cost = {
+		0:0, 1:0, 2:0, 3:0}
+	
+	func _cost_multiplier(L):
+		return ceil(self.cost_factor * L + exp(L*0.33))
+		
+	func _get_cost(L):
+		var cost
+		if self.category == "Storage":
+			cost = 0
+		else:
+			var m = self._cost_multiplier(L)
+			cost = {
+				0:	self.base_cost[0] * m,
+				1:	self.base_cost[1] * m,
+				2:	self.base_cost[2] * m,
+				3:	self.base_cost[3] * m
+					}
+		return cost
+	
+	func _can_build(cost):
+		#check if we can afford cost
+		var can_afford = true
+		
+		return can_afford
+	
+	func _apply_effects():
+		#apply the effects of this building
+		pass
+	
+	func upgrade(n):
+		#Try upgrading this structure by n levels
+		n += self.level
+		var cost = _get_cost(n)
+		if _can_build(cost):
+			self.level += 1
+			_apply_effects()
+		
+	
+
+#SHITTY OLD NOODLY BUILDING CLASSES
 class TacticsBuilding:
 	var construction
 	var bank
