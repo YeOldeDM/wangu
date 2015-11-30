@@ -333,17 +333,14 @@ func draw_mob_combat_info():
 
 func collect_loot(mob):
 	if current_loot_type < 4:
-		var loot = int(current_loot_type)
-		print("loot=",loot)
-		var amt = bank.bank[ loot ]['current']
-		#print(amt)
-		amt += current_loot_amt
-		bank.set_resource(int(loot),int(amt))
+		var loot = current_loot_type
+		var amt = current_loot_amt
+		bank.gain_resource(int(loot),int(amt))
 		var mats = {0: "metal",
 					1: "crystal",
 					2: "nanium",
 					3: "tech"}
-		var txt = "The "+mob.name+" gives up [color=#999966][b]"+str(current_loot_amt)+" "+mats[loot]+"![/b][/color]"
+		var txt = "The "+mob.name+" gives up [color=#999966][b]"+str(amt)+" "+mats[loot]+"![/b][/color]"
 		news.message(txt)
 
 

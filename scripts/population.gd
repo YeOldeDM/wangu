@@ -1,6 +1,10 @@
 
 extends Control
 
+
+#################
+#	GLOBALS		#
+#################
 var format
 var news
 

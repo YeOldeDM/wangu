@@ -1,15 +1,71 @@
 
 extends Control
 
-
-
-var building_button = load('res://building.xml')
+#################
+#	GLOBALS		#
+#################
+var structures = {
+	'Buildings':	[],
+	'Facilities':	[],
+	'Science':		[],
+	'Equipment':	[]
+				}
 
 var buildings = []
 var facilities = []
 var sciences = []
 var equipments = []
 
+var building_button = load('res://building.xml')
+
+#########################
+#	PRIVATE FUNCTIONS	#
+#########################
+func _add_building(category, building):
+	if 'construction' in building.building:
+		building.building.construction = self
+	if 'bank' in building.building:
+		building.building.bank = get_node('/root/Game/Bank')
+	if 'combat' in building.building:
+		building.building.combat = get_node('/root/Game/combat')
+	
+	structures[category].append(building)
+	building.draw_button()
+	var grid = str('Buildings/cont/'+category+'/cont/cont')
+	grid.add_child(building)
+
+func _building_factory():
+	pass
+	#GENERIC FACTORY FUNC FOR DEFINING STRUCTURES
+	#NEED GENERIC BUILDING CLASS FIRST
+	
+#########################
+#	PUBLIC FUNCTIONS	#
+#########################
+func set_population():
+	var n = 0
+	for b in structures['Buildings']:
+		if 'population' in b.building.base_production:
+			n += b.building.get_production('population',b.building.level)
+	get_node('/root/Game').population.set_max_pop(n)
+
+func set_storage():
+	var amts = {
+		0:	0,
+		1:	0,
+		2:	0}
+
+	for b in structures['Facilities']:
+		var a = b.building.get_storage()
+		for i in range(3):
+			amts[i] += a[i]
+	get_node('/root/Game/Bank').set_storage(amts)
+
+
+
+#############
+#	INIT	#
+#############
 func _ready():
 	for i in range(1):
 		var shack = Shack()
@@ -36,7 +92,7 @@ func _ready():
 		add_science(know)
 		var tact = Tactics()
 		add_science(tact)
-		
+
 		var shields = Shields()
 		add_equipment(shields)
 		var claws = Claws()
@@ -47,7 +103,11 @@ func _ready():
 		add_equipment(armor)
 		var hard = HardPlate()
 		add_equipment(hard)
-		
+
+
+#################################################
+#	REPLACE THIS CRAP WITH FACTORIES PLZ KTHX	#
+#################################################
 func add_building(building):
 	building.building.construction = self
 	building.building.bank = get_node('/root/Game/Bank')
@@ -77,24 +137,7 @@ func add_equipment(equip):
 	equip.draw_button()
 	get_node('Buildings/cont/Equipment/cont/cont').add_child(equip)
 
-func set_population():
-	var n = 0
-	for b in buildings:
-		if 'population' in b.building.base_production:
-			n += b.building.get_production('population',b.building.level)
-	get_node('/root/Game').population.set_max_pop(n)
 
-func set_storage():
-	var amts = {
-		0:	0,
-		1:	0,
-		2:	0}
-
-	for b in facilities:
-		var a = b.building.get_storage()
-		for i in range(3):
-			amts[i] += a[i]
-	get_node('/root/Game/Bank').set_storage(amts)
 
 
 #BOT HOUSING
@@ -246,7 +289,7 @@ func Lasers():
 	var b = building_button.instance()
 	b.building = b.EquipmentBuilding.new()
 	b.building.name = "Lasers"
-	b.building.description = "Emitted radiation! Each level of Lasers increases your Troopers damage by 8 points."
+	b.building.description = "Emitted radiation of amplified light! Each level of Lasers increases your Troopers damage by 8 points."
 	b.building.level = 0
 	b.building.skill_buffed = 'weapon'
 	b.building.buff_factor = 8
