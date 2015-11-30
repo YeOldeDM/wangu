@@ -15,7 +15,6 @@ func _ready():
 	news = get_node('news')
 	construction = get_node('construction')
 
-
 	set_process(true)
 	
 func _process(delta):
