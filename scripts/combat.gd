@@ -6,22 +6,21 @@ var bank
 var battle_clock = 0.0
 var turn_duration = 1.0
 
-var current_loot_type = 5
-var current_loot_amt = 0
 
 class Mob:
-	var own
+	var own		#link to combat object
+	var rng		#link to random name generator
 	var name = "Bob the Mob"
+	var boss = 0	#0=normal mob, 1=mini-boss, 2=mega-boss
 	
-	var boss = 0
-	
+	#MOB STATS
 	var level = 0
-	
+		#DMG
 	var strength = 1
-	var vitality = 1
-	
 	var damage_factor = 1.6
 	var damage_var = 0.4
+		#HP
+	var vitality = 1
 	var health_factor = 4
 	var health_var = 0.05
 	
@@ -29,46 +28,26 @@ class Mob:
 	var current_health = 0
 	
 	var is_dead = true
-	var random 
-	
-	func new_mob():
-		self.own.collect_loot(self)
-#		if self.level > 0:
-#			self.own.map.next_cell()
-		self.name = self.random.random_animal()
-		self.level += 1
-		if self.level % 100 == 0:	#Mega-Boss
-			self.boss = 2
-		elif self.level % 10 == 0:	#Mini-Boss
-			self.boss = 1
-		else:
-			self.boss = 0
-		self.get_total_health()
-		self.current_health = self.total_health
-		self.is_dead = false
-		
-		
-		#HACKY level up system
-		
-		randomize()
-		self.strength += int(rand_range(0,2))
-		self.vitality += int(rand_range(0,4))
-		
-	func get_total_health():
-		var base_health = (self.vitality*0.5) * self.health_factor
-		if self.boss == 2:
+
+	#PRIVATE FUNCTIONS
+	func _get_total_health():
+		var base_health = (self.vitality*0.5) * self.health_factor		#base= 1/2VIT x HPfactor
+		if self.boss == 2:												#mega-bosses: x10
 			base_health *= 10.0
-			prints("MEGABOSS",self.name,self.level)
-		elif self.boss == 1:
+			prints("MEGABOSS",self.name,", LVL",self.level)
+		elif self.boss == 1:											#mini-bosses: x5
 			base_health *= 5.0
-			prints("MINIBOSS",self.name,self.level)
-		var min_health = ceil(base_health*self.health_var)
+			prints("MINIBOSS",self.name,", LVL",self.level)
+
+		var min_health = ceil(base_health*self.health_var)				#min-max variation
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
+		#Roll for total HP and set
 		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.03))
 	
-	func damage():
+	func _damage():
 		var base_damage = ((self.strength*0.5) * self.damage_factor) + exp(self.level*0.03)
+
 		if self.level%10 == 0 and self.level > 0:
 			base_damage *= 5
 		elif self.level%100 == 0 and self.level > 0:
@@ -76,24 +55,49 @@ class Mob:
 		var min_dmg = ceil(base_damage*self.damage_var)
 		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
 		return [min_dmg,max_dmg]
+	
+	func _die():
+		self.is_dead = true
+
+
+	#PUBLIC FUNCTIONS
+	func new_mob():		#The old Mob is dead...long live the New Mob
+		self.own.collect_loot(self)	#collect any loot from previous mob
 		
+		self.name = self.rng.random_animal()	#new name
+		self.level += 1							#new level
+		#get boss status
+		if self.level % 100 == 0:	#Mega-Boss
+			self.boss = 2
+		elif self.level % 10 == 0:	#Mini-Boss
+			self.boss = 1
+		else:
+			self.boss = 0
+		self._get_total_health()						#recalculate total HP
+		self.current_health = self.total_health		#refill HP
+		self.is_dead = false						#I...live...again!
+		
+		
+		#HACKY level up system
+		randomize()
+		self.strength += int(rand_range(0,2))
+		self.vitality += int(rand_range(0,4))
+	
 	func attack():
-		var dmg = self.damage()
+		var dmg = _damage()
 		randomize()
 		return round(rand_range(dmg[0],dmg[1]))
-		
+	
 	func get_hit(dmg):
 		var damage = max(0,dmg)
 		var new_health = self.current_health - damage
 		if new_health <= 0:
 			self.current_health = 0
-			
-			self.die()
+			self._die()
 		else:
 			self.current_health = new_health
 	
-	func die():
-		self.is_dead = true
+
 
 
 
@@ -315,7 +319,7 @@ func _ready():
 
 	mob = Mob.new()
 	mob.own = self
-	mob.random = get_node('/root/random')
+	mob.rng = get_node('/root/random')
 	mob.new_mob()
 	
 	
