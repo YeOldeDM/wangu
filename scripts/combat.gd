@@ -151,8 +151,9 @@ class Army:
 		var pop = (self.population.population['current']*1.0) / (self.population.population['max']*1.0)
 		if pop >= 0.9:
 			self.population._change_current_population(-1*self.troops)
-			self.population.refresh()
-			self.current_health = self._get_total_health()
+			self.population._refresh()
+			self._get_total_health()
+			self.current_health = self.total_health
 			self.is_dead = false
 			self.combat_ready = true
 	
@@ -241,8 +242,8 @@ var map
 var bots_panel
 var mob_panel
 
-var current_loot_type
-var current_loot_amt
+var current_loot_type = 10
+var current_loot_amt = 0
 
 #Object Links
 var cell_button = preload('res://map_cell.xml')
@@ -334,9 +335,9 @@ func draw_mob_combat_info():
 
 func collect_loot(mob):
 	if current_loot_type < 4:
-		var loot = current_loot_type
-		var amt = current_loot_amt
-		bank.gain_resource(int(loot),int(amt))
+		var loot = int(current_loot_type)
+		var amt = int(current_loot_amt)
+		bank.gain_resource(loot,amt)
 		var mats = {0: "metal",
 					1: "crystal",
 					2: "nanium",
@@ -380,7 +381,7 @@ func _check_bots_healthbar(per):
 	else:
 		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
 		bar.set_value(bar_per)
-	var h = str(format._number(army.current_health),"/",format._number(army.total_health()))
+	var h = str(format._number(army.current_health),"/",format._number(army.total_health))
 	bar.get_node('health').set_text(h)
 
 func _check_mob_healthbar(per):

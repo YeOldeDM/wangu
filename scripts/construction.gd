@@ -67,42 +67,8 @@ func set_storage():
 #	INIT	#
 #############
 func _ready():
-	for i in range(1):
-		var shack = Shack()
-		add_building(shack)
-		var hangar = Hangar()
-		add_building(hangar)
-		var cargo = CargoBay()
-		add_building(cargo)
-		
-		var yard = Scrapyard()
-		add_facility(yard)
-		var caves = CrystalCaves()
-		add_facility(caves)
-		var bays = NanoBays()
-		add_facility(bays)
-		
-		var metal = Metallurgy()
-		add_science(metal)
-		var tune = Attunement()
-		add_science(tune)
-		var synth = NanoSynth()
-		add_science(synth)
-		var know = Knowledge()
-		add_science(know)
-		var tact = Tactics()
-		add_science(tact)
+	pass
 
-		var shields = Shields()
-		add_equipment(shields)
-		var claws = Claws()
-		add_equipment(claws)
-		var lasers = Lasers()
-		add_equipment(lasers)
-		var armor = Armor()
-		add_equipment(armor)
-		var hard = HardPlate()
-		add_equipment(hard)
 
 
 #################################################

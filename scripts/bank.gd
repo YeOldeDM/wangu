@@ -180,7 +180,7 @@ func _get_skill_level(L):
 	if L <= 0:
 		return 0
 	else:
-		return get_skill_level(L-1) + B + (R*max(0,L-2))
+		return _get_skill_level(L-1) + B + (R*max(0,L-2))
 
 func _set_resource(mat,amt):
 	#set current resource value. Clamp to max resource storage
@@ -233,8 +233,8 @@ func _draw_gui():
 			
 		var show_per = skill_panels[i].get_node('fillbar').get_value()
 		
-		var xp_needed = get_skill_level(real_lvl+1) - get_skill_level(real_lvl)
-		var xp_progress = your_skills[i]['xp'] - get_skill_level(real_lvl)
+		var xp_needed = _get_skill_level(real_lvl+1) - _get_skill_level(real_lvl)
+		var xp_progress = your_skills[i]['xp'] - _get_skill_level(real_lvl)
 		var skill_per = xp_progress / max(1,xp_needed)
 		if show_per != skill_per:
 			skill_panels[i].get_node('fillbar').set_value(skill_per)
