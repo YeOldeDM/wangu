@@ -30,9 +30,9 @@ func _add_building(category, building):
 		building.building.combat = get_node('/root/Game/combat')
 	
 	structures[category].append(building)
-	building.draw_button()
 	var grid = str('Buildings/cont/'+category+'/cont/cont')
 	grid.add_child(building)
+	building.draw_button()
 
 func _building_factory():
 	pass

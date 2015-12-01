@@ -60,7 +60,8 @@ class Mob:
 
 	#PUBLIC FUNCTIONS
 	func new_mob():		#The old Mob is dead...long live the New Mob
-		self.own.collect_loot(self)	#collect any loot from previous mob
+		if self.level > 0:
+			self.own.collect_loot(self)	#collect any loot from previous mob
 		
 		self.name = self.rng.random_animal()	#new name
 		self.level += 1							#new level
@@ -313,9 +314,9 @@ func set_skills():
 
 func draw_bots_combat_info():
 	var troops = str("Troopers (",format._number(army.troops),")")
-	var d = army.damage()
+	var d = army._damage()
 	var damage = str("Damage: ",format._number(d[0]),"-",format._number(d[1]))
-	var shields = str("Shields: ",format._number(army.shields()))
+	var shields = str("Shields: ",format._number(army._get_shields()))
 
 	bots_panel.get_node('troops').set_text(troops)
 
@@ -323,7 +324,7 @@ func draw_bots_combat_info():
 	bots_panel.get_node('shields').set_text(shields)
 
 func draw_mob_combat_info():
-	var d = mob.damage()
+	var d = mob._damage()
 	var level = str("Level ", mob.level)
 	var damage = str("Damage: ", format._number(d[0]),"-",format._number(d[1]))
 
