@@ -20,12 +20,13 @@ class Structure:
 		if self.category == "Storage":
 			cost = 0
 		else:
+			var c = self.base_cost
 			var m = self._cost_multiplier(L)
 			cost = {
-				0:	self.base_cost[0] * m,
-				1:	self.base_cost[1] * m,
-				2:	self.base_cost[2] * m,
-				3:	self.base_cost[3] * m
+				0:	c[0] * m,
+				1:	c[1] * m,
+				2:	c[2] * m,
+				3:	c[3] * m
 					}
 		return cost
 	
@@ -34,6 +35,10 @@ class Structure:
 		var can_afford = true
 		
 		return can_afford
+	
+	func _spend(cost):
+		for i in range(4):
+			self.bank.spend_resource(i,int(cost[i]))
 	
 	func _apply_effects():
 		#apply the effects of this building
@@ -44,6 +49,7 @@ class Structure:
 		n += self.level
 		var cost = _get_cost(n)
 		if _can_build(cost):
+			_spend(cost)
 			self.level += 1
 			_apply_effects()
 		
@@ -334,13 +340,15 @@ class Building:
 
 var building
 var news
+
+
 func _ready():
 	news = get_node('/root/Game/news')
 
 func draw_button():
 	if building:
 		get_node('name').set_text(building.name)
-		get_node('level').set_text(str("Level ",str(building.level)))
+		get_node('level').set_text(str(building.level))
 
 
 
