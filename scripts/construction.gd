@@ -16,28 +16,38 @@ var facilities = []
 var sciences = []
 var equipments = []
 
-var building_button = load('res://building.xml')
+var structure_button = load('res://building.xml')
 
 #########################
 #	PRIVATE FUNCTIONS	#
 #########################
-func _add_building(category, building):
-	if 'construction' in building.building:
-		building.building.construction = self
-	if 'bank' in building.building:
-		building.building.bank = get_node('/root/Game/Bank')
-	if 'combat' in building.building:
-		building.building.combat = get_node('/root/Game/combat')
+func _add_structure(category, structure):
+	if 'population' in structure.building:
+		structure.building.population = get_node('/root/Game/population')
+	if 'construction' in structure.building:
+		structure.building.construction = self
+	if 'bank' in structure.building:
+		structure.building.bank = get_node('/root/Game/Bank')
+	if 'combat' in structure.building:
+		structure.building.combat = get_node('/root/Game/combat')
 	
-	structures[category].append(building)
+	structures[category].append(structure)
 	var grid = str('Buildings/cont/'+category+'/cont/cont')
-	grid.add_child(building)
+	grid.add_child(structure)
 	building.draw_button()
 
-func _building_factory():
-	pass
-	#GENERIC FACTORY FUNC FOR DEFINING STRUCTURES
-	#NEED GENERIC BUILDING CLASS FIRST
+func _structure_factory(name, description, category, structure_category, material, factor, base_cost):
+	var structure = structure_button.instance()
+	if structure.building:
+		structure.name = name
+		structure.description = description
+		structure.category = structure_category
+		structure.material = material
+		structure.factor = factor
+		structure.base_cost = base_cost
+	else:
+		print("BUILDING OBJECT NOT CREATED!")
+	_add_structure(category,structure)
 	
 #########################
 #	PUBLIC FUNCTIONS	#

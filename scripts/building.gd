@@ -4,6 +4,11 @@ extends TextureButton
 #SHINY NEW GENERIC STRUCTURE CLASS
 class Structure:
 	var own
+	var bank
+	var population
+	var construction
+	var combat
+	
 	var name = "Structure"
 	var description = "This is a building, science project, or equipment"
 	var category = ""	#"Housing", "Storage", "Boost", "Equipment", "Tactics"
@@ -90,6 +95,8 @@ func _ready():
 	population = get_node('/root/Game/population')
 	news = get_node('/root/Game/news')
 	
+	building = Structure.new()
+	building.own = self
 
 
 func draw_button():
