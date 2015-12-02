@@ -118,8 +118,15 @@ func gain_xp(i,amt):
 		your_skills[i]['lvl'] += 1
 		your_skills[i]['to-next'] = _get_skill_level(your_skills[i]['lvl']+1)
 	
-func set_storage(mat, amt):
+func set_storage(mat):
 	#set max storage for resources
+	var amt = 100
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == 'Storage':
+				if struct.building.material == 0:
+					for l in range(struct.building.level):
+						amt *= 2
 	bank[mat]['max'] = amt
 	_draw_gui()
 

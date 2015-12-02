@@ -29,9 +29,7 @@ class Structure:
 		var cost = {0:0,1:0,2:0,3:0}
 		#Storage Structures have special cost progression
 		if self.category == "Storage":
-			var c = 50
-			for i in range(L-1):
-				c *= 2
+			var c = self.bank.bank[self.material]['max'] / 2
 			cost[self.material] = c
 		#All other Structures use normal cost progression
 		else:

@@ -80,6 +80,19 @@ func _number(n):
 		n = str(n)
 	return str(n,suffix)
 
+var roman_numerals = [
+		'0',
+		'I',
+		'II',
+		'III',
+		'IV',
+		'V',
+		'VI',
+		'VII',
+		'VIII',
+		'IX',
+		'X'
+		]
 var greek_abc = [
 	"Alpha",
 	"Beta",

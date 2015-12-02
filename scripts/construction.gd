@@ -80,7 +80,13 @@ func _ready():
 	make_shack()
 	make_garage()
 	make_hangar()
+	
+	make_scrapyard()
+	make_crystalcaves()
+	make_naniteservers()
 
+	make_metallurgy()
+	
 func make_shack():
 	var name = "Shack"
 	var description = "Basic housing for Bots. Each Shack provides living space for 2 Bots."
@@ -115,4 +121,57 @@ func make_hangar():
 					1:40,
 					2:22,
 			3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+	
+
+func make_scrapyard():
+	var name = "Scrapyard"
+	var description = "Storage for scrap Metal."
+	var category = "Facilities"
+	var structure_category = "Storage"
+	var material = 0
+	var factor = 100
+	var base_cost = {0:0, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_crystalcaves():
+	var name = "Crystal Caves"
+	var description = "Storage for Crystal."
+	var category = "Facilities"
+	var structure_category = "Storage"
+	var material = 1
+	var factor = 100
+	var base_cost = {0:0, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_naniteservers():
+	var name = "Nanite Servers"
+	var description = "Storage for Nanium."
+	var category = "Facilities"
+	var structure_category = "Storage"
+	var material = 2
+	var factor = 100
+	var base_cost = {0:0, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_metallurgy():
+	var name = "Metallurgy"
+	var description = "Base production of Metal is increased by 125% per level of Metallurgy."
+	var category = "Science"
+	var structure_category = "Boost"
+	var material = 0
+	var factor = 0
+	var base_cost = {0:50, 
+					1:0,
+					2:0,
+					3:50}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
