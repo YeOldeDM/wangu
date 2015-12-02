@@ -320,7 +320,7 @@ func set_troopers():
 		for struct in construction.structures[cat]:
 			if struct.building.category == "Tactics":
 				value = ceil(value * 1.25)
-	army.troopers = value
+	army.troops = value
 	draw_bots_combat_info()
 
 
