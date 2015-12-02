@@ -112,10 +112,10 @@ func set_storage(mat):
 	for cat in construction.structures:
 		for struct in construction.structures[cat]:
 			if struct.building.category == 'Storage':
-				if struct.building.material == 0:
+				if struct.building.material == int(mat):
 					for l in range(struct.building.level):
 						amt *= 2
-	bank[mat]['max'] = amt
+	bank[int(mat)]['max'] = amt
 	_draw_gui()
 
 func can_afford(mat, amt):
@@ -182,11 +182,11 @@ func _set_resource(mat,amt):
 	if bank[mat]['max'] != null:
 		if amt >= bank[mat]['max']:
 			amt = bank[mat]['max']
-	bank[mat]['current'] = amt
+	bank[mat]['current'] = max(0,amt)
 
 func _get_resource(mat):
 	#return current resources
-	return int(bank[mat]['current'])
+	return bank[mat]['current']
 
 
 

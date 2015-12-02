@@ -46,8 +46,12 @@ class Structure:
 		return can_afford
 	
 	func _spend(cost):
-		for i in range(4):
-			self.own.bank.spend_resource(i,int(cost[i]))
+#		for i in range(4):
+#			self.own.bank.spend_resource(i,int(cost[i]))
+		self.own.bank.spend_resource(0,cost[0])
+		self.own.bank.spend_resource(1,cost[1])
+		self.own.bank.spend_resource(2,cost[2])
+		self.own.bank.spend_resource(3,cost[3])
 	
 	func _apply_effects():
 		if self.category == 'Housing':
@@ -117,7 +121,7 @@ func _on_Button_mouse_exit():
 
 func _on_Button_pressed():
 	var l = building.level
-	building.upgrade(building.level+1)
+	building.upgrade(1)
 	draw_button()
 	if l != building.level:
 		news.message("The [color=#66ffff]"+building.name+"[/color] has been upgraded to [b]level "+str(building.level)+"[/b]")
