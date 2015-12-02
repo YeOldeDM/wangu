@@ -78,21 +78,41 @@ func set_storage():
 #############
 func _ready():
 	make_shack()
-
-
-
-
+	make_garage()
+	make_hangar()
 
 func make_shack():
 	var name = "Shack"
-	var description = "Basic housing for Bots. Each Shack provides living space for 3 Bots."
+	var description = "Basic housing for Bots. Each Shack provides living space for 2 Bots."
 	var category = "Buildings"
 	var structure_category = "Housing"
 	var material = 0
-	var factor = 3
+	var factor = 2
 	var base_cost = {0:10,
 		1:0,2:0,3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
-	_structure_factory(name, description, category, structure_category, material, factor, base_cost)
+func make_garage():
+	var name = "Garage"
+	var description = "Roomy housing for Bots. Each Shack provides living space for 5 Bots."
+	var category = "Buildings"
+	var structure_category = "Housing"
+	var material = 0
+	var factor = 5
+	var base_cost = {0:45, 
+					1:12,
+			2:0,3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
-
+func make_hangar():
+	var name = "Hangar"
+	var description = "Luxurious housing for Bots. Each Shack provides living space for 10 Bots."
+	var category = "Buildings"
+	var structure_category = "Housing"
+	var material = 0
+	var factor = 10
+	var base_cost = {0:80, 
+					1:40,
+					2:22,
+			3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)

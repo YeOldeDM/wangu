@@ -129,8 +129,8 @@ func _on_Button_pressed():
 
 
 
-var cost_color = [Color(0.1,0.1,0.1,0.4),
-					Color(1.0,0.2,0.2,0.4)]
+var cost_color = [Color(1.0,1.0,1.0,1.0),
+					Color(1.0,0.2,0.2,1.0)]
 
 func _on_Popup_about_to_show():
 	var panel = get_node('Popup')
@@ -141,26 +141,43 @@ func _on_Popup_about_to_show():
 	panel.get_node('description').add_text(building.description)
 	
 	var cost = building._get_cost(building.level+1)
+	
+#Set Metal Cost Text
 	var c = 0
 	if not bank.can_afford(0,cost[0]):
 		c = 1
-	panel.get_node('metal_cost').set('custom_colors/font_color_shadow', cost_color[c])
-	panel.get_node('metal_cost').set_text(format._number(cost[0]))
+	panel.get_node('metal_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[0] <= 0.0:
+		panel.get_node('metal_cost').set_text("")
+	else:
+		panel.get_node('metal_cost').set_text(format._number(cost[0]))
+#Set Crystal Cost Text
 	c = 0
 	if not bank.can_afford(1,cost[1]):
 		c = 1
-	panel.get_node('crystal_cost').set('custom_colors/font_color_shadow', cost_color[c])
-	panel.get_node('crystal_cost').set_text(format._number(cost[1]))
+	panel.get_node('crystal_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[1] <= 0.0:
+		panel.get_node('crystal_cost').set_text("")
+	else:
+		panel.get_node('crystal_cost').set_text(format._number(cost[1]))
+#Set Nanium Cost Text
 	c = 0
 	if not bank.can_afford(2,cost[2]):
 		c = 1
-	panel.get_node('nanium_cost').set('custom_colors/font_color_shadow', cost_color[c])
-	panel.get_node('nanium_cost').set_text(format._number(cost[2]))
+	panel.get_node('nanium_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[2] <= 0.0:
+		panel.get_node('nanium_cost').set_text("")
+	else:
+		panel.get_node('nanium_cost').set_text(format._number(cost[2]))
+#Set Tech Cost Text
 	c = 0
 	if not bank.can_afford(3,cost[3]):
 		c = 1
-	panel.get_node('tech_cost').set('custom_colors/font_color_shadow', cost_color[c])
-	panel.get_node('tech_cost').set_text(format._number(cost[3]))
+	panel.get_node('tech_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[3] <= 0.0:
+		panel.get_node('tech_cost').set_text("")
+	else:
+		panel.get_node('tech_cost').set_text(format._number(cost[3]))
 
 	#get position for popup (lower right corner of parent)
 	var pos = get_global_pos() + get_size()
