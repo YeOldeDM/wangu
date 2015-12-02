@@ -29,7 +29,7 @@ class Mob:
 
 	#PRIVATE FUNCTIONS
 	func _get_total_health():
-		var base_health = (self.vitality*0.5) * self.health_factor		#base= 1/2VIT x HPfactor
+		var base_health = max(1,(self.vitality*0.5)) * self.health_factor		#base= 1/2VIT x HPfactor
 		if self.boss == 2:												#mega-bosses: x10
 			base_health *= 10.0
 			prints("MEGABOSS",self.name,", LVL",self.level)
@@ -41,7 +41,7 @@ class Mob:
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
 		#Roll for total HP and set
-		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.03))
+		self.total_health = round(rand_range(min_health,max_health) + exp(self.level*0.03))
 	
 	func _damage():
 		var base_damage = ((self.strength*0.5) * self.damage_factor) + exp(self.level*0.03)
@@ -284,8 +284,6 @@ func generate_map(level=0):
 		cell.make_loot(level+i)
 		grid_panel.add_child(cell)
 	map.cells = grid_panel.get_children()
-	for c in map.cells:
-		print(c)
 	map.cells[map.current_cell].status = 2
 	map.cells[map.current_cell].change_color(2)
 
@@ -294,7 +292,8 @@ func regenerate_map(level=0):
 	for cell in cells:
 		cell.status = 0
 		cell.loot_type = 5
-		cell.make_loot(level+1)
+		if level > 0:
+			cell.make_loot(level+1)
 	cells[0].status = 2
 	for cell in cells:
 		cell.change_color(cell.status)

@@ -9,7 +9,7 @@ var colors = {
 var status = 0
 var loot_type = 5
 var loot_amt = 0
-var loot_chance = 0.4
+var loot_chance = 0.28
 
 func change_color(style):
 	#style: 0=red(wild), 1=green(conquered), 2=yellow(active)
@@ -19,7 +19,7 @@ func set_loot_frame(frame):
 	get_node('loot').set_frame(frame)
 	
 func make_loot(l):
-	l = 3.14	#cuz why not
+	l *= 3.14	#cuz why not
 	randomize()
 	if rand_range(0.0,1.0) <= loot_chance:
 		var loot_var = 0.3
