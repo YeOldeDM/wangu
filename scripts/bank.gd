@@ -81,9 +81,6 @@ func process(delta):
 			gain_xp(i,your_production_rate*boost_rate*delta)	#don't gain xp if this bank is full!
 		bank[i]['current'] = new_amt
 		
-	#count up time	
-	time += delta
-		
 	
 	#tick draw clock
 	draw_timer += delta
@@ -195,8 +192,6 @@ func _get_resource(mat):
 #	GUI DRAW FUNCTION	#
 #########################
 func _draw_gui():
-	get_node('time').set_text(str("Time: ",format._time(int(time))))
-	
 	var total_skill = 0
 	for i in range(4):
 		total_skill += your_skills[i]['lvl']
