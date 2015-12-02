@@ -306,11 +306,12 @@ func draw_map_info():
 		cell.change_color(cell.status)
 
 func set_equipment(equip):
-	army.skill[equip] = 0
+	var value = 0
 	for cat in construction.structures:
 		for struct in construction.structures[cat]:
 			if struct.building.material == equip:
-				army.skill[equip] += (struct.building.factor * struct.building.level)
+				value += (struct.building.factor * struct.building.level)
+	army.skill[int(equip)] = value
 	draw_bots_combat_info()
 
 

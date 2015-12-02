@@ -42,7 +42,14 @@ class Structure:
 	func _can_build(cost):
 		#check if we can afford cost
 		var can_afford = true
-		
+		if not self.own.bank.can_afford(0,cost[0]):
+			can_afford = false
+		elif not self.own.bank.can_afford(1,cost[1]):
+			can_afford = false
+		elif not self.own.bank.can_afford(2,cost[2]):
+			can_afford = false
+		elif not self.own.bank.can_afford(3,cost[3]):
+			can_afford = false
 		return can_afford
 	
 	func _spend(cost):
@@ -121,10 +128,12 @@ func _on_Button_mouse_exit():
 
 func _on_Button_pressed():
 	var l = building.level
-	building.upgrade(1)
-	draw_button()
-	if l != building.level:
-		news.message("The [color=#66ffff]"+building.name+"[/color] has been upgraded to [b]level "+str(building.level)+"[/b]")
+	var cost = building._get_cost(l+1)
+	if building._can_build(cost):
+		building.upgrade(1)
+		draw_button()
+		if l != building.level:
+			news.message("The [color=#66ffff]"+building.name+"[/color] has been upgraded to [b]level "+str(building.level)+"[/b]")
 
 
 
