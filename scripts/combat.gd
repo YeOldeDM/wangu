@@ -309,8 +309,9 @@ func set_equipment(equip):
 	var value = 0
 	for cat in construction.structures:
 		for struct in construction.structures[cat]:
-			if struct.building.material == equip:
-				value += (struct.building.factor * struct.building.level)
+			if struct.building.category == 'Equipment':
+				if struct.building.material == equip:
+					value += (struct.building.factor * struct.building.level)
 	army.skill[int(equip)] = value
 	draw_bots_combat_info()
 
