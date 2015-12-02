@@ -1,27 +1,24 @@
 
 extends Control
-var format
-var bank
 
-var battle_clock = 0.0
-var turn_duration = 1.0
 
-var current_loot_type = 5
-var current_loot_amt = 0
-
+#################
+#	MOB CLASS	#
+#################
 class Mob:
-	var own
+	var own		#link to combat object
+	var rng		#link to random name generator
 	var name = "Bob the Mob"
+	var boss = 0	#0=normal mob, 1=mini-boss, 2=mega-boss
 	
-	var boss = 0
-	
+	#MOB STATS
 	var level = 0
-	
+		#DMG
 	var strength = 1
-	var vitality = 1
-	
 	var damage_factor = 1.6
 	var damage_var = 0.4
+		#HP
+	var vitality = 1
 	var health_factor = 4
 	var health_var = 0.05
 	
@@ -29,46 +26,26 @@ class Mob:
 	var current_health = 0
 	
 	var is_dead = true
-	var random 
-	
-	func new_mob():
-		self.own.collect_loot(self)
-#		if self.level > 0:
-#			self.own.map.next_cell()
-		self.name = self.random.random_animal()
-		self.level += 1
-		if self.level % 100 == 0:	#Mega-Boss
-			self.boss = 2
-		elif self.level % 10 == 0:	#Mini-Boss
-			self.boss = 1
-		else:
-			self.boss = 0
-		self.get_total_health()
-		self.current_health = self.total_health
-		self.is_dead = false
-		
-		
-		#HACKY level up system
-		
-		randomize()
-		self.strength += int(rand_range(0,2))
-		self.vitality += int(rand_range(0,4))
-		
-	func get_total_health():
-		var base_health = (self.vitality*0.5) * self.health_factor
-		if self.boss == 2:
+
+	#PRIVATE FUNCTIONS
+	func _get_total_health():
+		var base_health = max(1,(self.vitality*0.5)) * self.health_factor		#base= 1/2VIT x HPfactor
+		if self.boss == 2:												#mega-bosses: x10
 			base_health *= 10.0
-			prints("MEGABOSS",self.name,self.level)
-		elif self.boss == 1:
+			prints("MEGABOSS",self.name,", LVL",self.level)
+		elif self.boss == 1:											#mini-bosses: x5
 			base_health *= 5.0
-			prints("MINIBOSS",self.name,self.level)
-		var min_health = ceil(base_health*self.health_var)
+			prints("MINIBOSS",self.name,", LVL",self.level)
+
+		var min_health = ceil(base_health*self.health_var)				#min-max variation
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
-		self.total_health = round(rand_range(min_health,max_health)+exp(self.level*0.03))
+		#Roll for total HP and set
+		self.total_health = round(rand_range(min_health,max_health) + exp(self.level*0.03))
 	
-	func damage():
+	func _damage():
 		var base_damage = ((self.strength*0.5) * self.damage_factor) + exp(self.level*0.03)
+
 		if self.level%10 == 0 and self.level > 0:
 			base_damage *= 5
 		elif self.level%100 == 0 and self.level > 0:
@@ -76,131 +53,148 @@ class Mob:
 		var min_dmg = ceil(base_damage*self.damage_var)
 		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
 		return [min_dmg,max_dmg]
+	
+	func _die():
+		self.is_dead = true
+
+
+	#PUBLIC FUNCTIONS
+	func new_mob():		#The old Mob is dead...long live the New Mob
+		if self.level > 0:
+			self.own.collect_loot(self)	#collect any loot from previous mob
 		
+		self.name = self.rng.random_animal()	#new name
+		self.level += 1							#new level
+		#get boss status
+		if self.level % 100 == 0:	#Mega-Boss
+			self.boss = 2
+		elif self.level % 10 == 0:	#Mini-Boss
+			self.boss = 1
+		else:
+			self.boss = 0
+		self._get_total_health()						#recalculate total HP
+		self.current_health = self.total_health		#refill HP
+		self.is_dead = false						#I...live...again!
+		
+		
+		#HACKY level up system
+		randomize()
+		self.strength += int(rand_range(0,2))
+		self.vitality += int(rand_range(0,4))
+	
 	func attack():
-		var dmg = self.damage()
+		var dmg = _damage()
 		randomize()
 		return round(rand_range(dmg[0],dmg[1]))
-		
+	
 	func get_hit(dmg):
 		var damage = max(0,dmg)
 		var new_health = self.current_health - damage
 		if new_health <= 0:
 			self.current_health = 0
-			
-			self.die()
+			self._die()
 		else:
 			self.current_health = new_health
-	
-	func die():
-		self.is_dead = true
+#####################
+#	/END MOB CLASS	#
+#####################
 
 
 
 
+#################
+#	ARMY CLASS	#
+#################
 class Army:
-	var troops = 1
-	var damage = 3
-	var damage_var = 0.4
-	var unit_health = 10
+	var population			#link to Population module
+	var equipment			#link to Construction -> equipments
 	
+	#	ARMY STATS	#
+	var troops = 1			#no of Troopers in your army
+	var damage = 3			#base damage per Trooper
+	var damage_var = 0.4	#damage variation
+	var unit_health = 10	#base HP per Trooper
+	
+	#modifiers from Equipment
 	var skill = {
-		'weapon':	0,
-		'armor':	0,
-		'shields':	0}
-		
+		0:	0,		#weapons
+		1:	0,		#armor
+		2:	0}		#shields
 	
 	var current_health = 0
+	var total_health = 0
 	
 	var is_dead = true
+	var combat_ready = false	#are we okay to go into battle?
+	var autofight = false		#Auto-Fight switch
 	
-	var combat_ready = false
-	var autofight = false
+	#	PRIVATE FUNCTIONS	#
+	func _damage():
+		var base_damage = (self.damage+self.skill[0]) * self.troops
+		var min_dmg = ceil(base_damage*damage_var)
+		var max_dmg = ceil(base_damage * (1.0+damage_var))
+		return [min_dmg,max_dmg]
 	
-	var population
-	var equipment
+	func _die():
+		self.is_dead = true
+		if not self.autofight:
+			self.combat_ready = false
 	
+	func _get_total_health():
+		self.total_health = (self.unit_health+self.skill[1]) * self.troops
+
+	func _get_shields():
+		return self.skill[2] * self.troops
+	
+	#	PUBLIC FUNCTIONS	#
 	func new_army():
 		var pop = (self.population.population['current']*1.0) / (self.population.population['max']*1.0)
 		if pop >= 0.9:
 			self.population._change_current_population(-1*self.troops)
-			self.population.refresh()
-			self.current_health = self.total_health()
+			self.population._refresh()
+			self._get_total_health()
+			self.current_health = self.total_health
 			self.is_dead = false
 			self.combat_ready = true
-			
 	
-	func damage():
-		var base_damage = (self.damage+self.skill['weapon']) * self.troops
-		var min_dmg = ceil(base_damage*damage_var)
-		var max_dmg = ceil(base_damage * (1.0+damage_var))
-		return [min_dmg,max_dmg]
-
-
 	func attack():
-		var dmg = self.damage()
+		var dmg = self._damage()
 		randomize()
 		return round(rand_range(dmg[0],dmg[1]))
 	
-	func total_health():
-		return (self.unit_health+self.skill['armor']) * self.troops
-
-	func shields():
-		return self.skill['shields'] * self.troops
-
-
 	func get_hit(dmg):
-		var damage = max(0,dmg-self.shields())
+		var damage = max(0,dmg-self._get_shields())
 		var new_health = self.current_health - damage
 		if new_health <= 0:
 			self.current_health = 0
-			self.die()
+			self._die()
 		else:
 			self.current_health = new_health
-	
-	func die():
-		self.is_dead = true
-		if not self.autofight:
-			self.combat_ready = false
+#####################
+#	/END ARMY CLASS	#
+#####################
 
 
-
-
-var army
-var mob
-
-var bots_panel
-var mob_panel
-
-var map
-
+#################
+#	MAP CLASS	#
+#################
 class Map:
-	var own
-	var grid
+	var own		#link to combat object
+	var grid	#link to map grid
+	
+	#	MAP STATS	#
 	var sector = 0
 	var zone = 1
 	var cells
 	var current_cell = 0
 
-	func next_cell():
-		self.cells[self.current_cell].status = 1
-		self.current_cell += 1
-		if self.current_cell > 99:
-			self.next_zone()
-		self.cells[self.current_cell].status = 2
-		if self.cells[self.current_cell].loot_type < 4:
-			self.own.current_loot_type = self.cells[self.current_cell].loot_type
-			self.own.current_loot_amt = self.cells[self.current_cell].loot_amt
-		else:
-			self.own.current_loot_type = 5
-		self.own.draw_map_info()
-	
-	func next_zone():
+	#	PRIVATE FUNCTIONS	#
+	func _next_zone():
 		self.zone += 1
 		
 		if self.zone > 10:
 			self.zone = 1
-			self.next_sector()
+			self._next_sector()
 		else:
 			self.own.news.message("[color=yellow]Welcome to Zone "+str(self.zone)+"[/color]")
 		self.current_cell = 0
@@ -210,22 +204,77 @@ class Map:
 			cell.status = 0
 		self.cells[self.current_cell].status = 1
 		
-	func next_sector():
+	func _next_sector():
 		self.sector += 1
 		self.own.new.message("[color=yellow]Welcome to Sector "+str(self.sector)+self.sector+"[/color]")
-		
+
+	#	PUBLIC FUNCTIONS	#
+	func next_cell():
+		self.cells[self.current_cell].status = 1
+		self.current_cell += 1
+		if self.current_cell > 99:
+			self._next_zone()
+		self.cells[self.current_cell].status = 2
+		if self.cells[self.current_cell].loot_type < 4:
+			self.own.current_loot_type = self.cells[self.current_cell].loot_type
+			self.own.current_loot_amt = self.cells[self.current_cell].loot_amt
+		else:
+			self.own.current_loot_type = 5
+		self.own.draw_map_info()
+#####################
+#	/END MAP CLASS	#
+#####################
+
+#External Links
+var format
+var bank
+var news
+var construction
+
+var battle_clock = 0.0
+var turn_duration = 1.0
+
+#Internal Links
+var army
+var mob
+var map
+
+#GUI Links
+var bots_panel
+var mob_panel
+
+var current_loot_type = 10
+var current_loot_amt = 0
+
+#Object Links
 var cell_button = preload('res://map_cell.xml')
 
-func regenerate_map(level=0):
-	var cells = get_node('Battle/map/grid').get_children()
-	for cell in cells:
-		cell.status = 0
-		cell.loot_type = 5
-		cell.make_loot(level+1)
-	cells[0].status = 2
-	for cell in cells:
-		cell.change_color(cell.status)
+#Combat Ready switch(need?)
+var combat_ready = false
 
+#################
+#	MAINLOOP	#
+#################
+func process(delta):
+	#UPDATE HEALTHBARS
+	var b_per = (army.current_health*1.0) / (army.total_health*1.0)
+	_check_bots_healthbar(b_per)
+
+	var m_per = (mob.current_health*1.0) / (mob.total_health*1.0)
+	_check_mob_healthbar(m_per)
+	
+	#run battle engine
+	battle_clock += delta
+	if battle_clock >= turn_duration:
+		battle_clock = 0.0
+		if army.autofight:
+			army.combat_ready = true
+		if army.combat_ready:
+			_combat()
+
+#########################
+#	PUBLIC FUNCTIONS	#
+#########################
 func generate_map(level=0):
 	var grid_panel = get_node('Battle/map/grid')
 	for cell in grid_panel.get_children():
@@ -235,11 +284,19 @@ func generate_map(level=0):
 		cell.make_loot(level+i)
 		grid_panel.add_child(cell)
 	map.cells = grid_panel.get_children()
-	for c in map.cells:
-		print(c)
 	map.cells[map.current_cell].status = 2
 	map.cells[map.current_cell].change_color(2)
 
+func regenerate_map(level=0):
+	var cells = get_node('Battle/map/grid').get_children()
+	for cell in cells:
+		cell.status = 0
+		cell.loot_type = 5
+		if level > 0:
+			cell.make_loot(level+1)
+	cells[0].status = 2
+	for cell in cells:
+		cell.change_color(cell.status)
 
 func draw_map_info():
 	get_node('Battle/map/sector').set_text(str("Sector ",format.greek_abc[map.sector]))
@@ -247,20 +304,23 @@ func draw_map_info():
 	for cell in map.cells:
 		cell.change_color(cell.status)
 
-func set_skills():
-	army.skill = {
-		'weapon':	0,
-		'armor':	0,
-		'shields':	0}
-	for b in army.equipment:
-		army.skill[b.building.skill_buffed] += (b.building.buff_factor * b.building.level)
+func set_equipment(equip):
+	var value = 0
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == 'Equipment':
+				if struct.building.material == equip:
+					value += (struct.building.factor * struct.building.level)
+	army.skill[int(equip)] = value
 	draw_bots_combat_info()
+
+
 
 func draw_bots_combat_info():
 	var troops = str("Troopers (",format._number(army.troops),")")
-	var d = army.damage()
+	var d = army._damage()
 	var damage = str("Damage: ",format._number(d[0]),"-",format._number(d[1]))
-	var shields = str("Shields: ",format._number(army.shields()))
+	var shields = str("Shields: ",format._number(army._get_shields()))
 
 	bots_panel.get_node('troops').set_text(troops)
 
@@ -268,7 +328,7 @@ func draw_bots_combat_info():
 	bots_panel.get_node('shields').set_text(shields)
 
 func draw_mob_combat_info():
-	var d = mob.damage()
+	var d = mob._damage()
 	var level = str("Level ", mob.level)
 	var damage = str("Damage: ", format._number(d[0]),"-",format._number(d[1]))
 
@@ -276,77 +336,24 @@ func draw_mob_combat_info():
 	mob_panel.get_node('mob_lvl').set_text(level)
 	mob_panel.get_node('damage').set_text(damage)
 
-
-func check_bots_healthbar(per):
-	var bar = bots_panel.get_node('healthbar')
-	var bar_per = bar.get_value()
-	if per-0.05 < bar_per < per+0.05:
-		bar.set_value(per)
-	else:
-		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
-		bar.set_value(bar_per)
-	var h = str(format._number(army.current_health),"/",format._number(army.total_health()))
-	bar.get_node('health').set_text(h)
-
-func check_mob_healthbar(per):
-	var bar = mob_panel.get_node('healthbar')
-	var bar_per = bar.get_value()
-	if per-0.05 < bar_per < per+0.05:
-		bar.set_value(per)
-	else:
-		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
-		bar.set_value(bar_per)
-	var h = str(format._number(mob.current_health),"/",format._number(mob.total_health))
-	bar.get_node('health').set_text(h)
-
-var news
-func _ready():
-	format = get_node('/root/formats')
-	news = get_node('/root/Game/news')
-	bank = get_node('/root/Game/Bank')
-	
-	map = Map.new()
-	map.own = self
-	generate_map()
-	
-	army = Army.new()
-	army.population = get_node('/root/Game/population')
-	army.equipment = get_node('/root/Game/construction').equipments
-
-	mob = Mob.new()
-	mob.own = self
-	mob.random = get_node('/root/random')
-	mob.new_mob()
-	
-	
-	bots_panel = get_node('Battle/cont/bots')
-	mob_panel = get_node('Battle/cont/mobs')
-	
-	draw_bots_combat_info()
-	draw_mob_combat_info()
-	
-	
+func collect_loot(mob):
+	if current_loot_type < 4:
+		var loot = int(current_loot_type)
+		var amt = int(current_loot_amt)
+		bank.gain_resource(loot,amt)
+		var mats = {0: "metal",
+					1: "crystal",
+					2: "nanium",
+					3: "tech"}
+		var txt = "The "+mob.name+" gives up [color=#999966][b]"+str(amt)+" "+mats[loot]+"![/b][/color]"
+		news.message(txt)
 
 
-var combat_ready = false
 
-func process(delta):
-	#UPDATE HEALTHBARS
-	var b_per = (army.current_health*1.0) / (army.total_health()*1.0)
-	check_bots_healthbar(b_per)
-
-	var m_per = (mob.current_health*1.0) / (mob.total_health*1.0)
-	check_mob_healthbar(m_per)
-
-	battle_clock += delta
-	if battle_clock >= turn_duration:
-		battle_clock = 0.0
-		if army.autofight:
-			army.combat_ready = true
-		if army.combat_ready:
-			combat()
-
-func combat():
+#########################
+#	PRIVATE FUNCTIONS	#
+#########################
+func _combat():
 	#COMBAT ENGINE
 	if not army.is_dead and not mob.is_dead:
 		if not army.is_dead:
@@ -368,23 +375,67 @@ func combat():
 			
 			draw_mob_combat_info()
 
-func collect_loot(mob):
-	if current_loot_type < 4:
-		var loot = int(current_loot_type)
-		print("loot=",loot)
-		var amt = bank.bank[ loot ]['current']
-		#print(amt)
-		amt += current_loot_amt
-		bank.set_resource(int(loot),int(amt))
-		var mats = {0: "metal",
-					1: "crystal",
-					2: "nanium",
-					3: "tech"}
-		var txt = "The "+mob.name+" gives up [color=#999966][b]"+str(current_loot_amt)+" "+mats[loot]+"![/b][/color]"
-		news.message(txt)
+
+func _check_bots_healthbar(per):
+	var bar = bots_panel.get_node('healthbar')
+	var bar_per = bar.get_value()
+	if per-0.05 < bar_per < per+0.05:
+		bar.set_value(per)
+	else:
+		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
+		bar.set_value(bar_per)
+	var h = str(format._number(army.current_health),"/",format._number(army.total_health))
+	bar.get_node('health').set_text(h)
+
+func _check_mob_healthbar(per):
+	var bar = mob_panel.get_node('healthbar')
+	var bar_per = bar.get_value()
+	if per-0.05 < bar_per < per+0.05:
+		bar.set_value(per)
+	else:
+		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
+		bar.set_value(bar_per)
+	var h = str(format._number(mob.current_health),"/",format._number(mob.total_health))
+	bar.get_node('health').set_text(h)
 
 
 
+#############
+#	INIT	#
+#############
+func _ready():
+	format = get_node('/root/formats')
+	news = get_node('/root/Game/news')
+	bank = get_node('/root/Game/Bank')
+	construction = get_node('/root/Game/construction')
+	
+	map = Map.new()
+	map.own = self
+	generate_map()
+	
+	army = Army.new()
+	army.population = get_node('/root/Game/population')
+	army.equipment = get_node('/root/Game/construction').equipments
+
+	mob = Mob.new()
+	mob.own = self
+	mob.rng = get_node('/root/random')
+	mob.new_mob()
+	
+	
+	bots_panel = get_node('Battle/cont/bots')
+	mob_panel = get_node('Battle/cont/mobs')
+	
+	draw_bots_combat_info()
+	draw_mob_combat_info()
+	
+
+
+
+
+#####################
+#	CHILD SIGNALS	#
+#####################
 func _on_auto_fight_toggled( pressed ):
 	if pressed:
 		army.autofight = true

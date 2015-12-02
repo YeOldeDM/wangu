@@ -1,297 +1,120 @@
 
 extends TextureButton
 
-class TacticsBuilding:
-	var construction
-	var bank
-	var combat
-	var name = "Tactics Building"
-	var description = ""
+#SHINY NEW GENERIC STRUCTURE CLASS
+class Structure:
+	var own
+	
+	var name = "Structure"
+	var description = "This is a building, science project, or equipment"
+	var category = ""	#"Housing", "Storage", "Boost", "Equipment", "Tactics"
 	var level = 0
+	
+	var material = 0
+	var factor = 0
+	
 	
 	var cost_factor = 1.75
 	var base_cost = {
-		0:	0,
-		1:	0,
-		2:	0,
-		3:	0}
-
-	func cost_multiplier(L):
-		return ceil(self.cost_factor * L + exp(L*0.33))
-
-	func get_cost(L):
-		var cost = {
-			0:	self.base_cost[0] * cost_multiplier(L),
-			1:	self.base_cost[1] * cost_multiplier(L),
-			2:	self.base_cost[2] * cost_multiplier(L),
-			3:	self.base_cost[3] * cost_multiplier(L)
-				}
-		return cost
-
-	func can_build(cost):
-		var go = true
-		if cost[0] > int(self.bank.bank[0]['current']):
-			go = false
-		if cost[1] > int(self.bank.bank[1]['current']):
-			go = false
-		if cost[2] > int(self.bank.bank[2]['current']):
-			go = false
-		if cost[3] > int(self.bank.bank[3]['current']):
-			go = false
-		return go
-		
-	func upgrade():
-		var cost = self.get_cost(self.level+1)
-		if self.can_build(cost):
-			
-			#subtract costs
-			self.bank.bank[0]['current'] -= cost[0]
-			self.bank.bank[1]['current'] -= cost[1]
-			self.bank.bank[2]['current'] -= cost[2]
-			self.bank.bank[3]['current'] -= cost[3]
-			
-			self.level += 1
-			self.combat.army.troops = ceil(self.combat.army.troops * 1.25)
-			self.combat.draw_bots_combat_info()
-
-
-
-
-class EquipmentBuilding:
-	var construction
-	var bank
-	var combat
-	var name = "Equipment"
-	var description = "This is equipment. It buffs your army's combat stats"
-	var level = 0
-	var skill_buffed = 'shields'
-	var buff_factor = 6
+		0:0, 1:0, 2:0, 3:0}
 	
-	var cost_factor = 1.55
-	var base_cost = {
-		0:	0,
-		1:	0,
-		2:	0,
-		3:	0}
-
-	func cost_multiplier(L):
-		return ceil(self.cost_factor * L + exp(L*0.33))
-
-	func get_cost(L):
-		var cost = {
-			0:	self.base_cost[0] * cost_multiplier(L),
-			1:	self.base_cost[1] * cost_multiplier(L),
-			2:	self.base_cost[2] * cost_multiplier(L),
-			3:	self.base_cost[3] * cost_multiplier(L)
-				}
-		return cost
-
-	func can_build(cost):
-		var go = true
-		if cost[0] > int(self.bank.bank[0]['current']):
-			go = false
-		if cost[1] > int(self.bank.bank[1]['current']):
-			go = false
-		if cost[2] > int(self.bank.bank[2]['current']):
-			go = false
-		if cost[3] > int(self.bank.bank[3]['current']):
-			go = false
-		return go
-
-
-	func upgrade():
-		var cost = self.get_cost(self.level+1)
-		if self.can_build(cost):
-			
-			#subtract costs
-			self.bank.bank[0]['current'] -= cost[0]
-			self.bank.bank[1]['current'] -= cost[1]
-			self.bank.bank[2]['current'] -= cost[2]
-			self.bank.bank[3]['current'] -= cost[3]
-			
-			self.level += 1
-			self.combat.set_skills()
-
-class BuffBuilding:
-	var construction
-	var bank
-	var name = "Buff Building"
-	var description = "This building increases the efficiency of resource gathering"
-	var level = 0
-	var skill_buffed = 0
-	
-	var base_cost = {
-		0:	0,
-		1:	0,
-		2:	0,
-		3:	0}
-	var cost_factor = 1.75
-
-	func cost_multiplier(L):
-		return ceil(self.cost_factor * L + exp(L*0.33))
-
-	func get_cost(L):
-		var cost = {
-			0:	self.base_cost[0] * cost_multiplier(L),
-			1:	self.base_cost[1] * cost_multiplier(L),
-			2:	self.base_cost[2] * cost_multiplier(L),
-			3:	self.base_cost[3] * cost_multiplier(L)
-				}
-		return cost
-
-	func can_build(cost):
-		var go = true
-		if cost[0] > int(self.bank.bank[0]['current']):
-			go = false
-		if cost[1] > int(self.bank.bank[1]['current']):
-			go = false
-		if cost[2] > int(self.bank.bank[2]['current']):
-			go = false
-		if cost[3] > int(self.bank.bank[3]['current']):
-			go = false
-		return go
-
-
-	func upgrade():
-		var cost = self.get_cost(self.level+1)
-		if self.can_build(cost):
-		
-			#subtract costs
-			self.bank.bank[0]['current'] -= cost[0]
-			self.bank.bank[1]['current'] -= cost[1]
-			self.bank.bank[2]['current'] -= cost[2]
-			self.bank.bank[3]['current'] -= cost[3]
-			
-			self.level += 1
-			self.bank.set_boost()
-
-class StorageBuilding:
-	var construction
-	var bank
-	var name = "Storage Building"
-	var description = """This is a building which stores resources"""
-	var level = 0
-	var base_storage = {
-			0:	0,
-			1:	0,
-			2:	0,
-			3:	0}	#Tech has no storage limit, but placeholder needed for clean communication w/ bank
-	
-	func get_storage():
-		var store = {
-			0:	0,
-			1:	0,
-			2:	0,
-			3:	0}
-		for i in range(4):
-			if self.base_storage[i] > 0:
-				var amt = self.base_storage[i]
-				for i in range(self.level):
-					amt *= 2
-				store[i] = amt
-		return store
-	
-	func get_cost(L):	#HACK: L needed for clean communication. Not needed in this func
-		var cost = self.get_storage()
-		for c in cost:
-			cost[c] /= 2
-		return cost
-	
-	func can_build():
-		var go = true
-		var cost = self.get_cost(0)	#HACK: argument shouldn't be needed here
-		for i in range(4):
-			if cost[i] > int(self.bank.bank[i]['current']):
-				go = false
-		return go
-	
-	func upgrade():
-		if self.can_build():
-			var cost = self.get_cost(0)
-			for i in range(4):
-				self.bank.bank[i]['current'] -= cost[i]
-			self.level += 1
-			self.construction.set_storage()
-		
-	
-class Building:
-	var construction
-	var bank
-	var name = "Loveshack"
-	var level = 0
-	var description = """This is a generic building.\n\n  
-	This is words that describe the building you are mousing over right now!\n 
-	You should have no more text than this."""
-	
-	var cost_factor = 1.75
-
-	
-	var base_production = {}
-	
-	var base_cost = {
-		'metal': 	0,
-		'crystal':	0,
-		'nanium':	0,
-		'tech':		0
-			}
-	
-	func can_build(cost):
-		var go = true
-		if cost[0] > int(self.bank.bank[0]['current']):
-			go = false
-		if cost[1] > int(self.bank.bank[1]['current']):
-			go = false
-		if cost[2] > int(self.bank.bank[2]['current']):
-			go = false
-		if cost[3] > int(self.bank.bank[3]['current']):
-			go = false
-		return go
-
-
-	func upgrade():
-		var cost = self.get_cost(self.level+1)
-		if self.can_build(cost):
-		
-			#subtract costs
-			self.bank.bank[0]['current'] -= cost[0]
-			self.bank.bank[1]['current'] -= cost[1]
-			self.bank.bank[2]['current'] -= cost[2]
-			self.bank.bank[3]['current'] -= cost[3]
-			
-			self.level += 1
-			self.construction.set_population()
-		
-	func cost_multiplier(L):
+	func _cost_multiplier(L):
 		return ceil(self.cost_factor * L + exp(L*0.33))
 		
-	func get_cost(L):
-		var cost = {
-			0:	self.base_cost['metal'] * cost_multiplier(L),
-			1:	self.base_cost['crystal'] * cost_multiplier(L),
-			2:	self.base_cost['nanium'] * cost_multiplier(L),
-			3:	self.base_cost['tech'] * cost_multiplier(L)
-				}
+	func _get_cost(L):
+		var cost = {0:0,1:0,2:0,3:0}
+		#Storage Structures have special cost progression
+		if self.category == "Storage":
+			var c = self.own.bank.bank[self.material]['max'] / 2
+			cost[self.material] = c
+		#All other Structures use normal cost progression
+		else:
+			var c = self.base_cost
+			var m = self._cost_multiplier(L)
+			cost = {
+				0:	c[0] * m,
+				1:	c[1] * m,
+				2:	c[2] * m,
+				3:	c[3] * m
+					}
 		return cost
 	
-	func get_production(asset,L):
-		var value = null
-		if self.base_production.has(asset):
-			value = self.base_production[asset] * L
-		return value
+	func _can_build(cost):
+		#check if we can afford cost
+		var can_afford = true
+		if not self.own.bank.can_afford(0,cost[0]):
+			can_afford = false
+		elif not self.own.bank.can_afford(1,cost[1]):
+			can_afford = false
+		elif not self.own.bank.can_afford(2,cost[2]):
+			can_afford = false
+		elif not self.own.bank.can_afford(3,cost[3]):
+			can_afford = false
+		return can_afford
+	
+	func _spend(cost):
+#		for i in range(4):
+#			self.own.bank.spend_resource(i,int(cost[i]))
+		self.own.bank.spend_resource(0,cost[0])
+		self.own.bank.spend_resource(1,cost[1])
+		self.own.bank.spend_resource(2,cost[2])
+		self.own.bank.spend_resource(3,cost[3])
+	
+	func _apply_effects():
+		if self.category == 'Housing':
+			self.own.population.set_max_population()
+		
+		elif self.category == 'Storage':
+			self.own.bank.set_storage(self.material)
+		
+		elif self.category == 'Boost':
+			self.own.bank.set_boost(self.material)
+		
+		elif self.category == 'Equipment':
+			self.own.combat.set_equipment(self.material)
+		
+		elif self.category == 'Tactics':
+			self.own.combat.set_troopers()
+		
+	func upgrade(n):
+		#Try upgrading this structure by n levels
+		n += self.level
+		var cost = _get_cost(n)
+		if _can_build(cost):
+			_spend(cost)
+			self.level += 1
+			_apply_effects()
 
-	func add_production(asset,value):
-		self.base_production[asset] = value
+
 
 
 var building
+
+var bank
+var population
+var combat
 var news
+var format
+
+func _init():
+	building = Structure.new()
+	building.own = self
+
 func _ready():
+	format = get_node('/root/formats')
+	bank = get_node('/root/Game/Bank')
+	combat = get_node('/root/Game/combat')
+	population = get_node('/root/Game/population')
 	news = get_node('/root/Game/news')
+	
+
+
 
 func draw_button():
 	if building:
 		get_node('name').set_text(building.name)
-		get_node('level').set_text(str("Level ",str(building.level)))
+		get_node('level').set_text(format._number(building.level))
+
 
 
 
@@ -305,8 +128,72 @@ func _on_Button_mouse_exit():
 
 func _on_Button_pressed():
 	var l = building.level
-	building.upgrade()
-	draw_button()
-	if l != building.level:
-		news.message("The [color=#66ffff]"+building.name+"[/color] has been upgraded to [b]level "+str(building.level)+"[/b]")
+	var cost = building._get_cost(l+1)
+	if building._can_build(cost):
+		building.upgrade(1)
+		draw_button()
+		if l != building.level:
+			news.message("The [color=#66ffff]"+building.name+"[/color] has been upgraded to [b]level "+str(building.level)+"[/b]")
 
+
+
+
+var cost_color = [Color(1.0,1.0,1.0,1.0),
+					Color(1.0,0.2,0.2,1.0)]
+
+func _on_Popup_about_to_show():
+	var panel = get_node('Popup')
+	
+	panel.get_node('name').set_text(building.name)
+	panel.get_node('level').set_text(str("Level ",format._number(building.level)))
+	panel.get_node('description').clear()
+	panel.get_node('description').add_text(building.description)
+	
+	var cost = building._get_cost(building.level+1)
+	
+#Set Metal Cost Text
+	var c = 0
+	if not bank.can_afford(0,cost[0]):
+		c = 1
+	panel.get_node('metal_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[0] <= 0.0:
+		panel.get_node('metal_cost').set_text("")
+	else:
+		panel.get_node('metal_cost').set_text(format._number(cost[0]))
+#Set Crystal Cost Text
+	c = 0
+	if not bank.can_afford(1,cost[1]):
+		c = 1
+	panel.get_node('crystal_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[1] <= 0.0:
+		panel.get_node('crystal_cost').set_text("")
+	else:
+		panel.get_node('crystal_cost').set_text(format._number(cost[1]))
+#Set Nanium Cost Text
+	c = 0
+	if not bank.can_afford(2,cost[2]):
+		c = 1
+	panel.get_node('nanium_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[2] <= 0.0:
+		panel.get_node('nanium_cost').set_text("")
+	else:
+		panel.get_node('nanium_cost').set_text(format._number(cost[2]))
+#Set Tech Cost Text
+	c = 0
+	if not bank.can_afford(3,cost[3]):
+		c = 1
+	panel.get_node('tech_cost').set('custom_colors/font_color', cost_color[c])
+	if cost[3] <= 0.0:
+		panel.get_node('tech_cost').set_text("")
+	else:
+		panel.get_node('tech_cost').set_text(format._number(cost[3]))
+
+	#get position for popup (lower right corner of parent)
+	var pos = get_global_pos() + get_size()
+	var res = get_node('/root').get_rect()
+	
+	#clamp popup to screen edges
+	pos.x = clamp(pos.x, 0, res.size.width - panel.get_size().x)
+	pos.y = clamp(pos.y, 0, res.size.height - panel.get_size().y)
+	#set that pos!
+	panel.set_pos(pos)

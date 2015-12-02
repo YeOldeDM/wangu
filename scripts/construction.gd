@@ -1,85 +1,52 @@
 
 extends Control
 
-
-
-var building_button = load('res://building.xml')
+#################
+#	GLOBALS		#
+#################
+var structures = {
+	'Buildings':	[],
+	'Facilities':	[],
+	'Science':		[],
+	'Equipment':	[]
+				}
 
 var buildings = []
 var facilities = []
 var sciences = []
 var equipments = []
 
-func _ready():
-	for i in range(1):
-		var shack = Shack()
-		add_building(shack)
-		var hangar = Hangar()
-		add_building(hangar)
-		var cargo = CargoBay()
-		add_building(cargo)
-		
-		var yard = Scrapyard()
-		add_facility(yard)
-		var caves = CrystalCaves()
-		add_facility(caves)
-		var bays = NanoBays()
-		add_facility(bays)
-		
-		var metal = Metallurgy()
-		add_science(metal)
-		var tune = Attunement()
-		add_science(tune)
-		var synth = NanoSynth()
-		add_science(synth)
-		var know = Knowledge()
-		add_science(know)
-		var tact = Tactics()
-		add_science(tact)
-		
-		var shields = Shields()
-		add_equipment(shields)
-		var claws = Claws()
-		add_equipment(claws)
-		var lasers = Lasers()
-		add_equipment(lasers)
-		var armor = Armor()
-		add_equipment(armor)
-		var hard = HardPlate()
-		add_equipment(hard)
-		
-func add_building(building):
-	building.building.construction = self
-	building.building.bank = get_node('/root/Game/Bank')
-	buildings.append(building)
-	building.draw_button()
-	get_node('Buildings/cont/Buildings/cont/cont').add_child(building)
-	
-func add_facility(facility):
-	facility.building.construction = self
-	facility.building.bank = get_node('/root/Game/Bank')
-	facilities.append(facility)
-	facility.draw_button()
-	get_node('Buildings/cont/Facilities/cont/cont').add_child(facility)
-	
-func add_science(science):
-	science.building.construction = self
-	science.building.bank = get_node('/root/Game/Bank')
-	sciences.append(science)
-	science.draw_button()
-	get_node('Buildings/cont/Science/cont/cont').add_child(science)
+var structure_button = load('res://building.xml')
 
-func add_equipment(equip):
-	equip.building.construction = self
-	equip.building.bank = get_node('/root/Game/Bank')
-	equip.building.combat = get_node('/root/Game/combat')
-	equipments.append(equip)
-	equip.draw_button()
-	get_node('Buildings/cont/Equipment/cont/cont').add_child(equip)
+#########################
+#	PRIVATE FUNCTIONS	#
+#########################
+func _add_structure(category, structure):
+	structures[category].append(structure)
+	var grid = str('Buildings/cont/'+category+'/cont/cont')
+	get_node(grid).add_child(structure)
+	structure.draw_button()
 
+func _structure_factory(name, description, category, structure_category, material, factor, base_cost):
+	var structure = structure_button.instance()
+	if structure.building:
+		var b = structure.building
+		b.name = name
+		b.description = description
+		b.category = structure_category
+		b.material = material
+		b.factor = factor
+		b.base_cost = base_cost
+	else:
+		print("BUILDING OBJECT NOT CREATED!")
+	_add_structure(category,structure)
+	
+#########################
+#	PUBLIC FUNCTIONS	#
+#########################
 func set_population():
 	var n = 0
-	for b in buildings:
+	for b in structures['Buildings']:
 		if 'population' in b.building.base_production:
 			n += b.building.get_production('population',b.building.level)
 	get_node('/root/Game').population.set_max_pop(n)
@@ -90,190 +57,248 @@ func set_storage():
 		1:	0,
 		2:	0}
 
-	for b in facilities:
+	for b in structures['Facilities']:
 		var a = b.building.get_storage()
 		for i in range(3):
 			amts[i] += a[i]
 	get_node('/root/Game/Bank').set_storage(amts)
 
 
-#BOT HOUSING
-func Shack():
-	var b = building_button.instance()
-	b.building = b.Building.new()
-	b.building.name = "Shack"
-	b.building.level = 0
-	b.building.description = "Meager accomidations for your bots.\n Each Shack increases your maximum population by 3 Bots."
-	b.building.add_production('population',3)
-	b.building.base_cost['metal'] = 10
-	return b
+
+#############
+#	INIT	#
+#############
+func _ready():
+	#housing
+	make_shack()
+	make_garage()
+	make_hangar()
 	
-func Hangar():
-	var b = building_button.instance()
-	b.building = b.Building.new()
-	b.building.name = "Hangar"
-	b.building.level = 0
-	b.building.description = "Storage, service bays, and other accomidations for robotic life-forms. Each Hangar increases your population by 5 Bots."
-	b.building.add_production('population', 5)
-	b.building.base_cost['metal'] = 60
-	b.building.base_cost['crystal'] = 40
-	return b
+	#storage
+	make_scrapyard()
+	make_crystalcaves()
+	make_naniteservers()
 
-func CargoBay():
-	var b = building_button.instance()
-	b.building = b.Building.new()
-	b.building.name = "Cargo Bay"
-	b.building.level = 0
-	b.building.description = "Cozy accomidations. Cozy for a Bot, at least. Each Cargo Bay increases your max population by 10 Bots."
-	b.building.add_production('population', 10)
-	b.building.base_cost['metal'] = 320
-	b.building.base_cost['crystal'] = 150
-	b.building.base_cost['nanium'] = 60
-	return b
-
-#RESOURCE STORAGE FACILITIES
-func Scrapyard():
-	var b = building_button.instance()
-	b.building = b.StorageBuilding.new()
-	b.building.name = "Scrapyard"
-	b.building.level = 0
-	b.building.description = "Storage space for salvaged Metal. Each level of Scrapyard doubles your holding capacity for Metal."
-	b.building.base_storage[0] = 100
-	return b
-
-func CrystalCaves():
-	var b = building_button.instance()
-	b.building = b.StorageBuilding.new()
-	b.building.name = "Crystal Caves"
-	b.building.level = 0
-	b.building.description = "Storage space for harvested Crystal. Each level of Caves doubles your holding capacity for Crystal."
-	b.building.base_storage[1] = 100
-	return b
-
-func NanoBays():
-	var b = building_button.instance()
-	b.building = b.StorageBuilding.new()
-	b.building.name = "Nano-Bays"
-	b.building.level = 0
-	b.building.description = "Storage space for Nanium. Each level of Nano-Bays doubles your holding capacity for Nanium."
-	b.building.base_storage[2] = 100
-	return b
+	#boost
+	make_metallurgy()
+	make_attunement()
+	make_synthesis()
+	make_gnosis()
+	make_enlightenment()
 	
-#SCIENCE
-func Metallurgy():
-	var b = building_button.instance()
-	b.building = b.BuffBuilding.new()
-	b.building.name = "Metallurgy"
-	b.building.description = "Increased knowledge of the nature of metals allows you to salvage the stuff faster."
-	b.building.level = 0
-	b.building.skill_buffed = 0
-	b.building.base_cost[0] = 30
-	b.building.base_cost[3] = 25
-	return b
+	#equipment
+	make_shields()
+	make_claws()
+	make_hardplate()
 
-func Attunement():
-	var b = building_button.instance()
-	b.building = b.BuffBuilding.new()
-	b.building.name = "Attunement"
-	b.building.description = "Increased attunement to the vibration of Crystals allows you to harvest the stuff faster."
-	b.building.level = 0
-	b.building.skill_buffed = 1
-	b.building.base_cost[0] = 20
-	b.building.base_cost[1] = 30
-	b.building.base_cost[3] = 30
-	return b
+#########################
+#	HOUSING STRUCTURES	#
+# material: N/A			#
+# factor: +pop/lvl		#
+#########################
+func make_shack():
+	var name = "Shack"
+	var description = "Basic housing for Bots. Each Shack provides living space for 2 Bots."
+	var category = "Buildings"
+	var structure_category = "Housing"
+	var material = 0
+	var factor = 2
+	var base_cost = {0:10,
+		1:0,2:0,3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
-func NanoSynth():
-	var b = building_button.instance()
-	b.building = b.BuffBuilding.new()
-	b.building.name = "Nano-Synthesis"
-	b.building.description = "Increased ability to synthesis Nanium allows you to mine the stuff faster."
-	b.building.level = 0
-	b.building.skill_buffed = 2
-	b.building.base_cost[1] = 40
-	b.building.base_cost[2] = 50
-	b.building.base_cost[3] = 35
-	return b
+func make_garage():
+	var name = "Garage"
+	var description = "Roomy housing for Bots. Each Shack provides living space for 5 Bots."
+	var category = "Buildings"
+	var structure_category = "Housing"
+	var material = 0
+	var factor = 5
+	var base_cost = {0:45, 
+					1:12,
+			2:0,3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
-func Knowledge():
-	var b = building_button.instance()
-	b.building = b.BuffBuilding.new()
-	b.building.name = "Knowledge"
-	b.building.description = "Increased general knowledge allows you to research more efficiently."
-	b.building.level = 0
-	b.building.skill_buffed = 3
-	b.building.base_cost[3] = 40
-	return b
-
-func Tactics():
-	var b = building_button.instance()
-	b.building = b.TacticsBuilding.new()
-	b.building.combat = get_node('/root/Game/combat')
-	b.building.name = "Battle Tactics"
-	b.building.description = "Tactical software upgrades increases the total number of Troopers you can control by one-quarter."
-	b.building.level = 0
-	b.building.base_cost[0] = 20
-	b.building.base_cost[1] = 40
-	b.building.base_cost[2] = 40
-	b.building.base_cost[3] = 10
-	return b
+func make_hangar():
+	var name = "Hangar"
+	var description = "Luxurious housing for Bots. Each Shack provides living space for 10 Bots."
+	var category = "Buildings"
+	var structure_category = "Housing"
+	var material = 0
+	var factor = 10
+	var base_cost = {0:80, 
+					1:40,
+					2:22,
+			3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 	
-#EQUIPMENT
-func Shields():
-	var b = building_button.instance()
-	b.building = b.EquipmentBuilding.new()
-	b.building.name = "Shields"
-	b.building.description = "Each level of Shields increases your Shields by 6 points per Trooper."
-	b.building.level = 0
-	b.building.skill_buffed = 'shields'
-	b.building.buff_factor = 6
-	b.building.base_cost[1] = 10
-	return b
+#########################
+#	STORAGE STRUCTURES	#
+# material:				#
+# 0=metal				#
+# 1=crystal				#
+# 2=nanium				#
+#########################
+func make_scrapyard():
+	var name = "Scrapyard"
+	var description = "Storage for scrap Metal."
+	var category = "Facilities"
+	var structure_category = "Storage"
+	var material = 0
+	var factor = 100
+	var base_cost = {0:0, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
-func Claws():
-	var b = building_button.instance()
-	b.building = b.EquipmentBuilding.new()
-	b.building.name = "Claws"
-	b.building.description = "The better to rip you shreds with, my dear!\n Each level of Claws adds 4 points to your Troopers' base damage."
-	b.building.level = 0
-	b.building.skill_buffed = 'weapon'
-	b.building.buff_factor = 4
-	b.building.base_cost[0] = 4
-	b.building.base_cost[2] = 8
-	return b
+func make_crystalcaves():
+	var name = "Crystal Caves"
+	var description = "Storage for Crystal."
+	var category = "Facilities"
+	var structure_category = "Storage"
+	var material = 1
+	var factor = 100
+	var base_cost = {0:0, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
-func Lasers():
-	var b = building_button.instance()
-	b.building = b.EquipmentBuilding.new()
-	b.building.name = "Lasers"
-	b.building.description = "Emitted radiation! Each level of Lasers increases your Troopers damage by 8 points."
-	b.building.level = 0
-	b.building.skill_buffed = 'weapon'
-	b.building.buff_factor = 8
-	b.building.base_cost[1] = 6
-	b.building.base_cost[2] = 11
-	return b
+func make_naniteservers():
+	var name = "Nanite Servers"
+	var description = "Storage for Nanium."
+	var category = "Facilities"
+	var structure_category = "Storage"
+	var material = 2
+	var factor = 100
+	var base_cost = {0:0, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
-func Armor():
-	var b = building_button.instance()
-	b.building = b.EquipmentBuilding.new()
-	b.building.name = "Armor Plating"
-	b.building.description = "Rudimentary Bot protection. Each level of Armor Plating adds 6 Health to each Trooper."
-	b.building.level = 0
-	b.building.skill_buffed = 'armor'
-	b.building.buff_factor = 6
-	b.building.base_cost[0] = 6
-	b.building.base_cost[2] = 9
-	return b
-	
-func HardPlate():
-	var b = building_button.instance()
-	b.building = b.EquipmentBuilding.new()
-	b.building.name = "Hardened Plating"
-	b.building.description = "Each level adds 12 Health to each Trooper."
-	b.building.level = 0
-	b.building.skill_buffed = 'armor'
-	b.building.buff_factor = 12
-	b.building.base_cost[2] = 10
-	b.building.base_cost[1] = 10
-	return b
+#########################
+#	BOOST STRUCTURES	#
+# material				#
+# 0=metal				#
+# 1=crystal				#
+# 2=nanium				#
+# 3=tech				#
+# 4=all					#
+#########################
+func make_metallurgy():
+	var name = "Metallurgy"
+	var description = "Base production of Metal is increased by 25% per level of Metallurgy."
+	var category = "Science"
+	var structure_category = "Boost"
+	var material = 0
+	var factor = 0
+	var base_cost = {0:50, 
+					1:0,
+					2:0,
+					3:50}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_attunement():
+	var name = "Attunement"
+	var description = "Base production of Crystal is increased by 25% per level of Attunement."
+	var category = "Science"
+	var structure_category = "Boost"
+	var material = 1
+	var factor = 0
+	var base_cost = {0:0, 
+					1:50,
+					2:0,
+					3:55}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_synthesis():
+	var name = "Synthesis"
+	var description = "Base production of Nanium is increased by 25% per level of Synthesis."
+	var category = "Science"
+	var structure_category = "Boost"
+	var material = 2
+	var factor = 0
+	var base_cost = {0:0, 
+					1:50,
+					2:0,
+					3:55}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_gnosis():
+	var name = "Gnosis"
+	var description = "Base production of Tech is increased by 25% per level of Gnosis."
+	var category = "Science"
+	var structure_category = "Boost"
+	var material = 3
+	var factor = 0
+	var base_cost = {0:0, 
+					1:50,
+					2:0,
+					3:55}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_enlightenment():
+	var name = "Enlightenment"
+	var description = "Increases the production of Metal, Crystal, Nanium and Tech by 10% each level."
+	var category = "Science"
+	var structure_category = "Boost"
+	var material = 4
+	var factor = 0
+	var base_cost = {0:20, 
+					1:20,
+					2:20,
+					3:65}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+#########################
+#	BOOST STRUCTURES	#
+# material:				#
+# 0=weapon(dmg)			#
+# 1=armor(HP)			#
+# 2=shield				#
+#						#
+# Factor: points/lvl	#
+#########################
+
+func make_shields():
+	var name = "Shields"
+	var description = "Each level of Shields blocks 6 points of damage to each Trooper."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var material = 2
+	var factor = 6
+	var base_cost = {0:0, 
+							1:7,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_claws():
+	var name = "Claws"
+	var description = "Each level of Claws adds 4 points of damage to each Trooper."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var material = 0
+	var factor = 4
+	var base_cost = {
+							0:5, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_hardplate():
+	var name = "Hard Plate"
+	var description = "Each level of Hard Plate adds 6 HP to each Trooper."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var material = 1
+	var factor = 6
+	var base_cost = {
+							0:6, 
+					1:0,
+					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)

@@ -22,7 +22,8 @@ var bank = {0:	{'current': 0, 'max': 100,
 var boost = {0:		{'level': 0, 'rate': 0.25},
 			1:		{'level': 0, 'rate': 0.25},
 			2:		{'level': 0, 'rate': 0.25},
-			3:		{'level': 0, 'rate': 0.25}}
+			3:		{'level': 0, 'rate': 0.25},
+			4:		{'level': 0, 'rate': 0.10}}
 
 var skills = ['Salvage','Harvest','Mine','Research']
 var skills2 = ['Salvaging','Harvesting','Mining','Researching']
@@ -42,30 +43,11 @@ var your_skills = {
 			'lvl':	0,	'xp':	0,
 			'to-next':	0},
 			}
-func get_skill_level(L):
-	var B = 20
-	var R = 50
-	if L <= 0:
-		return 0
-	else:
-		return get_skill_level(L-1) + B + (R*max(0,L-2))
+
 
 
 var worker_base_skill = 0.5
-var worker_skills = {
-		0:	{'name':	'Salvage',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-		1:	{'name':	'Harvest',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-		2:	{'name':	'Mine',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-		3:	{'name':	'Research',
-			'lvl':	0,	'xp':	0,
-			'to-next':	0},
-			}
+
 
 
 var buttons
@@ -77,29 +59,9 @@ var format
 var draw_timer = 0
 var draw_tick = 0.1
 
-func _ready():
-	buttons = [
-	get_node('Metal/use'),
-	get_node('Crystal/use'),
-	get_node('Nanium/use'),
-	get_node('Tech/use')]
-	
-	panels = [
-	get_node('Metal'),
-	get_node('Crystal'),
-	get_node('Nanium'),
-	get_node('Tech')]
-	
-	skill_panels = [
-	get_node('skills/Metal'),
-	get_node('skills/Crystal'),
-	get_node('skills/Nanium'),
-	get_node('skills/Tech'),
-	get_node('skills/total')]
-	
-	format = get_node('/root/formats')
-	#set_process(true)
-
+#################
+#	MAIN-LOOP	#
+#################
 func process(delta):
 	#adjust resource levels by income
 	for i in range(4):
@@ -119,9 +81,6 @@ func process(delta):
 			gain_xp(i,your_production_rate*boost_rate*delta)	#don't gain xp if this bank is full!
 		bank[i]['current'] = new_amt
 		
-	#count up time	
-	time += delta
-		
 	
 	#tick draw clock
 	draw_timer += delta
@@ -129,9 +88,110 @@ func process(delta):
 		draw_timer = 0
 		_draw_gui()
 
-func _draw_gui():
-	get_node('time').set_text(str("Time: ",format._time(int(time))))
+
+
+
+#########################
+#	PUBLIC FUNCTIONS	#
+#########################
+func gain_xp(i,amt):
+	#gain XP in i skill
+	var lvl = your_skills[i]['lvl']
+	your_skills[i]['to-next'] = _get_skill_level(lvl+1)
+	your_skills[i]['xp'] += amt
+	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
+		your_skills[i]['lvl'] += 1
+		your_skills[i]['to-next'] = _get_skill_level(your_skills[i]['lvl']+1)
 	
+func set_storage(mat):
+	#set max storage for resources
+	var amt = 100
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == 'Storage':
+				if struct.building.material == int(mat):
+					for l in range(struct.building.level):
+						amt *= 2
+	bank[int(mat)]['max'] = amt
+	_draw_gui()
+
+func can_afford(mat, amt):
+	#check if there are currently enough of a resource to spend x amt
+	var bank_amt = bank[mat]['current']
+	return int(amt) <= int(bank_amt)
+
+func gain_resource(mat, amt):
+	#gain resources
+	var value = _get_resource(mat)
+	value += amt
+	_set_resource(mat, value)
+
+func spend_resource(mat, amt):
+	#spend resources. Assumes we can afford the cost
+	var value = _get_resource(mat)
+	value -= amt
+	_set_resource(mat, value)
+
+func get_boost(mat):
+	#get current boost rate based on boost level
+	var value = 1.0
+	for i in range(boost[mat]['level']):
+		value += (value*boost[mat]['rate']) + (value*boost[4]['rate'])
+	return value
+
+func set_boost(material):
+	var level = 0
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == 'Boost':
+				if struct.building.material == material:
+					level += struct.building.level
+	boost[material]['level'] = level
+
+
+func get_workers(mat):
+	#get current amount of workers for resource
+	var pro = bank[mat]['producers']
+	return pro['workers']
+
+func set_workers(mat, amount):
+	#set amount of workers for resources
+	var pro = bank[mat]['producers']
+	pro['workers'] = amount
+
+
+
+
+
+#########################
+#	PRIVATE FUNCTIONS	#
+#########################
+func _get_skill_level(L):
+	var B = 20
+	var R = 50
+	if L <= 0:
+		return 0
+	else:
+		return _get_skill_level(L-1) + B + (R*max(0,L-2))
+
+func _set_resource(mat,amt):
+	#set current resource value. Clamp to max resource storage
+	if bank[mat]['max'] != null:
+		if amt >= bank[mat]['max']:
+			amt = bank[mat]['max']
+	bank[mat]['current'] = max(0,amt)
+
+func _get_resource(mat):
+	#return current resources
+	return bank[mat]['current']
+
+
+
+
+#########################
+#	GUI DRAW FUNCTION	#
+#########################
+func _draw_gui():
 	var total_skill = 0
 	for i in range(4):
 		total_skill += your_skills[i]['lvl']
@@ -163,58 +223,45 @@ func _draw_gui():
 			
 		var show_per = skill_panels[i].get_node('fillbar').get_value()
 		
-		var xp_needed = get_skill_level(real_lvl+1) - get_skill_level(real_lvl)
-		var xp_progress = your_skills[i]['xp'] - get_skill_level(real_lvl)
+		var xp_needed = _get_skill_level(real_lvl+1) - _get_skill_level(real_lvl)
+		var xp_progress = your_skills[i]['xp'] - _get_skill_level(real_lvl)
 		var skill_per = xp_progress / max(1,xp_needed)
 		if show_per != skill_per:
 			skill_panels[i].get_node('fillbar').set_value(skill_per)
-		
+
+
+#############
+#	INIT	#
+#############
+var construction
+
+func _ready():
+	buttons = [
+	get_node('Metal/use'),
+	get_node('Crystal/use'),
+	get_node('Nanium/use'),
+	get_node('Tech/use')]
 	
-		
-
-func gain_xp(i,amt):
-	var lvl = your_skills[i]['lvl']
-	your_skills[i]['to-next'] = get_skill_level(lvl+1)
-	your_skills[i]['xp'] += amt
-	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
-		your_skills[i]['lvl'] += 1
-		your_skills[i]['to-next'] = get_skill_level(your_skills[i]['lvl']+1)
+	panels = [
+	get_node('Metal'),
+	get_node('Crystal'),
+	get_node('Nanium'),
+	get_node('Tech')]
 	
-func set_storage(amts):
-	for i in range(3):
-		bank[i]['max'] = amts[i]
-	_draw_gui()
-
-func set_resource(material,amt):
-	if bank[material]['max'] != null:
-		if amt >= bank[material]['max']:
-			amt = bank[material]['max']
-	bank[material]['current'] = amt
-
-func get_boost(material):
-	var value = 1.0
-	for i in range(boost[material]['level']):
-		value += value*boost[material]['rate']
-	return value
-
-func set_boost():
-	var boosts = {0:0,1:0,2:0,3:0}
-	var buildings = get_node('/root/Game/construction').sciences
-	for b in buildings:
-		if 'skill_buffed' in b.building:
-			boosts[b.building.skill_buffed] += b.building.level
-	for i in range(4):
-		boost[i]['level'] = boosts[i]
-
-func get_workers(material):
-	var pro = bank[material]['producers']
-	return pro['workers']
-
-func set_workers(material, amount):
-	var pro = bank[material]['producers']
-	pro['workers'] = amount
-
+	skill_panels = [
+	get_node('skills/Metal'),
+	get_node('skills/Crystal'),
+	get_node('skills/Nanium'),
+	get_node('skills/Tech'),
+	get_node('skills/total')]
+	
+	format = get_node('/root/formats')
+	construction = get_node('/root/Game/construction')
+#####################
+#	CHILD SIGNALS	#
+#####################
 func _on_use_toggled( pressed,index ):
+	#toggling this material's player-grind status
 	var current_skill = null
 	if pressed:
 		current_skill = index
@@ -231,4 +278,3 @@ func _on_use_toggled( pressed,index ):
 			if buttons[i].is_pressed():
 				buttons[i].set_pressed(false)
 			bank[i]['producers']['you']=0
-		
