@@ -63,10 +63,7 @@ func _time(t):
 func _number(n):
 	#Attempt to clamp a number to a max of 6 characters
 	var suffix = ''
-	if n >= 1000000000000:			#Trillions (1,000b)
-		n = str(n*0.000000000001).left(5)
-		suffix = 't'
-	elif n >= 1000000000:			#Billions (1,000m)
+	if n >= 1000000000:			#Billions (1,000m)
 		n = str(n*0.000000001).left(5)
 		suffix = 'b'
 	elif n >= 1000000:				#Millions (1,000k)
