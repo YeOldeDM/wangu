@@ -7,6 +7,7 @@ extends Control
 #################
 var format
 var news
+var construction
 
 var population = {
 			'current': 0,
@@ -49,12 +50,19 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
-func set_max_pop(n):
+func set_max_population():
+	var pop = 10	#starting pop is 10
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == 'Housing':
+				pop += (struct.building.factor * struct.building.level)
 	var old_pop = population['max']
-	population['max'] = n+10
+	population['max'] = pop
 	var diff = population['max'] - old_pop
-	news.message(str(diff)+" spaces have just opened up for new Bots!")
+	if diff > 0:
+		news.message(str(diff)+" spaces have just opened up for new Bots!")
 	_refresh()
+
 
 func is_workforce_full():
 	if workforce['current'] == workforce['max'] or workforce['current'] == int(population['current']):
@@ -120,6 +128,8 @@ func _refresh():
 func _ready():
 	format = get_node('/root/formats')
 	news = get_node('/root/Game/news')
+	construction = get_node('/root/Game/construction')
+	
 	worker_panels = [
 		get_node('Metal'),
 		get_node('Crystal'),

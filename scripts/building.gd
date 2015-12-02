@@ -82,6 +82,7 @@ class Structure:
 
 
 
+
 var building
 
 var bank
@@ -89,14 +90,17 @@ var population
 var news
 var format
 
+func _init():
+	building = Structure.new()
+	building.own = self
+
 func _ready():
 	format = get_node('/root/formats')
 	bank = get_node('/root/Game/Bank')
 	population = get_node('/root/Game/population')
 	news = get_node('/root/Game/news')
 	
-	building = Structure.new()
-	building.own = self
+
 
 
 func draw_button():
@@ -125,8 +129,8 @@ func _on_Button_pressed():
 
 
 
-var cost_color = [Color(0.4,0.4,0.4,0.4),
-					Color(1.0,0.4,0.4,0.4)]
+var cost_color = [Color(0.1,0.1,0.1,0.4),
+					Color(1.0,0.2,0.2,0.4)]
 
 func _on_Popup_about_to_show():
 	var panel = get_node('Popup')
@@ -136,7 +140,7 @@ func _on_Popup_about_to_show():
 	panel.get_node('description').clear()
 	panel.get_node('description').add_text(building.description)
 	
-	var cost = building.get_cost(building.level+1)
+	var cost = building._get_cost(building.level+1)
 	var c = 0
 	if not bank.can_afford(0,cost[0]):
 		c = 1
@@ -157,3 +161,13 @@ func _on_Popup_about_to_show():
 		c = 1
 	panel.get_node('tech_cost').set('custom_colors/font_color_shadow', cost_color[c])
 	panel.get_node('tech_cost').set_text(format._number(cost[3]))
+
+	#get position for popup (lower right corner of parent)
+	var pos = get_global_pos() + get_size()
+	var res = get_node('/root').get_rect()
+	
+	#clamp popup to screen edges
+	pos.x = clamp(pos.x, 0, res.size.width - panel.get_size().x)
+	pos.y = clamp(pos.y, 0, res.size.height - panel.get_size().y)
+	#set that pos!
+	panel.set_pos(pos)

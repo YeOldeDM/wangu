@@ -229,6 +229,7 @@ class Map:
 var format
 var bank
 var news
+var construction
 
 var battle_clock = 0.0
 var turn_duration = 1.0
@@ -304,14 +305,15 @@ func draw_map_info():
 	for cell in map.cells:
 		cell.change_color(cell.status)
 
-func set_skills():
-	army.skill = {
-		'weapon':	0,
-		'armor':	0,
-		'shields':	0}
-	for b in army.equipment:
-		army.skill[b.building.skill_buffed] += (b.building.buff_factor * b.building.level)
-	draw_bots_combat_info()
+func set_equipment(equip):
+	army.skill[equip] = 0
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.material == equip:
+				army.skill[equip] += (struct.building.factor * struct.building.level)
+
+
+
 
 func draw_bots_combat_info():
 	var troops = str("Troopers (",format._number(army.troops),")")
@@ -404,6 +406,7 @@ func _ready():
 	format = get_node('/root/formats')
 	news = get_node('/root/Game/news')
 	bank = get_node('/root/Game/Bank')
+	construction = get_node('/root/Game/construction')
 	
 	map = Map.new()
 	map.own = self

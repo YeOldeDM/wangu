@@ -136,7 +136,7 @@ func gain_resource(mat, amt):
 
 func spend_resource(mat, amt):
 	#spend resources. Assumes we can afford the cost
-	var value = _get_resource(mat,amt)
+	var value = _get_resource(mat)
 	value -= amt
 	_set_resource(mat, value)
 
@@ -147,15 +147,15 @@ func get_boost(mat):
 		value += value*boost[mat]['rate']
 	return value
 
-func set_boosts():
-	#Define boost levels based on current buildings
-	var boosts = {0:0,1:0,2:0,3:0}
-	var buildings = get_node('/root/Game/construction').sciences
-	for b in buildings:
-		if 'skill_buffed' in b.building:
-			boosts[b.building.skill_buffed] += b.building.level
-	for i in range(4):
-		boost[i]['level'] = boosts[i]
+func set_boost(material):
+	var level = 0
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == 'Boost':
+				if struct.building.material == material:
+					level += struct.building.level
+	boost[material]['level'] = level
+
 
 func get_workers(mat):
 	#get current amount of workers for resource
@@ -243,6 +243,8 @@ func _draw_gui():
 #############
 #	INIT	#
 #############
+var construction
+
 func _ready():
 	buttons = [
 	get_node('Metal/use'),
@@ -264,7 +266,7 @@ func _ready():
 	get_node('skills/total')]
 	
 	format = get_node('/root/formats')
-
+	construction = get_node('/root/Game/construction')
 #####################
 #	CHILD SIGNALS	#
 #####################
