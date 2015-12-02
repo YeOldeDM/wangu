@@ -314,6 +314,14 @@ func set_equipment(equip):
 	army.skill[int(equip)] = value
 	draw_bots_combat_info()
 
+func set_troopers():
+	var value = 1
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == "Tactics":
+				value = ceil(value * 1.25)
+	army.troopers = value
+	draw_bots_combat_info()
 
 
 func draw_bots_combat_info():

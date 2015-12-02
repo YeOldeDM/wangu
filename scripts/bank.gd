@@ -23,7 +23,7 @@ var boost = {0:		{'level': 0, 'rate': 0.25},
 			1:		{'level': 0, 'rate': 0.25},
 			2:		{'level': 0, 'rate': 0.25},
 			3:		{'level': 0, 'rate': 0.25},
-			4:		{'level': 0, 'rate': 0.10}}
+			4:		{'level': 0, 'rate': 0.1}}		#boost ALL
 
 var skills = ['Salvage','Harvest','Mine','Research']
 var skills2 = ['Salvaging','Harvesting','Mining','Researching']
@@ -136,7 +136,9 @@ func get_boost(mat):
 	#get current boost rate based on boost level
 	var value = 1.0
 	for i in range(boost[mat]['level']):
-		value += (value*boost[mat]['rate']) + (value*boost[4]['rate'])
+		value += (value * boost[mat]['rate'])
+	for i in range(boost[4]['level']):
+		value += (value * boost[4]['rate'])
 	return value
 
 func set_boost(material):

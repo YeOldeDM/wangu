@@ -90,6 +90,8 @@ func _ready():
 	make_shields()
 	make_claws()
 	make_hardplate()
+	
+	make_battletactics()
 
 #########################
 #	HOUSING STRUCTURES	#
@@ -197,7 +199,7 @@ func make_metallurgy():
 	var base_cost = {0:50, 
 					1:0,
 					2:0,
-					3:50}
+					3:10}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
 func make_attunement():
@@ -210,7 +212,7 @@ func make_attunement():
 	var base_cost = {0:0, 
 					1:50,
 					2:0,
-					3:55}
+					3:12}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
 func make_synthesis():
@@ -223,7 +225,7 @@ func make_synthesis():
 	var base_cost = {0:0, 
 					1:50,
 					2:0,
-					3:55}
+					3:15}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
 func make_gnosis():
@@ -234,9 +236,9 @@ func make_gnosis():
 	var material = 3
 	var factor = 0
 	var base_cost = {0:0, 
-					1:50,
+					1:0,
 					2:0,
-					3:55}
+					3:50}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
 func make_enlightenment():
@@ -249,8 +251,22 @@ func make_enlightenment():
 	var base_cost = {0:20, 
 					1:20,
 					2:20,
-					3:65}
+					3:35}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_battletactics():
+	var name = "Battle Tactics"
+	var description = "Increases the number of Troopers in your combat forces by 25%"
+	var category = "Science"
+	var structure_category = "Tactics"
+	var material = 0
+	var factor = 0
+	var base_cost = {0:25,
+					1:20,
+					2:16,
+					3:8}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
 
 #########################
 #	BOOST STRUCTURES	#
