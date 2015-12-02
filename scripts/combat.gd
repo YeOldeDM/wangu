@@ -117,9 +117,9 @@ class Army:
 	
 	#modifiers from Equipment
 	var skill = {
-		'weapon':	0,
-		'armor':	0,
-		'shields':	0}
+		0:	0,		#weapons
+		1:	0,		#armor
+		2:	0}		#shields
 	
 	var current_health = 0
 	var total_health = 0
@@ -130,7 +130,7 @@ class Army:
 	
 	#	PRIVATE FUNCTIONS	#
 	func _damage():
-		var base_damage = (self.damage+self.skill['weapon']) * self.troops
+		var base_damage = (self.damage+self.skill[0]) * self.troops
 		var min_dmg = ceil(base_damage*damage_var)
 		var max_dmg = ceil(base_damage * (1.0+damage_var))
 		return [min_dmg,max_dmg]
@@ -141,10 +141,10 @@ class Army:
 			self.combat_ready = false
 	
 	func _get_total_health():
-		self.total_health = (self.unit_health+self.skill['armor']) * self.troops
+		self.total_health = (self.unit_health+self.skill[1]) * self.troops
 
 	func _get_shields():
-		return self.skill['shields'] * self.troops
+		return self.skill[2] * self.troops
 	
 	#	PUBLIC FUNCTIONS	#
 	func new_army():
@@ -311,7 +311,7 @@ func set_equipment(equip):
 		for struct in construction.structures[cat]:
 			if struct.building.material == equip:
 				army.skill[equip] += (struct.building.factor * struct.building.level)
-
+	draw_bots_combat_info()
 
 
 

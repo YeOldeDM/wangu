@@ -4,10 +4,6 @@ extends TextureButton
 #SHINY NEW GENERIC STRUCTURE CLASS
 class Structure:
 	var own
-	var bank
-	var population
-	var construction
-	var combat
 	
 	var name = "Structure"
 	var description = "This is a building, science project, or equipment"
@@ -29,7 +25,7 @@ class Structure:
 		var cost = {0:0,1:0,2:0,3:0}
 		#Storage Structures have special cost progression
 		if self.category == "Storage":
-			var c = self.bank.bank[self.material]['max'] / 2
+			var c = self.own.bank.bank[self.material]['max'] / 2
 			cost[self.material] = c
 		#All other Structures use normal cost progression
 		else:
@@ -51,7 +47,7 @@ class Structure:
 	
 	func _spend(cost):
 		for i in range(4):
-			self.bank.spend_resource(i,int(cost[i]))
+			self.own.bank.spend_resource(i,int(cost[i]))
 	
 	func _apply_effects():
 		if self.category == 'Housing':
@@ -85,6 +81,7 @@ var building
 
 var bank
 var population
+var combat
 var news
 var format
 
@@ -95,6 +92,7 @@ func _init():
 func _ready():
 	format = get_node('/root/formats')
 	bank = get_node('/root/Game/Bank')
+	combat = get_node('/root/Game/combat')
 	population = get_node('/root/Game/population')
 	news = get_node('/root/Game/news')
 	

@@ -22,7 +22,8 @@ var bank = {0:	{'current': 0, 'max': 100,
 var boost = {0:		{'level': 0, 'rate': 0.25},
 			1:		{'level': 0, 'rate': 0.25},
 			2:		{'level': 0, 'rate': 0.25},
-			3:		{'level': 0, 'rate': 0.25}}
+			3:		{'level': 0, 'rate': 0.25},
+			4:		{'level': 0, 'rate': 0.10}}
 
 var skills = ['Salvage','Harvest','Mine','Research']
 var skills2 = ['Salvaging','Harvesting','Mining','Researching']
@@ -46,20 +47,7 @@ var your_skills = {
 
 
 var worker_base_skill = 0.5
-#var worker_skills = {
-#		0:	{'name':	'Salvage',
-#			'lvl':	0,	'xp':	0,
-#			'to-next':	0},
-#		1:	{'name':	'Harvest',
-#			'lvl':	0,	'xp':	0,
-#			'to-next':	0},
-#		2:	{'name':	'Mine',
-#			'lvl':	0,	'xp':	0,
-#			'to-next':	0},
-#		3:	{'name':	'Research',
-#			'lvl':	0,	'xp':	0,
-#			'to-next':	0},
-#			}
+
 
 
 var buttons
@@ -151,7 +139,7 @@ func get_boost(mat):
 	#get current boost rate based on boost level
 	var value = 1.0
 	for i in range(boost[mat]['level']):
-		value += value*boost[mat]['rate']
+		value += (value*boost[mat]['rate']) + (value*boost[4]['rate'])
 	return value
 
 func set_boost(material):
