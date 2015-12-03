@@ -27,6 +27,20 @@ var workers = {
 		3: 0,
 		}
 
+func save():
+	var saveDict = {
+	'land':		land,
+	'population':	population['current'],
+	'workers':	{
+		0:	workers[0],
+		1:	workers[1],
+		2:	workers[2],
+		3:	workers[3]
+		},
+		
+	}
+	return saveDict
+
 var worker_panels
 var pop_panel
 
@@ -51,8 +65,7 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
-func save():
-	pass
+
 
 func set_max_population():
 	var pop = 10 + land
