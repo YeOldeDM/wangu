@@ -10,7 +10,7 @@ func _verbose_time(t):
 	seconds -= minutes*60
 	minutes -= hours*60
 	days -= hours*24
-	
+
 	if days > 0:
 		days = str(days,"d, ")
 	else:

@@ -94,6 +94,9 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
+func save():
+	pass
+
 func gain_xp(i,amt):
 	#gain XP in i skill
 	var lvl = your_skills[i]['lvl']

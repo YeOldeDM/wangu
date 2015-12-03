@@ -39,4 +39,11 @@ func _process(delta):
 	
 	#CONSTRUCTION
 
+func save_game():
+	pass
 
+func load_game():
+	pass
+
+func new_game():
+	pass

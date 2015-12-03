@@ -13,6 +13,9 @@ var structures = {
 
 var structure_button = load('res://building.xml')
 
+func save():
+	pass
+
 #########################
 #	PRIVATE FUNCTIONS	#
 #########################

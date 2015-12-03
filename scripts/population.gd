@@ -51,6 +51,9 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
+func save():
+	pass
+
 func set_max_population():
 	var pop = 10 + land
 	for cat in construction.structures:

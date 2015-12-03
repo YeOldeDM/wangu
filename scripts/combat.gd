@@ -276,6 +276,9 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
+func save():
+	pass
+
 func generate_map(level=0):
 	var grid_panel = get_node('Battle/map/grid')
 	for cell in grid_panel.get_children():
