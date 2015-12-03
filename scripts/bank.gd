@@ -2,9 +2,6 @@
 extends Control
 
 
-
-var time = 0.0
-
 var bank = {0:	{'current': 0, 'max': 100, 
 			'rate': 0, 'producers':	{'you':0,
 									'workers':0}},
@@ -43,6 +40,48 @@ var your_skills = {
 			'lvl':	0,	'xp':	0,
 			'to-next':	0},
 			}
+
+
+func save():
+	var saveDict = {
+	'bank': {
+		0:		{'current': bank[0]['current'],
+				'max':		bank[0]['max'],
+				'producers':	{'workers':	bank[0]['producers']['workers']}
+			},
+		1:		{'current': bank[1]['current'],
+				'max':		bank[1]['max'],
+				'producers':	{'workers':	bank[1]['producers']['workers']}
+			},
+		2:		{'current': bank[2]['current'],
+				'max':		bank[2]['max'],
+				'producers':	{'workers':	bank[2]['producers']['workers']}
+			},
+		3:		{'current': bank[3]['current'],
+				'max':		null,
+				'producers':	{'workers':	bank[3]['producers']['workers']}
+			},
+		},
+	'your_skills':	{
+		0:	{
+			'lvl':	your_skills[0]['lvl'],
+			'xp':	your_skills[0]['xp']
+			},
+		1:	{
+			'lvl':	your_skills[1]['lvl'],
+			'xp':	your_skills[1]['xp']
+			},
+		2:	{
+			'lvl':	your_skills[2]['lvl'],
+			'xp':	your_skills[2]['xp']
+			},
+		3:	{
+			'lvl':	your_skills[3]['lvl'],
+			'xp':	your_skills[3]['xp']
+			},
+		},
+	}
+	return saveDict
 
 
 
@@ -94,8 +133,7 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
-func save():
-	pass
+
 
 func gain_xp(i,amt):
 	#gain XP in i skill
