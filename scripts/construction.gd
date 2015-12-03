@@ -261,7 +261,7 @@ func make_shields():
 	var material = 2
 	var factor = 6
 	var base_cost = {0:0, 
-							1:7,
+							1:4,
 					2:0,
 					3:0}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
@@ -274,7 +274,7 @@ func make_claws():
 	var material = 0
 	var factor = 4
 	var base_cost = {
-							0:5, 
+							0:3, 
 					1:0,
 					2:0,
 					3:0}
@@ -289,8 +289,8 @@ func make_lasers():
 	var factor = 10
 	var base_cost = {
 							0:0, 
-					1:4,
-					2:8,
+					1:2,
+					2:5,
 					3:0}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
