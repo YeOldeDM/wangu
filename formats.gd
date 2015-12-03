@@ -26,9 +26,7 @@ func _verbose_time(t):
 	else:
 		minutes = ""
 
-
 	seconds = str(seconds,"s")
-
 	return str(days,hours,minutes,seconds)
 
 func _time(t):
@@ -58,8 +56,8 @@ func _time(t):
 		seconds = str("0",seconds)
 	
 	return str(days,hours,":",minutes,":",seconds)
-	
-	
+
+
 func _number(n):
 	#Attempt to clamp a number to a max of 6 characters
 	var suffix = ''
@@ -97,6 +95,7 @@ var roman_numerals = [
 		'IX',
 		'X'
 		]
+
 var greek_abc = [
 	"Alpha",
 	"Beta",
