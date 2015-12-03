@@ -102,6 +102,14 @@ func gain_xp(i,amt):
 	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
 		your_skills[i]['lvl'] += 1
 		your_skills[i]['to-next'] = _get_skill_level(your_skills[i]['lvl']+1)
+		
+		var gui_ref = {
+			0: 'Metal',
+			1: 'Crystal',
+			2: 'Nanium',
+			3: 'Tech'}
+		var path = 'skills/'+gui_ref[i]+'/Lup'
+		get_node(path).set_emitting(true)
 	
 func set_storage(mat):
 	#set max storage for resources
