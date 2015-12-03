@@ -41,29 +41,6 @@ func _structure_factory(name, description, category, structure_category, materia
 		print("BUILDING OBJECT NOT CREATED!")
 	_add_structure(category,structure)
 	
-#########################
-#	PUBLIC FUNCTIONS	#
-#########################
-func set_population():
-	var n = 0
-	for b in structures['Buildings']:
-		if 'population' in b.building.base_production:
-			n += b.building.get_production('population',b.building.level)
-	get_node('/root/Game').population.set_max_pop(n)
-
-func set_storage():
-	var amts = {
-		0:	0,
-		1:	0,
-		2:	0}
-
-	for b in structures['Facilities']:
-		var a = b.building.get_storage()
-		for i in range(3):
-			amts[i] += a[i]
-	get_node('/root/Game/Bank').set_storage(amts)
-
-
 
 #############
 #	INIT	#
@@ -89,8 +66,11 @@ func _ready():
 	#equipment
 	make_shields()
 	make_claws()
+	make_lasers()
 	make_hardplate()
+	make_nanoplate()
 	
+	#tactics
 	make_battletactics()
 
 #########################
@@ -305,6 +285,20 @@ func make_claws():
 					3:0}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
+func make_lasers():
+	var name = "Lasers"
+	var description = "Each level of Lasers adds 10 points of damage to each Trooper."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var material = 0
+	var factor = 10
+	var base_cost = {
+							0:0, 
+					1:4,
+					2:8,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
 func make_hardplate():
 	var name = "Hard Plate"
 	var description = "Each level of Hard Plate adds 6 HP to each Trooper."
@@ -316,5 +310,19 @@ func make_hardplate():
 							0:6, 
 					1:0,
 					2:0,
+					3:0}
+	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
+
+func make_nanoplate():
+	var name = "Nano-Plate"
+	var description = "Each level of Nano-Plate adds 14 HP to each Trooper."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var material = 1
+	var factor = 14
+	var base_cost = {
+							0:0, 
+					1:0,
+					2:10,
 					3:0}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
