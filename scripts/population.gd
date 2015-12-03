@@ -9,6 +9,7 @@ var format
 var news
 var construction
 
+var land = 0
 var population = {
 			'current': 0,
 			'max': 10,
@@ -51,7 +52,7 @@ func process(delta):
 #	PUBLIC FUNCTIONS	#
 #########################
 func set_max_population():
-	var pop = 10	#starting pop is 10
+	var pop = 10 + land
 	for cat in construction.structures:
 		for struct in construction.structures[cat]:
 			if struct.building.category == 'Housing':

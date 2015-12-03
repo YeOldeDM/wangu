@@ -11,11 +11,6 @@ var structures = {
 	'Equipment':	[]
 				}
 
-var buildings = []
-var facilities = []
-var sciences = []
-var equipments = []
-
 var structure_button = load('res://building.xml')
 
 #########################
@@ -241,10 +236,10 @@ func make_battletactics():
 	var structure_category = "Tactics"
 	var material = 0
 	var factor = 0
-	var base_cost = {0:25,
+	var base_cost = {0:20,
 					1:20,
-					2:16,
-					3:8}
+					2:20,
+					3:40}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
 

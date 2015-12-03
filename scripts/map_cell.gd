@@ -28,7 +28,7 @@ func make_loot(l):
 		randomize()
 		loot_amt = max(1,round(rand_range(min_loot,max_loot)))
 		randomize()
-		loot_type = round(rand_range(0,3))
+		loot_type = round(rand_range(0,4))
 		print("MADE LOOT")
 	set_loot_frame(loot_type)
 

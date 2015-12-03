@@ -215,7 +215,7 @@ class Map:
 		if self.current_cell > 99:
 			self._next_zone()
 		self.cells[self.current_cell].status = 2
-		if self.cells[self.current_cell].loot_type < 4:
+		if self.cells[self.current_cell].loot_type <= 4:
 			self.own.current_loot_type = self.cells[self.current_cell].loot_type
 			self.own.current_loot_amt = self.cells[self.current_cell].loot_amt
 		else:
@@ -228,6 +228,7 @@ class Map:
 #External Links
 var format
 var bank
+var population
 var news
 var construction
 
@@ -315,12 +316,15 @@ func set_equipment(equip):
 	draw_bots_combat_info()
 
 func set_troopers():
-	var value = 1
+	var value = 0
 	for cat in construction.structures:
 		for struct in construction.structures[cat]:
 			if struct.building.category == "Tactics":
-				value = ceil(value * 1.25)
-	army.troops = value
+				value += struct.building.level
+	var troops = 1
+	for i in range(value):
+		troops += ceil(troops * 0.25)
+	army.troops = troops
 	draw_bots_combat_info()
 
 
@@ -345,7 +349,12 @@ func draw_mob_combat_info():
 	mob_panel.get_node('damage').set_text(damage)
 
 func collect_loot(mob):
-	if current_loot_type < 4:
+	if current_loot_type == 4:
+		population.land += 3
+		population.set_max_population()
+		var txt = "You've cleared out some good land to house your Bots. Population increased by [b]3[/b]!"
+		news.message(txt)
+	elif current_loot_type < 4:
 		var loot = int(current_loot_type)
 		var amt = int(current_loot_amt)
 		bank.gain_resource(loot,amt)
@@ -415,6 +424,7 @@ func _ready():
 	format = get_node('/root/formats')
 	news = get_node('/root/Game/news')
 	bank = get_node('/root/Game/Bank')
+	population = get_node('/root/Game/population')
 	construction = get_node('/root/Game/construction')
 	
 	map = Map.new()
@@ -423,7 +433,6 @@ func _ready():
 	
 	army = Army.new()
 	army.population = get_node('/root/Game/population')
-	army.equipment = get_node('/root/Game/construction').equipments
 
 	mob = Mob.new()
 	mob.own = self
