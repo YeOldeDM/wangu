@@ -1,7 +1,15 @@
 
 extends TextureButton
 
-#SHINY NEW GENERIC STRUCTURE CLASS
+var building
+
+var bank
+var population
+var combat
+var news
+var format
+
+
 class Structure:
 	var own
 	
@@ -85,20 +93,12 @@ class Structure:
 			self.level += 1
 			_apply_effects()
 
-
-
-
-var building
-
-var bank
-var population
-var combat
-var news
-var format
-
 func _init():
 	building = Structure.new()
 	building.own = self
+
+
+
 
 func _ready():
 	format = get_node('/root/formats')

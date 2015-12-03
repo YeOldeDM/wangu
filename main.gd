@@ -40,7 +40,15 @@ func _process(delta):
 	#CONSTRUCTION
 
 func save_game():
-	pass
+	var saveGame = File.new()
+	savegame.open("user://savegame.sav", File.WRITE)
+	var saveNodes = {
+		'bank':			bank.save(),
+		'population':	population.save()
+		}
+	saveGame.store_line(saveNodes.to_json())
+	saveGame.close()
+
 
 func load_game():
 	pass
