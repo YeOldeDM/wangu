@@ -41,8 +41,9 @@ func _process(delta):
 
 func save_game():
 	var saveGame = File.new()
-	savegame.open("user://savegame.sav", File.WRITE)
+	saveGame.open("user://savegame.sav", File.WRITE)
 	var saveNodes = {
+		'time':			game_time,
 		'bank':			bank.save(),
 		'population':	population.save()
 		}
@@ -51,7 +52,42 @@ func save_game():
 
 
 func load_game():
-	pass
+	var saveGame = File.new()
+	if !saveGame.file_exists('user://savegame.sav'):
+		print("no savegame found!")
+		return
+	var currentline = {}
+	saveGame.open('user://savegame.sav', File.READ)
+	while (!saveGame.eof_reached()):
+		currentline.parse_json(saveGame.get_line())
+	print(currentline)
+	saveGame.close()
 
 func new_game():
 	pass
+
+
+func _on_save_pressed():
+	save_game()
+
+
+func _on_load_pressed():
+	load_game()
+
+
+func _on_new_pressed():
+	get_node('sys_panel/new').set_disabled(true)
+	get_node('sys_panel/new/reset_confirm').popup()
+
+
+func _on_reset_confirm_confirmed():
+	new_game()
+
+
+func _on_reset_confirm_popup_hide():
+	get_node('sys_panel/new').set_disabled(false)
+
+
+func _on_exit_pressed():
+	save_game()
+	get_tree().quit()
