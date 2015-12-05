@@ -41,6 +41,17 @@ var your_skills = {
 			'to-next':	0},
 			}
 
+func restore(source):
+	prints("BANK DICTS ", source.keys() )
+	print(source['bank'])
+	for i in range(4):
+		bank[i]['current'] = source['bank'][i]['current']
+		bank[i]['producers']['workers'] = source['bank'][i]['producers']['workers']
+		
+		your_skills[i]['lvl'] = source['your_skills'][i]['lvl']
+		your_skills[i]['xp'] = source['your_skills'][i]['xp']
+
+
 
 func save():
 	var saveDict = {

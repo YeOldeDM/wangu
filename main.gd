@@ -56,11 +56,14 @@ func load_game():
 	if !saveGame.file_exists('user://savegame.sav'):
 		print("no savegame found!")
 		return
-	var currentline = {}
+	var loadNodes = {}
 	saveGame.open('user://savegame.sav', File.READ)
 	while (!saveGame.eof_reached()):
-		currentline.parse_json(saveGame.get_line())
-	print(currentline)
+		loadNodes.parse_json(saveGame.get_line())
+	prints("LOADING DICTS: ",loadNodes.keys())
+	bank.restore(loadNodes['bank'])
+	
+	
 	saveGame.close()
 
 func new_game():
