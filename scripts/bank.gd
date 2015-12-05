@@ -43,35 +43,21 @@ var your_skills = {
 
 func restore(source):
 	prints("BANK DICTS ", source.keys() )
-	print(source['bank'])
 	for i in range(4):
-		bank[i]['current'] = source['bank'][i]['current']
-		bank[i]['producers']['workers'] = source['bank'][i]['producers']['workers']
+		bank[i]['current'] = source['resources'][str(i)]
 		
-		your_skills[i]['lvl'] = source['your_skills'][i]['lvl']
-		your_skills[i]['xp'] = source['your_skills'][i]['xp']
+		your_skills[i]['lvl'] = source['your_skills'][str(i)]['lvl']
+		your_skills[i]['xp'] = source['your_skills'][str(i)]['xp']
 
 
 
 func save():
 	var saveDict = {
-	'bank': {
-		0:		{'current': bank[0]['current'],
-				'max':		bank[0]['max'],
-				'producers':	{'workers':	bank[0]['producers']['workers']}
-			},
-		1:		{'current': bank[1]['current'],
-				'max':		bank[1]['max'],
-				'producers':	{'workers':	bank[1]['producers']['workers']}
-			},
-		2:		{'current': bank[2]['current'],
-				'max':		bank[2]['max'],
-				'producers':	{'workers':	bank[2]['producers']['workers']}
-			},
-		3:		{'current': bank[3]['current'],
-				'max':		null,
-				'producers':	{'workers':	bank[3]['producers']['workers']}
-			},
+	'resources': {
+		0:	bank[0]['current'],
+		1:	bank[1]['current'],
+		2:	bank[2]['current'],
+		3:		bank[3]['current']
 		},
 	'your_skills':	{
 		0:	{

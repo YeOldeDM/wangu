@@ -62,8 +62,7 @@ func load_game():
 		loadNodes.parse_json(saveGame.get_line())
 	prints("LOADING DICTS: ",loadNodes.keys())
 	bank.restore(loadNodes['bank'])
-	
-	
+
 	saveGame.close()
 
 func new_game():
