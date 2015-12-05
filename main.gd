@@ -25,6 +25,7 @@ func _ready():
 	set_process(true)
 
 
+#	HEARTBEAT	#
 func _process(delta):
 	game_time += delta
 	var t = format._time(game_time)
@@ -39,16 +40,24 @@ func _process(delta):
 	
 	#CONSTRUCTION
 
+
+
+
+#######################################
+###		SAVE / RESTORE / NEW GAME	###
+#######################################
 func save_game():
 	#Save the current game state
 	var saveGame = File.new()
 	#open file for writing (overwrites old file, I hope??)
 	saveGame.open("user://savegame.sav", File.WRITE)
-	#Get data to save, in Dict form
+	#Get save data from all modules, put them into a GlobDick
 	var saveNodes = {
 		'time':			game_time,
 		'bank':			bank.save(),
-		'population':	population.save()
+		'population':	population.save(),
+		'construction': construction.save(),
+		'combat':		combat.save()
 		}
 	#Write to file and close it
 	saveGame.store_line(saveNodes.to_json())
@@ -74,24 +83,36 @@ func load_game():
 	
 	###	DONE GETTING DATA. NOW RESTORE THE GAME MODULES	###
 	saveGame.close()
+	
 	#Restore global game time
 	prints("SETTING TIME TO",format._time(loadNodes['time']),'\n========')
 	
 	#1.Restore Construction/Structures
+	construction.restore(loadNodes['construction'])
+	
 	#2.Restore Population
+	population.restore(loadNodes['population'])
 	
 	#3.Restore Bank
-	print("Restoring Module Bank")
 	bank.restore(loadNodes['bank'])
-	print("Restored Bank\n========")
 	
 	#4.Restore Combat/Map
-
+	combat.restore(loadNodes['combat'])
 
 
 func new_game():
+	#Set it all back to zero!
 	pass
 
+
+func wipe_game():
+	#Clear user://savegame.sav!
+	pass
+
+
+#####################
+#	CHILD SIGNALS	#
+#####################
 
 func _on_save_pressed():
 	save_game()

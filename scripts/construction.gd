@@ -19,15 +19,25 @@ var structure_button = load('res://building.xml')
 #############################
 #SAVE#
 func save():
-	var saveNode = {
-	
+	var saveDict = {
+		'structures': []
 	}
-	return saveNode
+	for cat in structures:
+		for struct in structures[cat]:
+			if 'structID' in struct.building:
+				var structDict = {'ID': "", 'lvl': 0}
+				structDict['ID'] = struct.building.structID
+				structDict['lvl'] = struct.building.level
+				saveDict.append(structDict)
+	return saveDict
 
 
 #RESTORE#
 func restore(source):
-	pass
+	var struct_source = source['structures']
+	print('STRUCTURES')
+	for struct in struct_source:
+		print(struct)
 
 
 #########################
@@ -57,9 +67,9 @@ func _structure_factory(name, description, category, structure_category, materia
 #############
 #	INIT	#
 #############
-#!!!!!!!!!!!#
-#	Add 0 as argument (after struct makers are updated)
+
 func _ready():
+	#All this should be replaced by Restore/New functions
 	#housing
 	make_shack()
 	make_garage()
@@ -96,6 +106,10 @@ func _ready():
 #	Add argument 'l':	#
 #	set initial 		#
 #	structure lvl		#
+#						#
+#	Add structID:		#
+#	=func name - 'make_'#
+#	prefix.				#
 #########################
 func make_shack(l=0):
 	var name = "Shack"
@@ -110,6 +124,7 @@ func make_shack(l=0):
 		1:0,2:0,3:0}
 	_structure_factory(name,description,category,structure_category,material,factor,base_cost)
 
+#UPDATE HERE DOWN
 func make_garage():
 	var name = "Garage"
 	var description = "Roomy housing for Bots. Each Shack provides living space for 5 Bots."

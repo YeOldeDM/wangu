@@ -253,6 +253,15 @@ var cell_button = preload('res://map_cell.xml')
 #Combat Ready switch(need?)
 var combat_ready = false
 
+func save():
+	var saveDict = {
+	
+	}
+	return saveDict
+
+func restore(source):
+	prints('COMBAT: ',source)
+	
 #################
 #	MAINLOOP	#
 #################
@@ -276,8 +285,7 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
-func save():
-	pass
+
 
 func generate_map(level=0):
 	var grid_panel = get_node('Battle/map/grid')

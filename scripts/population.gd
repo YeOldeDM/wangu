@@ -43,7 +43,7 @@ func save():
 
 func restore(source):
 	land = source['land']
-	population['current'] = source['population']['current']
+	population['current'] = source['population']
 	for i in range(4):
 		workers[i] = source['workers'][str(i)]
 	
