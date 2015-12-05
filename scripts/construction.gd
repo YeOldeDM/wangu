@@ -13,8 +13,22 @@ var structures = {
 
 var structure_button = load('res://building.xml')
 
+
+#############################
+#	SAVE/RESTORE FUNCTIONS	#
+#############################
+#SAVE#
 func save():
+	var saveNode = {
+	
+	}
+	return saveNode
+
+
+#RESTORE#
+func restore(source):
 	pass
+
 
 #########################
 #	PRIVATE FUNCTIONS	#
@@ -43,6 +57,8 @@ func _structure_factory(name, description, category, structure_category, materia
 #############
 #	INIT	#
 #############
+#!!!!!!!!!!!#
+#	Add 0 as argument (after struct makers are updated)
 func _ready():
 	#housing
 	make_shack()
@@ -76,11 +92,18 @@ func _ready():
 # material: N/A			#
 # factor: +pop/lvl		#
 #########################
-func make_shack():
+#!!!!!!!!!!!!!!!!!!!!!!!#
+#	Add argument 'l':	#
+#	set initial 		#
+#	structure lvl		#
+#########################
+func make_shack(l=0):
 	var name = "Shack"
+	var structID = "shack"
 	var description = "Basic housing for Bots. Each Shack provides living space for 2 Bots."
 	var category = "Buildings"
 	var structure_category = "Housing"
+	var level = l
 	var material = 0
 	var factor = 2
 	var base_cost = {0:10,

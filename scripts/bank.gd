@@ -42,7 +42,7 @@ var your_skills = {
 			}
 
 func restore(source):
-	prints("BANK DICTS ", source.keys() )
+	prints("Restoring ", source.keys() )
 	for i in range(4):
 		bank[i]['current'] = source['resources'][str(i)]
 		
@@ -54,9 +54,9 @@ func restore(source):
 func save():
 	var saveDict = {
 	'resources': {
-		0:	bank[0]['current'],
-		1:	bank[1]['current'],
-		2:	bank[2]['current'],
+		0:		bank[0]['current'],
+		1:		bank[1]['current'],
+		2:		bank[2]['current'],
 		3:		bank[3]['current']
 		},
 	'your_skills':	{

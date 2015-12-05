@@ -40,30 +40,54 @@ func _process(delta):
 	#CONSTRUCTION
 
 func save_game():
+	#Save the current game state
 	var saveGame = File.new()
+	#open file for writing (overwrites old file, I hope??)
 	saveGame.open("user://savegame.sav", File.WRITE)
+	#Get data to save, in Dict form
 	var saveNodes = {
 		'time':			game_time,
 		'bank':			bank.save(),
 		'population':	population.save()
 		}
+	#Write to file and close it
 	saveGame.store_line(saveNodes.to_json())
 	saveGame.close()
 
 
 func load_game():
+	#Load the currently-saved game state
+	#Only one save slot for now.
 	var saveGame = File.new()
+	#Make sure our file exists:
 	if !saveGame.file_exists('user://savegame.sav'):
 		print("no savegame found!")
 		return
+	#Dict to hold json lines
 	var loadNodes = {}
+	#Open file to Read
 	saveGame.open('user://savegame.sav', File.READ)
+	#Go through file lines and append each line to loadNodes
 	while (!saveGame.eof_reached()):
 		loadNodes.parse_json(saveGame.get_line())
-	prints("LOADING DICTS: ",loadNodes.keys())
-	bank.restore(loadNodes['bank'])
-
+	prints("LOADING DICTS: ",loadNodes.keys(),'\n')
+	
+	###	DONE GETTING DATA. NOW RESTORE THE GAME MODULES	###
 	saveGame.close()
+	#Restore global game time
+	prints("SETTING TIME TO",format._time(loadNodes['time']),'\n========')
+	
+	#1.Restore Construction/Structures
+	#2.Restore Population
+	
+	#3.Restore Bank
+	print("Restoring Module Bank")
+	bank.restore(loadNodes['bank'])
+	print("Restored Bank\n========")
+	
+	#4.Restore Combat/Map
+
+
 
 func new_game():
 	pass

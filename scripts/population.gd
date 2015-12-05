@@ -41,6 +41,16 @@ func save():
 	}
 	return saveDict
 
+func restore(source):
+	land = source['land']
+	population['current'] = source['population']['current']
+	for i in range(4):
+		workers[i] = source['workers'][str(i)]
+	
+	_set_current_workforce()
+	_set_max_workforce()
+	set_max_population()
+
 var worker_panels
 var pop_panel
 
@@ -78,6 +88,10 @@ func set_max_population():
 	var diff = population['max'] - old_pop
 	if diff > 0:
 		news.message(str(diff)+" spaces have just opened up for new Bots!")
+	if population['current'] > population['max']:	#If we get too many Bots:
+		var diff = population['current'] - population['max']
+		news.message("[color=red]"+str(diff)+" Bots could not fit in your Bot colony. They had to be put down.[/color]")
+		population['current'] = population['max']
 	_refresh()
 
 
