@@ -12,7 +12,7 @@ var format
 
 class Structure:
 	var own
-	var structID = null
+	var structID = "no_structure"
 	var name = "Structure"
 	var description = "This is a building, science project, or equipment"
 	var category = ""	#"Housing", "Storage", "Boost", "Equipment", "Tactics"
