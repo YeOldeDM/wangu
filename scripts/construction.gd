@@ -34,8 +34,8 @@ func save():
 
 #RESTORE#
 func restore(source):
+	prints("Restoring Construction:", source.keys() )
 	var struct_source = source['structures']
-	print('STRUCTURES')
 	
 	_clear_structures()
 	for struct in struct_source:

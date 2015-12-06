@@ -42,6 +42,8 @@ func save():
 	return saveDict
 
 func restore(source):
+	prints("Restoring Population:", source.keys() )
+	
 	land = source['land']
 	population['current'] = source['population']
 	for i in range(4):

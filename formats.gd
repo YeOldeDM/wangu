@@ -2,7 +2,7 @@ extends Node
 
 func _verbose_time(t):
 	#convert t sec into "ad, xh, ym, zs" format
-	var seconds = t
+	var seconds = int(t)
 	var minutes = int(t/60)
 	var hours = int(minutes / 60)
 	var days = int(hours / 24)

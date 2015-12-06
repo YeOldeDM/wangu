@@ -255,12 +255,46 @@ var combat_ready = false
 
 func save():
 	var saveDict = {
-	
+		'sector':	map.sector,
+		'zone':		map.zone,
+		'cell':		map.current_cell,
+		'mob':		{
+					'name':		mob.name,
+					'level':	mob.level,
+					'boss':		mob.boss,
+					'strength':	mob.strength,
+					'vitality':	mob.vitality,
+					'current_health':	mob.current_health,
+					'total_health':		mob.total_health
+			}
 	}
 	return saveDict
 
 func restore(source):
-	prints('COMBAT: ',source)
+	prints("Restoring Combat:", source.keys() )
+	
+	#RESTORE MAP
+	map.sector = int(source['sector'])
+	map.zone = int(source['zone'])
+	map.current_cell = int(source['cell'])
+	draw_map_info()
+	
+	#RESTORE MOB
+	var smob = source['mob']
+	mob.name = smob['name']
+	mob.level = int(smob['level'])
+	mob.boss = int(smob['boss'])
+	mob.strength = int(smob['strength'])
+	mob.vitality = int(smob['vitality'])
+	mob.current_health = int(smob['current_health'])
+	mob.total_health = int(smob['total_health'])
+	draw_mob_combat_info()
+	
+	#RESTORE ARMY
+	set_troopers()
+	for i in range(3):
+		set_equipment(i)
+	draw_bots_combat_info()
 	
 #################
 #	MAINLOOP	#

@@ -42,7 +42,7 @@ var your_skills = {
 			}
 
 func restore(source):
-	prints("Restoring ", source.keys() )
+	prints("Restoring Bank:", source.keys() )
 	for i in range(4):
 		bank[i]['current'] = source['resources'][str(i)]
 		

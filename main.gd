@@ -85,7 +85,8 @@ func load_game():
 	saveGame.close()
 	
 	#Restore global game time
-	prints("SETTING TIME TO",format._time(loadNodes['time']),'\n========')
+	prints("Setting game Time:",format._verbose_time(loadNodes['time']))
+	game_time = loadNodes['time']
 	
 	#1.Restore Construction/Structures
 	construction.restore(loadNodes['construction'])
