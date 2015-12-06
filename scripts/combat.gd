@@ -278,6 +278,8 @@ func restore(source):
 	map.zone = int(source['zone'])
 	map.current_cell = int(source['cell'])
 	draw_map_info()
+	var l = (map.sector*1000) + (map.zone*100) + map.current_cell
+	regenerate_map(l)
 	
 	#RESTORE MOB
 	var smob = source['mob']
@@ -335,13 +337,17 @@ func generate_map(level=0):
 
 func regenerate_map(level=0):
 	var cells = get_node('Battle/map/grid').get_children()
+	for i in range(cells.size()):
+		if i < map.current_cell:
+			cells[i].status = 1
+		elif i == map.current_cell:
+			cells[i].status = 2
+		else:
+			cells[i].status = 0
 	for cell in cells:
-		cell.status = 0
 		cell.loot_type = 5
 		if level > 0:
 			cell.make_loot(level+1)
-	cells[0].status = 2
-	for cell in cells:
 		cell.change_color(cell.status)
 
 func draw_map_info():
