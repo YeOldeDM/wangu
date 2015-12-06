@@ -276,8 +276,8 @@ func make_synthesis(l=0):
 	var material = 2
 	var factor = 0
 	var base_cost = {0:0, 
-					1:50,
-					2:0,
+					1:0,
+					2:50,
 					3:15}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
 

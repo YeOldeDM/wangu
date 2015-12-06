@@ -19,7 +19,6 @@ func set_loot_frame(frame):
 	get_node('loot').set_frame(frame)
 	
 func make_loot(l):
-	l *= 3.14	#cuz why not
 	randomize()
 	if rand_range(0.0,1.0) <= loot_chance:
 		var loot_var = 0.3
