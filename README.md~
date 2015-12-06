@@ -18,14 +18,4 @@ http://www.fontspace.com/gnu-freefont/freesans
 All attempts in the past to document or plan ahead for development have failed me, so this time around I am approaching this game on-the-natch.
 There is no design doc, no roadmap, no milestones, no issues. Just progress.
 
-<<<<<<< HEAD
-CLEANER BRANCH
-This branch is highly broken and most likely will not be playable in any form of the word. Unless you are testing something specific in this branch, you will want to go grab the master branch of this project if you want to play the game.
-=======
-BRANCHES    
-master - most current functioning iteration. If you just want to play, use this branch.    
-cleaner - general clean-up and optimization of game code. Most likely broken at any given point in time.    
 
-REPORTING BUGS/CRASHES/FEATURE REQUESTS: The most helpful way to contribute to the project and report any bugs, or anything you'd like to see in the game, is to open an Issue in the Issues tab of the Wangu github site.    
-You can usually find me lurking on IRC at irc.freenode.net, channel #godotengine, or my own personal channel ##bathwater.
->>>>>>> 5efbd414fb9430dbfddd9c23ea8739834b2bbbed

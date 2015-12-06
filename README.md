@@ -18,4 +18,6 @@ http://www.fontspace.com/gnu-freefont/freesans
 All attempts in the past to document or plan ahead for development have failed me, so this time around I am approaching this game on-the-natch.
 There is no design doc, no roadmap, no milestones, no issues. Just progress.
 
+(Okay...so there are issues...)
+
 
