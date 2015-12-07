@@ -27,7 +27,7 @@ class Structure:
 		0:0, 1:0, 2:0, 3:0}
 	
 	func _cost_multiplier(L):
-		return ceil(self.cost_factor * L + exp(L*0.33))
+		return ceil((self.cost_factor * L) + ((L ^ 2)*0.33))
 		
 	func _get_cost(L):
 		var cost = {0:0,1:0,2:0,3:0}
