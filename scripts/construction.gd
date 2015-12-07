@@ -114,6 +114,7 @@ func _ready():
 	make_lasers()
 	make_hardplate()
 	make_nanoplate()
+	make_impactjelly()
 	
 	#tactics
 	make_battletactics()
@@ -414,4 +415,20 @@ func make_nanoplate(l=0):
 					1:0,
 					2:10,
 					3:0}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+	
+func make_impactjelly(l=0):
+	var name = "Impact Jelly"
+	var structID = "impactjelly"
+	var description = "High-impact-resistant, variable-density smart gel. Increases the HP of each trooper by 30 points per level."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var level = l
+	var material = 1
+	var factor = 30
+	var base_cost = {
+			0:0,
+			1:24,
+			2:20,
+			3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
