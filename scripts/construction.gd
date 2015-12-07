@@ -343,12 +343,12 @@ func make_battletactics(l=0):
 func make_shields(l=0):
 	var name = "Shields"
 	var structID = "shields"
-	var description = "Each level of Shields blocks 6 points of damage to each Trooper."
+	var description = "Each level of Shields blocks 8 points of damage to each Trooper."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 2
-	var factor = 6
+	var factor = 8
 	var base_cost = {0:0, 
 							1:4,
 					2:0,
@@ -358,12 +358,12 @@ func make_shields(l=0):
 func make_claws(l=0):
 	var name = "Claws"
 	var structID = "claws"
-	var description = "Each level of Claws adds 4 points of damage to each Trooper."
+	var description = "Each level of Claws adds 8 points of damage to each Trooper."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 0
-	var factor = 4
+	var factor = 8
 	var base_cost = {
 							0:3, 
 					1:0,
@@ -374,12 +374,12 @@ func make_claws(l=0):
 func make_lasers(l=0):
 	var name = "Lasers"
 	var structID = "lasers"
-	var description = "Each level of Lasers adds 10 points of damage to each Trooper."
+	var description = "Each level of Lasers adds 20 points of damage to each Trooper."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 0
-	var factor = 10
+	var factor = 20
 	var base_cost = {
 							0:0, 
 					1:2,
@@ -390,12 +390,12 @@ func make_lasers(l=0):
 func make_rockets(l=0):
 	var name = "Rockets"
 	var structID = "rockets"
-	var description = "Surface-to-Air-to-Surface destruction! Adds 18 points of damage to each Trooper per level."
+	var description = "Surface-to-Air-to-Surface destruction! Adds 40 points of damage to each Trooper per level."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 0
-	var factor = 18
+	var factor = 40
 	var base_cost = {
 			0:	0,
 			1:	0,
@@ -407,12 +407,12 @@ func make_rockets(l=0):
 func make_laserclaws(l=0):
 	var name = "Laser Claws"
 	var structID = "laserclaws"
-	var description = "Laser Claws!! Adds 24 points of damage to each trooper."
+	var description = "Laser Claws!! Adds 90 points of damage to each trooper."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 0
-	var factor = 24
+	var factor = 90
 	var base_cost = {
 					0:0, 
 					1:0,
@@ -424,12 +424,12 @@ func make_laserclaws(l=0):
 func make_hardplate(l=0):
 	var name = "Hard Plate"
 	var structID = "hardplate"
-	var description = "Each level of Hard Plate adds 6 HP to each Trooper."
+	var description = "Each level of Hard Plate adds 16 HP to each Trooper."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 1
-	var factor = 6
+	var factor = 16
 	var base_cost = {
 							0:6, 
 					1:0,
@@ -440,12 +440,12 @@ func make_hardplate(l=0):
 func make_nanoplate(l=0):
 	var name = "Nano-Plate"
 	var structID = "nanoplate"
-	var description = "Each level of Nano-Plate adds 14 HP to each Trooper."
+	var description = "Each level of Nano-Plate adds 50 HP to each Trooper."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 1
-	var factor = 14
+	var factor = 50
 	var base_cost = {
 							0:0, 
 					1:0,
@@ -456,12 +456,12 @@ func make_nanoplate(l=0):
 func make_impactjelly(l=0):
 	var name = "Impact Jelly"
 	var structID = "impactjelly"
-	var description = "High-impact-resistant, variable-density smart gel. Increases the HP of each trooper by 30 points per level."
+	var description = "High-impact-resistant, variable-density smart gel. Increases the HP of each trooper by 110 points per level."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 1
-	var factor = 30
+	var factor = 110
 	var base_cost = {
 			0:0,
 			1:24,

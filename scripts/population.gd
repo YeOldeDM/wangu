@@ -13,7 +13,7 @@ var land = 0
 var population = {
 			'current': 0,
 			'max': 10,
-			'rate': 0.01
+			'rate': 0.05
 			}
 var workforce = {
 			'current': 0,
