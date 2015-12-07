@@ -127,7 +127,8 @@ func _set_current_workforce():
 #	GUI DRAW FUNCTION	#
 #########################
 func _refresh():
-	if int(population['current']) >= population['max']:
+	#BUILD BUTTON (still hackish. For now, you can only build up to 2 bots. After that, they breed on their own.
+	if int(population['current']) >= population['max'] or 1 < int(population['current']):
 		get_node('home/build').set_disabled(true)
 	else:
 		if get_node('home/build').is_disabled():
