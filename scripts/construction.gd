@@ -55,12 +55,7 @@ func restore(source):
 		else:
 			print("\n\n INVALID STRUCTURE CANNOT BE RESTORED \n "+this_struct['ID'])
 	
-#	for struct in struct_source:
-#		var call_str = "make_"+struct['ID']
-#		if has_method(call_str):
-#			call(call_str,int(struct['lvl']))
-#		else:
-#			print("\n\n INVALID STRUCTURE CANNOT BE RESTORED \n "+struct['ID'])
+
 
 
 
@@ -136,6 +131,8 @@ var init_structures = [
 	{'ID':	'impactjelly',	'lvl':	0},
 	]
 
+
+
 func _ready():
 	for struct in init_structures:
 		var call_str = "make_"+struct['ID']
@@ -143,45 +140,6 @@ func _ready():
 			call(call_str,int(struct['lvl']))
 		else:
 			print("\n\n INVALID STRUCTURE CANNOT BE CREATED \n "+struct['ID'])
-
-
-###		KILL ME!!!		###
-#	#All this should be replaced by Restore/New functions
-#	#housing
-#	make_shack()
-#	make_garage()
-#	make_hangar()
-#	make_robodome()
-#	
-#	#storage
-#	make_scrapyard()
-#	make_crystalcaves()
-#	make_naniteservers()
-#
-#	#boost
-#	make_metallurgy()
-#	make_attunement()
-#	make_synthesis()
-#	make_gnosis()
-#	make_enlightenment()
-#	
-#	#equipment
-#	make_shields()
-#	make_claws()
-#	make_lasers()
-#	make_rockets()
-#	make_laserclaws()
-#	make_hardplate()
-#	make_nanoplate()
-#	make_impactjelly()
-#	
-#	#tactics
-#	make_battletactics()
-#
-###		/KILL ME!!!		###
-
-
-
 
 #########################
 #	HOUSING STRUCTURES	#
