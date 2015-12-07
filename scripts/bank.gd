@@ -48,6 +48,8 @@ func restore(source):
 		
 		your_skills[i]['lvl'] = source['your_skills'][str(i)]['lvl']
 		your_skills[i]['xp'] = source['your_skills'][str(i)]['xp']
+		set_storage(int(i))
+		set_boost(int(i))
 
 
 

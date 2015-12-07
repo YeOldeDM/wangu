@@ -61,6 +61,7 @@ func save_game():
 		}
 	#Write to file and close it
 	saveGame.store_line(saveNodes.to_json())
+	news.message("[b]Game Saved![/b]",game_time)
 	saveGame.close()
 
 
@@ -100,6 +101,7 @@ func load_game():
 	#4.Restore Combat/Map
 	combat.restore(loadNodes['combat'])
 
+	news.message("[b]Game Loaded![/b]",game_time)
 
 func new_game():
 	#Set it all back to zero!
