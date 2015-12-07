@@ -112,6 +112,8 @@ func _ready():
 	make_shields()
 	make_claws()
 	make_lasers()
+	make_rockets()
+	make_laserclaws()
 	make_hardplate()
 	make_nanoplate()
 	make_impactjelly()
@@ -384,6 +386,40 @@ func make_lasers(l=0):
 					2:5,
 					3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+func make_rockets(l=0):
+	var name = "Rockets"
+	var structID = "rockets"
+	var description = "Surface-to-Air-to-Surface destruction! Adds 18 points of damage to each Trooper per level."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var level = l
+	var material = 0
+	var factor = 18
+	var base_cost = {
+			0:	0,
+			1:	0,
+			2:	12,
+			3:	0
+		}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+func make_laserclaws(l=0):
+	var name = "Laser Claws"
+	var structID = "laserclaws"
+	var description = "Laser Claws!! Adds 24 points of damage to each trooper."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var level = l
+	var material = 0
+	var factor = 24
+	var base_cost = {
+					0:0, 
+					1:0,
+					2:20,
+					3:0}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
 
 func make_hardplate(l=0):
 	var name = "Hard Plate"
