@@ -36,14 +36,31 @@ func save():
 func restore(source):
 	prints("Restoring Construction:", source.keys() )
 	var struct_source = source['structures']
-	
+	print(struct_source)
 	_clear_structures()
-	for struct in struct_source:
-		var call_str = "make_"+struct['ID']
+	#look through base set of Structures
+	#if its ID is in source, use that data
+	#otherwise, use default starter data
+	for struct in init_structures:
+		var this_struct = struct
+
+		for struct in struct_source:
+			if struct['ID'] == this_struct['ID']:
+				this_struct = struct
+				#print("found "+struct['ID']+" in source")
+		
+		var call_str = "make_"+this_struct['ID']
 		if has_method(call_str):
-			call(call_str,int(struct['lvl']))
+			call(call_str,int(this_struct['lvl']))
 		else:
-			print("\n\n INVALID STRUCTURE CANNOT BE RESTORED \n "+struct['ID'])
+			print("\n\n INVALID STRUCTURE CANNOT BE RESTORED \n "+this_struct['ID'])
+	
+#	for struct in struct_source:
+#		var call_str = "make_"+struct['ID']
+#		if has_method(call_str):
+#			call(call_str,int(struct['lvl']))
+#		else:
+#			print("\n\n INVALID STRUCTURE CANNOT BE RESTORED \n "+struct['ID'])
 
 
 
@@ -89,37 +106,82 @@ func _clear_structures():
 #	INIT	#
 #############
 
-func _ready():
-	#All this should be replaced by Restore/New functions
-	#housing
-	make_shack()
-	make_garage()
-	make_hangar()
-	
-	#storage
-	make_scrapyard()
-	make_crystalcaves()
-	make_naniteservers()
+var init_structures = [
+	{'ID':	'shack',	'lvl':	0},
+	{'ID':	'garage',	'lvl':	0},
+	{'ID':	'hangar',	'lvl':	0},
+	{'ID':	'robodome',	'lvl':	0},
 
-	#boost
-	make_metallurgy()
-	make_attunement()
-	make_synthesis()
-	make_gnosis()
-	make_enlightenment()
+	{'ID':	'scrapyard',	'lvl':	0},
+	{'ID':	'crystalcaves',	'lvl':	0},
+	{'ID':	'naniteservers',	'lvl':	0},
 	
-	#equipment
-	make_shields()
-	make_claws()
-	make_lasers()
-	make_rockets()
-	make_laserclaws()
-	make_hardplate()
-	make_nanoplate()
-	make_impactjelly()
+	{'ID':	'metallurgy',	'lvl':	0},
+	{'ID':	'attunement',	'lvl':	0},
+	{'ID':	'synthesis',	'lvl':	0},
+	{'ID':	'gnosis',		'lvl':	0},
+	{'ID':	'enlightenment',	'lvl':	0},
+	{'ID':	'battletactics',	'lvl':	0},
 	
-	#tactics
-	make_battletactics()
+	
+	{'ID':	'shields',	'lvl':	0},
+	
+	{'ID':	'claws',		'lvl':	0},
+	{'ID':	'lasers',		'lvl':	0},
+	{'ID':	'rockets',		'lvl':	0},
+	{'ID':	'laserclaws',	'lvl':	0},
+	
+	{'ID':	'hardplate',	'lvl':	0},
+	{'ID':	'nanoplate',	'lvl':	0},
+	{'ID':	'impactjelly',	'lvl':	0},
+	]
+
+func _ready():
+	for struct in init_structures:
+		var call_str = "make_"+struct['ID']
+		if has_method(call_str):
+			call(call_str,int(struct['lvl']))
+		else:
+			print("\n\n INVALID STRUCTURE CANNOT BE CREATED \n "+struct['ID'])
+
+
+###		KILL ME!!!		###
+#	#All this should be replaced by Restore/New functions
+#	#housing
+#	make_shack()
+#	make_garage()
+#	make_hangar()
+#	make_robodome()
+#	
+#	#storage
+#	make_scrapyard()
+#	make_crystalcaves()
+#	make_naniteservers()
+#
+#	#boost
+#	make_metallurgy()
+#	make_attunement()
+#	make_synthesis()
+#	make_gnosis()
+#	make_enlightenment()
+#	
+#	#equipment
+#	make_shields()
+#	make_claws()
+#	make_lasers()
+#	make_rockets()
+#	make_laserclaws()
+#	make_hardplate()
+#	make_nanoplate()
+#	make_impactjelly()
+#	
+#	#tactics
+#	make_battletactics()
+#
+###		/KILL ME!!!		###
+
+
+
 
 #########################
 #	HOUSING STRUCTURES	#
@@ -152,32 +214,48 @@ func make_shack(l=0):
 func make_garage(l=0):
 	var name = "Garage"
 	var structID = "garage"
-	var description = "Roomy housing for Bots. Each Shack provides living space for 5 Bots."
+	var description = "Roomy housing for Bots. Each Garage provides living space for 5 Bots."
 	var category = "Buildings"
 	var structure_category = "Housing"
 	var level = l
 	var material = 0
 	var factor = 5
-	var base_cost = {0:45, 
-					1:12,
+	var base_cost = {0:24, 
+					1:20,
 			2:0,3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
 
 func make_hangar(l=0):
 	var name = "Hangar"
 	var structID = "hangar"
-	var description = "Luxurious housing for Bots. Each Shack provides living space for 10 Bots."
+	var description = "Luxurious housing for Bots. Each Hangar provides living space for 10 Bots."
 	var category = "Buildings"
 	var structure_category = "Housing"
 	var level = l
 	var material = 0
 	var factor = 10
-	var base_cost = {0:80, 
+	var base_cost = {0:68, 
 					1:40,
-					2:22,
+					2:30,
 			3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
-	
+
+func make_robodome(l=0):
+	var name = "Robo-Dome"
+	var structID = "robodome"
+	var description = "A mini robo city! Each Robo-Dome packs an additional 25 Bots to your population."
+	var category = "Buildings"
+	var structure_category = "Housing"
+	var level = l
+	var material = 0
+	var factor = 25
+	var base_cost = {0:120, 
+					1:70,
+					2:100,
+			3:0}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+
 #########################
 #	STORAGE STRUCTURES	#
 # material:				#
