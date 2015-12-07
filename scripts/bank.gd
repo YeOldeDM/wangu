@@ -48,7 +48,8 @@ func restore(source):
 		
 		your_skills[i]['lvl'] = source['your_skills'][str(i)]['lvl']
 		your_skills[i]['xp'] = source['your_skills'][str(i)]['xp']
-		set_storage(int(i))
+		if i < 3:
+			set_storage(int(i))
 		set_boost(int(i))
 
 
@@ -141,6 +142,8 @@ func gain_xp(i,amt):
 	your_skills[i]['xp'] += amt
 	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
 		your_skills[i]['lvl'] += 1
+		var txt = "Your skill in " + skills2[i] + " has risen to level " +str(your_skills[i]['lvl']) + "!"
+		news.message(txt)
 		your_skills[i]['to-next'] = _get_skill_level(your_skills[i]['lvl']+1)
 		
 		var gui_ref = {
@@ -284,6 +287,7 @@ func _draw_gui():
 #	INIT	#
 #############
 var construction
+var news
 
 func _ready():
 	buttons = [
@@ -307,6 +311,7 @@ func _ready():
 	
 	format = get_node('/root/formats')
 	construction = get_node('/root/Game/construction')
+	news = get_node('/root/Game/news')
 #####################
 #	CHILD SIGNALS	#
 #####################
