@@ -206,7 +206,7 @@ class Map:
 		
 	func _next_sector():
 		self.sector += 1
-		self.own.new.message("[color=yellow]Welcome to Sector "+str(self.sector)+self.sector+"[/color]")
+		self.own.new.message("[color=yellow]Welcome to Sector "+str(self.sector)+"[/color]")
 
 	#	PUBLIC FUNCTIONS	#
 	func next_cell():

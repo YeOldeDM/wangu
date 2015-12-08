@@ -58,14 +58,22 @@ var animals = [
 
 func random_animal():
 	randomize()
+	#grab a random prefix
 	var p = int(rand_range(0,prefix.size()))
+	#grab a random animal name A
 	var a = int(rand_range(0,animals.size()))
+	#make name B == name A
 	var b = a
+
+	#Prevent duplicate names
 	var rep = true
 	while rep:
+		#re-define B until it doesn't equal A
 		b = int(rand_range(0,animals.size()))
 		if b != a:
 			rep = false
+
+	#Assemble and return
 	var s = prefix[p]+' '+animals[a].capitalize()+animals[b]
 	return s
 

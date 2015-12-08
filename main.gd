@@ -12,6 +12,10 @@ var construction
 var time_label
 var game_time = 0.0
 
+var autosave = true
+var autosave_timer = 0.0	#timer in sec
+var autosave_interval = 5	#in minutes
+
 func _ready():
 	format = get_node('/root/formats')
 	#master links
@@ -27,9 +31,21 @@ func _ready():
 
 #	HEARTBEAT	#
 func _process(delta):
+	
+	#GAME CLOCK
 	game_time += delta
 	var t = format._time(game_time)
 	time_label.set_text(str("Time: ",t))
+	
+	#AUTOSAVE
+	if autosave:
+		autosave_timer += delta
+		if autosave_timer >= (autosave_interval*60):	#convert minutes > seconds
+			autosave_timer = 0.0
+			save_game()
+			news.message("auto-saving...",game_time)
+	
+			#MODULE PROCESSES
 	#BANK
 	bank.process(delta)
 	#POPULATION
@@ -103,9 +119,14 @@ func load_game():
 
 	news.message("[b]Game Loaded![/b]",game_time)
 
+
+
+
 func new_game():
 	#Set it all back to zero!
 	pass
+
+
 
 
 func wipe_game():
@@ -113,12 +134,28 @@ func wipe_game():
 	pass
 
 
+
+func quit_game():
+	get_tree().quit()
+
+
+
+
+
 #####################
 #	CHILD SIGNALS	#
 #####################
 
 func _on_save_pressed():
+	get_node('sys_panel/save').set_disabled(true)
+	get_node('sys_panel/save/save_confirm').popup()
+
+func _on_save_confirm_confirmed():
 	save_game()
+
+func _on_save_confirm_popup_hide():
+	get_node('sys_panel/save').set_disabled(false)
+
 
 
 func _on_load_pressed():
@@ -130,14 +167,19 @@ func _on_new_pressed():
 	get_node('sys_panel/new/reset_confirm').popup()
 
 
+
 func _on_reset_confirm_confirmed():
 	new_game()
-
 
 func _on_reset_confirm_popup_hide():
 	get_node('sys_panel/new').set_disabled(false)
 
 
+
 func _on_exit_pressed():
 	save_game()
-	get_tree().quit()
+	quit_game()
+	
+
+func _on_exit1_pressed():	#Quit without saving
+	quit_game()

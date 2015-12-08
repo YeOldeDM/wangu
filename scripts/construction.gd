@@ -119,11 +119,13 @@ var init_structures = [
 	{'ID':	'battletactics',	'lvl':	0},
 	
 	
-	{'ID':	'shields',	'lvl':	0},
+	{'ID':	'shields',		'lvl':	0},
+	{'ID':	'nanoshields',	'lvl':	0},
 	
 	{'ID':	'claws',		'lvl':	0},
 	{'ID':	'lasers',		'lvl':	0},
 	{'ID':	'rockets',		'lvl':	0},
+	{'ID':	'flechette',	'lvl':	0},
 	{'ID':	'laserclaws',	'lvl':	0},
 	
 	{'ID':	'hardplate',	'lvl':	0},
@@ -141,20 +143,31 @@ func _ready():
 		else:
 			print("\n\n INVALID STRUCTURE CANNOT BE CREATED \n "+struct['ID'])
 
+
+
+
+#########################################
+###		STRUCTURE RECIPE METHODS	#####
+#										#
+# To make a new Structure:				#
+# 1.  Clone a similar structure			#
+# 1a. Customize it with new data		#
+#										#
+# 2.  add entry in init_structs			#
+#     dictionary in format:				#
+#      {'ID': structID, 'lvl': 0},		#
+# 3. Speak the magic words:				#
+#		"Zim, Zala-Bim, Bom-Ba,			#
+#			Zala-Doo, Zala-Dim"			#
+#########################################
+
+
 #########################
 #	HOUSING STRUCTURES	#
 # material: N/A			#
 # factor: +pop/lvl		#
 #########################
-#!!!!!!!!!!!!!!!!!!!!!!!#
-#	Add argument 'l':	#
-#	set initial 		#
-#	structure lvl		#
-#						#
-#	Add structID:		#
-#	=func name - 'make_'#
-#	prefix.				#
-#########################
+
 func make_shack(l=0):
 	var name = "Shack"
 	var structID = "shack"
@@ -391,6 +404,21 @@ func make_shields(l=0):
 					3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
 
+func make_nanoshields(l=0):
+	var name = "Nano-Shields"
+	var structID = "nanoshields"
+	var description = "Each level of Nano-Shields blocks 20 points of damage to each Trooper."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var level = l
+	var material = 2
+	var factor = 20
+	var base_cost = {0:0, 
+							1:12,
+					2:11,
+					3:0}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
 func make_claws(l=0):
 	var name = "Claws"
 	var structID = "claws"
@@ -417,8 +445,8 @@ func make_lasers(l=0):
 	var material = 0
 	var factor = 20
 	var base_cost = {
-							0:0, 
-					1:2,
+							0:3, 
+					1:0,
 					2:5,
 					3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
@@ -436,6 +464,23 @@ func make_rockets(l=0):
 			0:	0,
 			1:	0,
 			2:	12,
+			3:	0
+		}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+func make_flechette(l=0):
+	var name = "Flechetter"
+	var structID = "flechette"
+	var description = "Fires streams of explosive crystal micro-shards. Adds 56 points of damage to each Trooper per level."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var level = l
+	var material = 0
+	var factor = 56
+	var base_cost = {
+			0:	0,
+			1:	12,
+			2:	16,
 			3:	0
 		}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
