@@ -41,10 +41,10 @@ class Mob:
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
 		#Roll for total HP and set
-		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 2)*1.41)) #+ exp(self.level*0.03))
+		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 3)*1.41)) #+ exp(self.level*0.03))
 	
 	func _damage():
-		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 2)*0.24)#+ exp(self.level*0.03)
+		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 3)*0.64)#+ exp(self.level*0.03)
 
 		if self.level%10 == 0 and self.level > 0:
 			base_damage *= 2.0

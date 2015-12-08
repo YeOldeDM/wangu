@@ -409,12 +409,12 @@ func make_shields(l=0):
 func make_nanoshields(l=0):
 	var name = "Nano-Shields"
 	var structID = "nanoshields"
-	var description = "Each level of Nano-Shields blocks 20 points of damage to each Trooper."
+	var description = "Each level of Nano-Shields blocks 14 points of damage to each Trooper."
 	var category = "Equipment"
 	var structure_category = "Equipment"
 	var level = l
 	var material = 2
-	var factor = 20
+	var factor = 14
 	var base_cost = {0:0, 
 							1:12,
 					2:11,
@@ -568,7 +568,7 @@ func make_fibershell(l=0):
 			3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
 
-func make_nanoshell(l=0):
+func make_nanomail(l=0):
 	var name = "Nano Mail"
 	var structID = "nanomail"
 	var description = "Feels like being covered in a trillion spiders. Good thing bots don't have feelings. \n Increases the HP of each trooper by 520 points per level."

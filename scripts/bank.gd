@@ -220,8 +220,8 @@ func set_workers(mat, amount):
 #	PRIVATE FUNCTIONS	#
 #########################
 func _get_skill_level(L):
-	var B = 20
-	var R = 50
+	var B = 50
+	var R = 150
 	if L <= 0:
 		return 0
 	else:

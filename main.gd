@@ -12,6 +12,8 @@ var construction
 var time_label
 var game_time = 0.0
 
+var autoload = true
+
 var autosave = true
 var autosave_timer = 0.0	#timer in sec
 var autosave_interval = 5	#in minutes
@@ -27,6 +29,9 @@ func _ready():
 	time_label = get_node('sys_panel/time')
 	
 	set_process(true)
+	
+	if autoload:
+		load_game()
 
 
 #	HEARTBEAT	#
