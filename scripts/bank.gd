@@ -333,3 +333,15 @@ func _on_use_toggled( pressed,index ):
 			if buttons[i].is_pressed():
 				buttons[i].set_pressed(false)
 			bank[i]['producers']['you']=0
+
+
+var current_skill_moused = 0
+
+func _on_skillpop_about_to_show():
+	var popup = get_node('skills/skillpop')
+	#get current_skill_info
+
+#repeat x3
+func _on_Metal_mouse_enter():
+	current_skill_moused = 0
+	get_node('skills/skillpop').popup()
