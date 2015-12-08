@@ -206,7 +206,7 @@ class Map:
 		
 	func _next_sector():
 		self.sector += 1
-		self.own.new.message("[color=yellow]Welcome to Sector "+str(self.sector)+"[/color]")
+		self.own.news.message("[color=yellow]Welcome to Sector "+str(self.sector)+"[/color]")
 
 	#	PUBLIC FUNCTIONS	#
 	func next_cell():
@@ -221,6 +221,8 @@ class Map:
 		else:
 			self.own.current_loot_type = 5
 		self.own.draw_map_info()
+
+
 #####################
 #	/END MAP CLASS	#
 #####################
