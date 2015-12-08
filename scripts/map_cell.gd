@@ -9,7 +9,7 @@ var colors = {
 var status = 0
 var loot_type = 5
 var loot_amt = 0
-var loot_chance = 0.28
+var loot_chance = 0.44
 
 func change_color(style):
 	#style: 0=red(wild), 1=green(conquered), 2=yellow(active)

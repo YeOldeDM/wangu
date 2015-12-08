@@ -27,7 +27,11 @@ class Structure:
 		0:0, 1:0, 2:0, 3:0}
 	
 	func _cost_multiplier(L):
-		return ceil((self.cost_factor * L) * ((L ^ 3)*2.61))
+		var mult = 0.0
+		var base = self.cost_factor * L
+		var expon = int(L*3.14) ^ 2
+		return int(ceil(base * expon))
+		#return ceil((self.cost_factor * L) * (int(L ^ 3)*2.61))
 		
 	func _get_cost(L):
 		var cost = {0:0,1:0,2:0,3:0}
@@ -61,8 +65,6 @@ class Structure:
 		return can_afford
 	
 	func _spend(cost):
-#		for i in range(4):
-#			self.own.bank.spend_resource(i,int(cost[i]))
 		self.own.bank.spend_resource(0,cost[0])
 		self.own.bank.spend_resource(1,cost[1])
 		self.own.bank.spend_resource(2,cost[2])

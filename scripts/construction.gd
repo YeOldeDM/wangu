@@ -36,7 +36,6 @@ func save():
 func restore(source):
 	prints("Restoring Construction:", source.keys() )
 	var struct_source = source['structures']
-	print(struct_source)
 	_clear_structures()
 	#look through base set of Structures
 	#if its ID is in source, use that data
