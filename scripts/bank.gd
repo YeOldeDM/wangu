@@ -51,7 +51,7 @@ func restore(source):
 		if i < 3:
 			set_storage(int(i))
 		set_boost(int(i))
-	set_boost(4)
+	set_boost(4) #set All's boost as well
 
 
 func save():

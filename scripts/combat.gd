@@ -31,25 +31,25 @@ class Mob:
 	func _get_total_health():
 		var base_health = max(1,(self.vitality*0.5)) * self.health_factor		#base= 1/2VIT x HPfactor
 		if self.boss == 2:												#mega-bosses: x10
-			base_health *= 10.0
+			base_health *= 5.0
 			prints("MEGABOSS",self.name,", LVL",self.level)
 		elif self.boss == 1:											#mini-bosses: x5
-			base_health *= 5.0
+			base_health *= 2.0
 			prints("MINIBOSS",self.name,", LVL",self.level)
 
 		var min_health = ceil(base_health*self.health_var)				#min-max variation
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
 		#Roll for total HP and set
-		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 2)*0.21)) #+ exp(self.level*0.03))
+		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 2)*1.41)) #+ exp(self.level*0.03))
 	
 	func _damage():
-		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 2)*0.14)#+ exp(self.level*0.03)
+		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 2)*0.24)#+ exp(self.level*0.03)
 
 		if self.level%10 == 0 and self.level > 0:
-			base_damage *= 5.0
-		elif self.level%100 == 0 and self.level > 0:
 			base_damage *= 2.0
+		elif self.level%100 == 0 and self.level > 0:
+			base_damage *= 1.5
 		var min_dmg = ceil(base_damage*self.damage_var)
 		var max_dmg = ceil(base_damage*(1.0+self.damage_var))
 		return [min_dmg,max_dmg]

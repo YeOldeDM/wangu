@@ -72,13 +72,13 @@ func _number(n):
 		suffix = 'k'
 	#Less than 10,000...
 	elif n <= 9:
-		n = str(n).left(4)
+		n = str(int(round(n))).left(4)
 	elif n <= 99:
-		n = str(n).left(5)
+		n = str(int(round(n))).left(5)
 	elif n <= 999:
-		n = str(int(n)).left(6)
+		n = str(int(round(n))).left(6)
 	else:
-		n = str(n)
+		n = str(int(round(n)))
 	#return number+suffix
 	return str(n,suffix)
 

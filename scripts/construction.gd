@@ -131,6 +131,8 @@ var init_structures = [
 	{'ID':	'hardplate',	'lvl':	0},
 	{'ID':	'nanoplate',	'lvl':	0},
 	{'ID':	'impactjelly',	'lvl':	0},
+	{'ID':	'fibershell',	'lvl':	0},
+	{'ID':	'nanomail',		'lvl':	0},
 	]
 
 
@@ -547,5 +549,37 @@ func make_impactjelly(l=0):
 			0:0,
 			1:24,
 			2:20,
+			3:0}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+func make_fibershell(l=0):
+	var name = "Fiber Shell"
+	var structID = "fibershell"
+	var description = "Lightweight spun carbon platings. Increases the HP of each trooper by 350 points per level."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var level = l
+	var material = 1
+	var factor = 350
+	var base_cost = {
+			0:80,
+			1:80,
+			2:40,
+			3:0}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+func make_nanoshell(l=0):
+	var name = "Nano Mail"
+	var structID = "nanomail"
+	var description = "Feels like being covered in a trillion spiders. Good thing bots don't have feelings. \n Increases the HP of each trooper by 520 points per level."
+	var category = "Equipment"
+	var structure_category = "Equipment"
+	var level = l
+	var material = 1
+	var factor = 520
+	var base_cost = {
+			0:50,
+			1:70,
+			2:130,
 			3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
