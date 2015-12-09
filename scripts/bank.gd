@@ -335,13 +335,61 @@ func _on_use_toggled( pressed,index ):
 			bank[i]['producers']['you']=0
 
 
-var current_skill_moused = 0
+var current_skill_moused = null
 
-func _on_skillpop_about_to_show():
-	var popup = get_node('skills/skillpop')
-	#get current_skill_info
+
 
 #repeat x3
 func _on_Metal_mouse_enter():
 	current_skill_moused = 0
 	get_node('skills/skillpop').popup()
+
+func _on_Crystal_mouse_enter():
+	current_skill_moused = 1
+	get_node('skills/skillpop').popup()
+
+func _on_Nanium_mouse_enter():
+	current_skill_moused = 2
+	get_node('skills/skillpop').popup()
+
+func _on_Tech_mouse_enter():
+	current_skill_moused = 3
+	get_node('skills/skillpop').popup()
+
+
+
+func _on_skillbox_mouse_exit():
+	get_node('skills/skillpop').hide()
+	current_skill_moused = null
+
+
+func _on_skillpop_about_to_show():
+	var popup = get_node('skills/skillpop')
+	raise()
+	popup.raise()
+	if current_skill_moused != null:
+			#Get data
+		var csm = current_skill_moused
+		var skill_name = skills2[csm]
+		var skill_lvl = your_skills[csm]['lvl']
+		var skill_rate = 1.0 + (skill_lvl*0.05)
+		var skill_xp = [int(your_skills[csm]['xp']),
+						int(your_skills[csm]['to-next'])]
+			#Show data
+		popup.get_node('skill_name').set_text(skill_name)
+		popup.get_node('skill_lvl').set_text("level "+str(skill_lvl))
+		popup.get_node('skill_grind').set_text("+"+str(skill_rate)+"/s")
+		popup.get_node('skill_xp').set_text("XP "+str(skill_xp[0])+"/"+str(skill_xp[1]))
+	
+			#Set position
+		var m_pos = get_tree().get_root().get_mouse_pos()
+		m_pos.x += 10
+		m_pos.y += 10
+		popup.set_pos(m_pos)
+	
+
+
+
+
+
+
