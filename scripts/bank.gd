@@ -389,7 +389,33 @@ func _on_skillpop_about_to_show():
 	
 
 
+func _on_metal_rate_mouse_enter():
+	get_node('ratepop').popup()
+
+func _on_crystal_rate_mouse_enter():
+	get_node('ratepop').popup()
+
+
+func _on_nanium_rate_mouse_enter():
+	get_node('ratepop').popup()
+
+
+func _on_tech_rate_mouse_enter():
+	get_node('ratepop').popup()
+
+
+func _on_rate_mouse_exit():
+	get_node('ratepop').hide()
 
 
 
+func _on_ratepop_about_to_show():
+	var popup = get_node('ratepop')
+	raise()
+	popup.raise()
 
+		#Set position
+	var m_pos = get_tree().get_root().get_mouse_pos()
+	m_pos.x += 10
+	m_pos.y += 10
+	popup.set_pos(m_pos)
