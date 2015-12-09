@@ -298,7 +298,7 @@ func make_metallurgy(l=0):
 	var level = l
 	var material = 0
 	var factor = 0
-	var base_cost = {0:50, 
+	var base_cost = {0:4, 
 					1:0,
 					2:0,
 					3:10}
@@ -314,7 +314,7 @@ func make_attunement(l=0):
 	var material = 1
 	var factor = 0
 	var base_cost = {0:0, 
-					1:50,
+					1:5,
 					2:0,
 					3:12}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
@@ -330,7 +330,7 @@ func make_synthesis(l=0):
 	var factor = 0
 	var base_cost = {0:0, 
 					1:0,
-					2:50,
+					2:6,
 					3:15}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
 
@@ -358,9 +358,9 @@ func make_enlightenment(l=0):
 	var level = l
 	var material = 4
 	var factor = 0
-	var base_cost = {0:20, 
-					1:20,
-					2:20,
+	var base_cost = {0:10, 
+					1:10,
+					2:11,
 					3:35}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
 

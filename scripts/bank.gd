@@ -1,20 +1,73 @@
 
 extends Control
 
-
 var bank = {0:	{'current': 0, 'max': 100, 
-			'rate': 0, 'producers':	{'you':0,
-									'workers':0}},
+				'rate': {
+					'from_you':	0,
+					'from_workers':	0,
+					'base_rate':	0,
+					'boost_rate':	0,
+					'total_rate':	0
+					}, 
+				'producers': {
+					'you':0,
+					'workers':0
+					}
+				},
 			1:	{'current': 0, 'max': 100, 
-			'rate': 0, 'producers':	{'you':0,
-									'workers':0}},
+				'rate': {
+					'from_you':	0,
+					'from_workers':	0,
+					'base_rate':	0,
+					'boost_rate':	0,
+					'total_rate':	0
+					}, 
+				'producers': {
+					'you':0,
+					'workers':0
+					}
+				},
 			2:	{'current': 0, 'max': 100, 
-			'rate': 0, 'producers':	{'you':0,
-									'workers':0}},
+			'rate': {
+					'from_you':	0,
+					'from_workers':	0,
+					'base_rate':	0,
+					'boost_rate':	0,
+					'total_rate':	0
+					}, 
+				'producers': {
+					'you':0,
+					'workers':0
+					}
+				},
 			3:	{'current': 0, 'max': null,
-			'rate': 0, 'producers':	{'you':0,
-									'workers':0}},
+			'rate': {
+					'from_you':	0,
+					'from_workers':	0,
+					'base_rate':	0,
+					'boost_rate':	0,
+					'total_rate':	0
+					}, 
+				'producers': {
+					'you':0,
+					'workers':0
+					}
+				},
 			}
+
+#var bank = {0:	{'current': 0, 'max': 100, 
+#			'rate': 0, 'producers':	{'you':0,
+#									'workers':0}},
+#			1:	{'current': 0, 'max': 100, 
+#			'rate': 0, 'producers':	{'you':0,
+#									'workers':0}},
+#			2:	{'current': 0, 'max': 100, 
+#			'rate': 0, 'producers':	{'you':0,
+#									'workers':0}},
+#			3:	{'current': 0, 'max': null,
+#			'rate': 0, 'producers':	{'you':0,
+#									'workers':0}},
+#			}
 
 var boost = {0:		{'level': 0, 'rate': 0.25},
 			1:		{'level': 0, 'rate': 0.25},
@@ -65,19 +118,19 @@ func save():
 	'your_skills':	{
 		0:	{
 			'lvl':	your_skills[0]['lvl'],
-			'xp':	your_skills[0]['xp']
+			'xp':	(your_skills[0]['xp'])
 			},
 		1:	{
 			'lvl':	your_skills[1]['lvl'],
-			'xp':	your_skills[1]['xp']
+			'xp':	(your_skills[0]['xp'])
 			},
 		2:	{
 			'lvl':	your_skills[2]['lvl'],
-			'xp':	your_skills[2]['xp']
+			'xp':	(your_skills[0]['xp'])
 			},
 		3:	{
 			'lvl':	your_skills[3]['lvl'],
-			'xp':	your_skills[3]['xp']
+			'xp':	(your_skills[0]['xp'])
 			},
 		},
 	}
@@ -107,17 +160,25 @@ func process(delta):
 		var mat_amt = bank[i]['current']
 		var mat_max = bank[i]['max']
 		
-		var your_production_rate = bank[i]['producers']['you'] * max(1.0,(your_base_skill))
-		var your_production_boost = your_production_rate * (your_skills[i]['lvl']* 0.05 )
-		var worker_production_rate = bank[i]['producers']['workers'] * worker_base_skill
-		var boost_rate = get_boost(i)
-		var total_rate = (your_production_rate + your_production_boost + worker_production_rate) * boost_rate
-		bank[i]['rate'] = total_rate
-		var new_amt = mat_amt + (bank[i]['rate']*delta)
+		bank[i]['rate']['from_you'] = bank[i]['producers']['you'] * (your_base_skill + (your_skills[i]['lvl']*0.05))
+		bank[i]['rate']['from_workers'] = bank[i]['producers']['workers'] * worker_base_skill
+		
+		bank[i]['rate']['base_rate'] = bank[i]['rate']['from_you'] + bank[i]['rate']['from_workers']
+		
+		bank[i]['rate']['boost_rate'] = bank[i]['rate']['base_rate'] * get_boost(i)
+		
+		bank[i]['rate']['total_rate'] = bank[i]['rate']['base_rate']
+		
+		if bank[i]['rate']['total_rate'] > 0:
+			bank[i]['rate']['total_rate'] += bank[i]['rate']['boost_rate']
+
+		
+		#bank[i]['rate'] = total_rate
+		var new_amt = mat_amt + (bank[i]['rate']['total_rate']*delta)
 		if mat_max and new_amt >= mat_max:
 			new_amt = mat_max
 		else:
-			gain_xp(i,your_production_rate*boost_rate*delta)	#don't gain xp if this bank is full!
+			gain_xp(i, (bank[i]['rate']['from_you'] * (1.0+get_boost(i))) * delta)	#don't gain xp if this bank is full!
 		bank[i]['current'] = new_amt
 		
 	
@@ -185,11 +246,9 @@ func spend_resource(mat, amt):
 
 func get_boost(mat):
 	#get current boost rate based on boost level
-	var value = 1.0
-	for i in range(boost[mat]['level']):
-		value += (value * boost[mat]['rate'])
-	for i in range(boost[4]['level']):
-		value += (value * boost[4]['rate'])
+	var mat_boost = boost[mat]['level'] * boost[mat]['rate']
+	var all_boost = boost[4]['level'] * boost[4]['rate']
+	var value = mat_boost + all_boost
 	return value
 
 func set_boost(material):
@@ -221,7 +280,7 @@ func set_workers(mat, amount):
 #########################
 func _get_skill_level(L):
 	var B = 50
-	var R = 150
+	var R = 100
 	if L <= 0:
 		return 0
 	else:
@@ -252,7 +311,7 @@ func _draw_gui():
 	
 	
 	for i in range(4):
-		var mat_rate = bank[i]['rate']
+		var mat_rate = bank[i]['rate']['total_rate']
 		panels[i].get_node('rate').set_text(str("+",format._number(mat_rate),"/s"))
 		
 		var mat_amt = bank[i]['current']
@@ -335,41 +394,41 @@ func _on_use_toggled( pressed,index ):
 			bank[i]['producers']['you']=0
 
 
-var current_skill_moused = null
+var current_mat_moused = null
 
 
 
 #repeat x3
 func _on_Metal_mouse_enter():
-	current_skill_moused = 0
+	current_mat_moused = 0
 	get_node('skills/skillpop').popup()
 
 func _on_Crystal_mouse_enter():
-	current_skill_moused = 1
+	current_mat_moused = 1
 	get_node('skills/skillpop').popup()
 
 func _on_Nanium_mouse_enter():
-	current_skill_moused = 2
+	current_mat_moused = 2
 	get_node('skills/skillpop').popup()
 
 func _on_Tech_mouse_enter():
-	current_skill_moused = 3
+	current_mat_moused = 3
 	get_node('skills/skillpop').popup()
 
 
 
 func _on_skillbox_mouse_exit():
 	get_node('skills/skillpop').hide()
-	current_skill_moused = null
+	current_mat_moused = null
 
 
 func _on_skillpop_about_to_show():
 	var popup = get_node('skills/skillpop')
 	raise()
 	popup.raise()
-	if current_skill_moused != null:
+	if current_mat_moused != null:
 			#Get data
-		var csm = current_skill_moused
+		var csm = current_mat_moused
 		var skill_name = skills2[csm]
 		var skill_lvl = your_skills[csm]['lvl']
 		var skill_rate = 1.0 + (skill_lvl*0.05)
@@ -390,21 +449,24 @@ func _on_skillpop_about_to_show():
 
 
 func _on_metal_rate_mouse_enter():
+	current_mat_moused = 0
 	get_node('ratepop').popup()
 
 func _on_crystal_rate_mouse_enter():
+	current_mat_moused = 1
 	get_node('ratepop').popup()
-
 
 func _on_nanium_rate_mouse_enter():
+	current_mat_moused = 2
 	get_node('ratepop').popup()
 
-
 func _on_tech_rate_mouse_enter():
+	current_mat_moused = 3
 	get_node('ratepop').popup()
 
 
 func _on_rate_mouse_exit():
+	current_mat_moused = null
 	get_node('ratepop').hide()
 
 
@@ -413,7 +475,35 @@ func _on_ratepop_about_to_show():
 	var popup = get_node('ratepop')
 	raise()
 	popup.raise()
+		#Get data
+	if current_mat_moused != null:
+		var cmm = current_mat_moused
 
+		var you_base = bank[cmm]['producers']['you']
+		var you_pro = bank[cmm]['rate']['from_you']
+		
+		var workers_q = bank[cmm]['producers']['workers']
+		var worker_base = worker_base_skill
+		var worker_pro = bank[cmm]['rate']['from_workers']
+		
+		var boost_per = get_boost(cmm)
+		var boost_pro = bank[cmm]['rate']['boost_rate']
+		
+		var total_pro = bank[cmm]['rate']['total_rate']
+		
+		#Show data
+		popup.get_node('you_base').set_text(str(you_base))
+		popup.get_node('you_pro').set_text(str(you_pro))
+		
+		popup.get_node('workers_q').set_text(str(workers_q))
+		popup.get_node('worker_base').set_text(str(worker_base))
+		popup.get_node('worker_pro').set_text(str(worker_pro))
+		
+		popup.get_node('boost_per').set_text(str(boost_per*100))
+		popup.get_node('boost_pro').set_text(str(boost_pro))
+		
+		popup.get_node('total_pro').set_text(str(total_pro))
+		
 		#Set position
 	var m_pos = get_tree().get_root().get_mouse_pos()
 	m_pos.x += 10
