@@ -1,6 +1,7 @@
 
 extends Control
 
+#Le Banque Grotesque
 var bank = {0:	{'current': 0, 'max': 100, 
 				'rate': {
 					'from_you':	0,
@@ -55,6 +56,7 @@ var bank = {0:	{'current': 0, 'max': 100,
 				},
 			}
 
+#Ye Olde Banke
 #var bank = {0:	{'current': 0, 'max': 100, 
 #			'rate': 0, 'producers':	{'you':0,
 #									'workers':0}},
@@ -69,16 +71,24 @@ var bank = {0:	{'current': 0, 'max': 100,
 #									'workers':0}},
 #			}
 
+#Income Boost dictionary
 var boost = {0:		{'level': 0, 'rate': 0.25},
 			1:		{'level': 0, 'rate': 0.25},
 			2:		{'level': 0, 'rate': 0.25},
 			3:		{'level': 0, 'rate': 0.25},
 			4:		{'level': 0, 'rate': 0.1}}		#boost ALL
 
+#References for label text
 var skills = ['Salvage','Harvest','Mine','Research']
 var skills2 = ['Salvaging','Harvesting','Mining','Researching']
 
+#Grinding base skill
 var your_base_skill = 1.0
+
+#Worker base skill
+var worker_base_skill = 0.5
+
+#Grinding skill dict
 var your_skills = {
 		0:	{'name':	'Salvage',
 			'lvl':	0,	'xp':	0,
@@ -94,27 +104,36 @@ var your_skills = {
 			'to-next':	0},
 			}
 
+#RESTORE BANK DATA
 func restore(source):
 	prints("Restoring Bank:", source.keys() )
 	for i in range(4):
+		#Set Current resource levels
 		bank[i]['current'] = source['resources'][str(i)]
 		
+		#Set Grind skills
 		your_skills[i]['lvl'] = source['your_skills'][str(i)]['lvl']
 		your_skills[i]['xp'] = source['your_skills'][str(i)]['xp']
+		
+		#Set storage limits
 		if i < 3:
 			set_storage(int(i))
+		
+		#Set Boost rates
 		set_boost(int(i))
 	set_boost(4) #set All's boost as well
 
-
+#SAVE BANK DATA
 func save():
 	var saveDict = {
+	#Store current resource levels
 	'resources': {
 		0:		bank[0]['current'],
 		1:		bank[1]['current'],
 		2:		bank[2]['current'],
 		3:		bank[3]['current']
 		},
+	#Store skill levels and XP
 	'your_skills':	{
 		0:	{
 			'lvl':	your_skills[0]['lvl'],
@@ -122,15 +141,15 @@ func save():
 			},
 		1:	{
 			'lvl':	your_skills[1]['lvl'],
-			'xp':	(your_skills[0]['xp'])
+			'xp':	(your_skills[1]['xp'])
 			},
 		2:	{
 			'lvl':	your_skills[2]['lvl'],
-			'xp':	(your_skills[0]['xp'])
+			'xp':	(your_skills[2]['xp'])
 			},
 		3:	{
 			'lvl':	your_skills[3]['lvl'],
-			'xp':	(your_skills[0]['xp'])
+			'xp':	(your_skills[3]['xp'])
 			},
 		},
 	}
@@ -138,18 +157,21 @@ func save():
 
 
 
-var worker_base_skill = 0.5
 
 
 
+#Links to UI elements
 var buttons
 var panels
 var skill_panels
 
+#format import
 var format
 
+#Draw timer (so we don't need to draw every frame)
 var draw_timer = 0
 var draw_tick = 0.1
+
 
 #################
 #	MAIN-LOOP	#
@@ -160,6 +182,7 @@ func process(delta):
 		var mat_amt = bank[i]['current']
 		var mat_max = bank[i]['max']
 		
+		#Define rates & Do the maths
 		bank[i]['rate']['from_you'] = bank[i]['producers']['you'] * (your_base_skill + (your_skills[i]['lvl']*0.05))
 		bank[i]['rate']['from_workers'] = bank[i]['producers']['workers'] * worker_base_skill
 		
@@ -169,16 +192,21 @@ func process(delta):
 		
 		bank[i]['rate']['total_rate'] = bank[i]['rate']['base_rate']
 		
+		#Only apply Boost if there is some base production also
 		if bank[i]['rate']['total_rate'] > 0:
 			bank[i]['rate']['total_rate'] += bank[i]['rate']['boost_rate']
-
 		
-		#bank[i]['rate'] = total_rate
+		#Calculate new value
 		var new_amt = mat_amt + (bank[i]['rate']['total_rate']*delta)
+		
+		#Clamp to storage limit:
 		if mat_max and new_amt >= mat_max:
 			new_amt = mat_max
+		#..else don't gain xp if this bank is full!
 		else:
-			gain_xp(i, (bank[i]['rate']['from_you'] * (1.0+get_boost(i))) * delta)	#don't gain xp if this bank is full!
+			gain_xp(i, (bank[i]['rate']['from_you'] * (1.0+get_boost(i))) * delta)	
+		
+		#Update the bank with the new amount
 		bank[i]['current'] = new_amt
 		
 	
