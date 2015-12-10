@@ -519,7 +519,15 @@ func _on_ratepop_about_to_show():
 		
 		var total_pro = bank[cmm]['rate']['total_rate']
 		
+		var mats = {
+			0:	'Metal',
+			1:	'Crystal',
+			2:	'Nanium',
+			3:	'Tech'
+				}
 		#Show data
+		popup.get_node('rate_name').set_text(mats[cmm]+" production")
+		
 		popup.get_node('you_base').set_text(str(you_base))
 		popup.get_node('you_pro').set_text(str(you_pro))
 		
