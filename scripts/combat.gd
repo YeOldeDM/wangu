@@ -206,6 +206,8 @@ class Map:
 		
 	func _next_sector():
 		self.sector += 1
+		if self.sector > 23:
+			self.sector = 0
 		self.own.news.message("[color=yellow]Welcome to Sector "+str(self.sector)+"[/color]")
 
 	#	PUBLIC FUNCTIONS	#
