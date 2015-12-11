@@ -528,17 +528,17 @@ func _on_ratepop_about_to_show():
 		#Show data
 		popup.get_node('rate_name').set_text(mats[cmm]+" production")
 		
-		popup.get_node('you_base').set_text(str(you_base))
-		popup.get_node('you_pro').set_text(str(you_pro))
+		popup.get_node('you_base').set_text(format._number(you_base))
+		popup.get_node('you_pro').set_text("+"+format._number(you_pro))
 		
-		popup.get_node('workers_q').set_text(str(workers_q))
-		popup.get_node('worker_base').set_text(str(worker_base))
-		popup.get_node('worker_pro').set_text(str(worker_pro))
+		popup.get_node('workers_q').set_text("x"+format._number(workers_q))
+		popup.get_node('worker_base').set_text(format._number(worker_base))
+		popup.get_node('worker_pro').set_text("+"+format._number(worker_pro))
 		
-		popup.get_node('boost_per').set_text(str(boost_per*100))
-		popup.get_node('boost_pro').set_text(str(boost_pro))
+		popup.get_node('boost_per').set_text(format._number(boost_per*100)+"%")
+		popup.get_node('boost_pro').set_text(format._number(boost_pro))
 		
-		popup.get_node('total_pro').set_text(str(total_pro))
+		popup.get_node('total_pro').set_text("Net Total: +"+format._number(total_pro))
 		
 		#Set position
 	var m_pos = get_tree().get_root().get_mouse_pos()
