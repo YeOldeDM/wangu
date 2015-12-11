@@ -516,3 +516,42 @@ func _on_auto_fight_toggled( pressed ):
 
 func _on_fight_pressed():
 	army.combat_ready = true
+
+
+
+var stat_moused = null
+
+func _on_damage_mouse_enter():
+	stat_moused = 'damage'
+	get_node('compop').popup()
+
+func _on_shields_mouse_enter():
+	stat_moused = 'shields'
+	get_node('compop').popup()
+
+func _on_healthbar_mouse_enter():
+	stat_moused = 'health'
+	get_node('compop').popup()
+
+
+
+func _on_item_mouse_exit():
+	get_node('compop').hide()
+	stat_moused = null
+
+
+func _on_compop_about_to_show():
+	raise()
+	get_node('compop').raise()
+	if stat_moused:
+		get_node('compop/title').set_text(stat_moused)
+	
+	var pos = get_tree().get_root().get_mouse_pos()
+	pos.x += 10
+	pos.y -= get_node('compop').get_rect().size.height + 10
+	get_node('compop').set_pos(pos)
+
+
+
+
+
