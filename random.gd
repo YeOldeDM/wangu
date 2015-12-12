@@ -49,6 +49,7 @@ var animals = [
 	'shark',
 	'snail',
 	'squirrel',
+	'stork',
 	'turtle',
 	'taco',
 	'tiger',

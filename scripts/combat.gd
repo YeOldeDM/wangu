@@ -41,10 +41,10 @@ class Mob:
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
 		#Roll for total HP and set
-		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 3)*1.41)) #+ exp(self.level*0.03))
+		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 3)*0.16)) #+ exp(self.level*0.03))
 	
 	func _damage():
-		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 3)*0.64)#+ exp(self.level*0.03)
+		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 3)*0.16)#+ exp(self.level*0.03)
 
 		if self.level%10 == 0 and self.level > 0:
 			base_damage *= 2.0
@@ -587,7 +587,7 @@ func _on_compop_about_to_show():
 					if struct.building.category == "Equipment":
 						if struct.building.material == stat_moused:
 							var v = struct.building.factor * struct.building.level
-							printt(v,v_total)
+							#printt(v,v_total)
 							v_total += v
 							_compop_entry(struct.building)
 							
