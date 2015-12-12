@@ -22,6 +22,7 @@ var animals = [
 	'ant',
 	'bear',
 	'beaver',
+	'bean',
 	'cat',
 	'chicken',
 	'cheetah',

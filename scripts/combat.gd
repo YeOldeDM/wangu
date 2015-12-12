@@ -520,19 +520,18 @@ func _on_fight_pressed():
 
 
 var stat_moused = null
-
+#0=dmg, 1=armor, 2=shields
 func _on_damage_mouse_enter():
-	stat_moused = 'damage'
-	get_node('compop').popup()
-
-func _on_shields_mouse_enter():
-	stat_moused = 'shields'
+	stat_moused = 0
 	get_node('compop').popup()
 
 func _on_healthbar_mouse_enter():
-	stat_moused = 'health'
+	stat_moused = 1
 	get_node('compop').popup()
 
+func _on_shields_mouse_enter():
+	stat_moused = 2
+	get_node('compop').popup()
 
 
 func _on_item_mouse_exit():
@@ -540,12 +539,76 @@ func _on_item_mouse_exit():
 	stat_moused = null
 
 
+func _clear_compop():
+	var P = get_node('compop/grid')
+	for i in range(4,P.get_children().size()):
+		P.get_children()[i].queue_free()
+
+func _compop_entry(data):
+	#append a row of data to compop
+	#creates labels and sets text
+	#data=Structure class instance
+	var grid = get_node('compop/grid')
+		#Name
+	var l_name = Label.new()
+	l_name.set_text(data.name)
+
+		#Level
+	var l_lvl = Label.new()
+	l_lvl.set_text("x"+format._number(data.level))
+	
+		#Production factor
+	var l_fac = Label.new()
+	l_fac.set_text("+"+format._number(data.factor))
+
+		#Total
+	var l_tot = Label.new()
+	l_tot.set_text(format._number(int(data.level*data.factor)))
+	
+	grid.add_child(l_name)
+	grid.add_child(l_lvl)
+	grid.add_child(l_fac)
+	grid.add_child(l_tot)
+	
 func _on_compop_about_to_show():
+	_clear_compop()
 	raise()
 	get_node('compop').raise()
-	if stat_moused:
-		get_node('compop/title').set_text(stat_moused)
-	
+	if stat_moused != null:
+		var grid = get_node('compop/grid')
+		var mats = {0: "Damage",
+					1: "Armor",
+					2: "Shields"}
+		get_node('compop/title').set_text(mats[stat_moused])
+		var v_total = 0
+		for cat in construction.structures:
+			for struct in construction.structures[cat]:
+				if struct.building.level > 0:
+					if struct.building.category == "Equipment":
+						if struct.building.material == stat_moused:
+							var v = struct.building.factor * struct.building.level
+							printt(v,v_total)
+							v_total += v
+							_compop_entry(struct.building)
+							
+		
+		var l_troops = Label.new()
+		l_troops.set_text("Troops")
+		grid.add_child(l_troops)
+		
+		var q_troops = Label.new()
+		q_troops.set_text("x"+format._number(army.troops))
+		grid.add_child(q_troops)
+		
+		var n_troops = Label.new()
+		n_troops.set_text("+"+format._number(v_total))
+		grid.add_child(n_troops)
+
+		var t_troops = Label.new()
+		t_troops.set_text(format._number(v_total*army.troops))
+		grid.add_child(t_troops)
+
+
 	var pos = get_tree().get_root().get_mouse_pos()
 	pos.x += 10
 	pos.y -= get_node('compop').get_rect().size.height + 10

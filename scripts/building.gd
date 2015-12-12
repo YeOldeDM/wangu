@@ -144,7 +144,10 @@ var cost_color = [Color(1.0,1.0,1.0,1.0),
 					Color(1.0,0.2,0.2,1.0)]
 
 func _on_Popup_about_to_show():
+	
 	var panel = get_node('Popup')
+	get_node('/root/Game/construction').raise()
+	panel.raise()
 	
 	panel.get_node('name').set_text(building.name)
 	panel.get_node('level').set_text(str("Level ",format._number(building.level)))

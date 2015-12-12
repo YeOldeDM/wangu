@@ -56,20 +56,7 @@ var bank = {0:	{'current': 0, 'max': 100,
 				},
 			}
 
-#Ye Olde Banke
-#var bank = {0:	{'current': 0, 'max': 100, 
-#			'rate': 0, 'producers':	{'you':0,
-#									'workers':0}},
-#			1:	{'current': 0, 'max': 100, 
-#			'rate': 0, 'producers':	{'you':0,
-#									'workers':0}},
-#			2:	{'current': 0, 'max': 100, 
-#			'rate': 0, 'producers':	{'you':0,
-#									'workers':0}},
-#			3:	{'current': 0, 'max': null,
-#			'rate': 0, 'producers':	{'you':0,
-#									'workers':0}},
-#			}
+
 
 #Income Boost dictionary
 var boost = {0:		{'level': 0, 'rate': 0.25},
