@@ -109,6 +109,16 @@ func restore(source):
 		#Set Boost rates
 		set_boost(int(i))
 	set_boost(4) #set All's boost as well
+	
+	#Set active grind skill
+	if 'your_active_skill' in source:
+		_on_use_toggled(1, source['your_active_skill'])
+		var gui_ref = {
+			0: 'Metal',
+			1: 'Crystal',
+			2: 'Nanium',
+			3: 'Tech'}
+		get_node(gui_ref[int(source['your_active_skill'])]+'/use').set_pressed(true)
 
 #SAVE BANK DATA
 func save():
@@ -140,6 +150,17 @@ func save():
 			},
 		},
 	}
+	
+	#Store grind button status
+	var active_skill = -1
+	for i in range(4):
+		if bank[i]['producers']['you'] > 0:
+			active_skill = i
+			continue
+	if active_skill >= 0:
+		saveDict['your_active_skill'] = active_skill
+	else:
+		print("BAD ACTIVE SKILL, NOT STORED")
 	return saveDict
 
 
