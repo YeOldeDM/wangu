@@ -148,8 +148,8 @@ class Army:
 	
 	#	PUBLIC FUNCTIONS	#
 	func new_army():
-		var pop = (self.population.population['current']*1.0) / (self.population.population['max']*1.0)
-		if pop >= 0.9:
+		var pop = self.population.population['current'] - self.population.workforce['current']
+		if pop >= 2:
 			self.population._change_current_population(-1*self.troops)
 			self.population._refresh()
 			self._get_total_health()
@@ -254,7 +254,7 @@ var current_loot_amt = 0
 #Object Links
 var cell_button = preload('res://map_cell.xml')
 
-#Combat Ready switch(need?)
+
 var combat_ready = false
 
 func save():
@@ -427,18 +427,26 @@ func collect_loot(mob):
 #########################
 func _combat():
 	#COMBAT ENGINE
-	if not army.is_dead and not mob.is_dead:
-		if not army.is_dead:
+	if not army.is_dead and not mob.is_dead:	#if both sides are living..
+		if not army.is_dead:	#if army is living..
+			#if army.troops < population.workforce['current']:	#If we have enough free Bots to send into battle..
+
+			#ATTACK! Army attacks first
 			var army_dmg = army.attack()
 			mob.get_hit(army_dmg)
+			#if mob is still alive, mob attacks
 			if not mob.is_dead:
 				var mob_dmg = mob.attack()
 				army.get_hit(mob_dmg)
 
-	else:
+	else:	#one side or the other is dead..
 		if army.is_dead:
+			#Respawn army, if ready
 			if army.combat_ready:
-				army.new_army()
+				if population.workforce['current'] > army.troops:
+					army.new_army()
+				else:
+					population._check_current_workforce()
 		if mob.is_dead:
 			if mob.boss > 0:
 				news.message("[color=red]The [b]"+mob.name+"[/b] falls heavy at your feet.[/color]")

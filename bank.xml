@@ -173,13 +173,13 @@
 				<resource  external="1">  </resource>
 				<dictionary  shared="false">
 					<string> "__editor_plugin_screen__" </string>
-					<string> "2D" </string>
+					<string> "Script" </string>
 					<string> "__editor_plugin_states__" </string>
 					<dictionary  shared="false">
 						<string> "2D" </string>
 						<dictionary  shared="false">
 							<string> "ofs" </string>
-							<vector2> -17.9003, 155.635 </vector2>
+							<vector2> -190.3, -97.0627 </vector2>
 							<string> "snap_grid" </string>
 							<bool> True </bool>
 							<string> "snap_offset" </string>
@@ -199,7 +199,7 @@
 							<string> "snap_step" </string>
 							<vector2> 8, 8 </vector2>
 							<string> "zoom" </string>
-							<real> 3.424787 </real>
+							<real> 1.227738 </real>
 						</dictionary>
 						<string> "3D" </string>
 						<dictionary  shared="false">

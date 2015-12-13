@@ -49,11 +49,11 @@ func restore(source):
 	for i in range(4):
 		workers[i] = source['workers'][str(i)]
 	
-	
+	set_max_population()
 	_set_max_workforce()
 	_set_current_workforce()
 	_check_current_workforce()
-	set_max_population()
+	
 
 var worker_panels
 var pop_panel
@@ -123,7 +123,7 @@ func _change_current_population(n):
 func _check_current_workforce():
 	if workforce['current'] > workforce['max']:	#Handle worker overflow bug
 		for w in workers:
-			w = 0
+			workers[w] = 0
 		_set_current_workforce()
 		news.message("[b]Your workers went on strike! Whip those bots back into shape, son![/b]")
 		_refresh()
