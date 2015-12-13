@@ -77,6 +77,12 @@ func save_game():
 	#Get save data from all modules, put them into a GlobDick
 	var saveNodes = {
 		'time':			game_time,
+		'settings':	{
+			'autosave':	autosave,
+			'autosave_interval':	autosave_interval,
+			'autoload':		autoload,
+			'fullscreen':	get_node('sys_panel').fullscreen
+				},
 		'bank':			bank.save(),
 		'population':	population.save(),
 		'construction': construction.save(),
@@ -109,9 +115,25 @@ func load_game():
 	saveGame.close()
 	
 	#Restore global game time
-	prints("Setting game Time:",format._verbose_time(loadNodes['time']))
-	game_time = loadNodes['time']
+	if 'time' in loadNodes:
+		prints("Setting game Time:",format._verbose_time(loadNodes['time']))
+		game_time = loadNodes['time']
+	else:
+		print("No game time saved! Setting to 0")
+		game_time = 0
 	
+	#Restore game settings
+	if 'settings' in loadNodes:
+		var set = loadNodes['settings']
+		prints("Restoring Population:", set.keys() )
+		
+		autosave = set['autosave']
+		autosave_interval = int(set['autosave_interval'])
+		autoload = set['autoload']
+		get_node('sys_panel').fullscreen = set['fullscreen']
+	else:
+		print("No Game Settings found! No worries, they'll be made next time you save \n")
+
 	#1.Restore Construction/Structures
 	construction.restore(loadNodes['construction'])
 	

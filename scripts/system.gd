@@ -13,7 +13,7 @@ func _ready():
 	game = get_parent()
 	options = get_node('options')
 	options_dialog = get_node('options/options_dialog')
-
+	_set_screen_mode()
 
 
 
