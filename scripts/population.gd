@@ -127,7 +127,7 @@ func _check_current_workforce():
 		_set_current_workforce()
 		news.message("[b]Your workers went on strike! Whip those bots back into shape, son![/b]")
 		_refresh()
-		
+
 func _set_current_workforce():
 	var total = workers[0]+workers[1]+workers[2]+workers[3]
 	workforce['current'] = total	#current workforce cannot exceed current population
