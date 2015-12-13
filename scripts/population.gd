@@ -49,8 +49,9 @@ func restore(source):
 	for i in range(4):
 		workers[i] = source['workers'][str(i)]
 	
-	_set_current_workforce()
+	
 	_set_max_workforce()
+	_set_current_workforce()
 	set_max_population()
 
 var worker_panels

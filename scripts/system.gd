@@ -61,3 +61,8 @@ func _on_options_dialog_popup_hide():
 func _on_options_dialog_focus_enter():
 	options_dialog.raise()
 	game.raise()
+
+
+func _on_length_value_changed( value ):
+	if game.autosave:
+		game.autosave_interval = int(value)
