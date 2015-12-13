@@ -471,11 +471,12 @@ func _check_mob_healthbar(per):
 	bar.get_node('health').set_text(h)
 
 
-
+var game
 #############
 #	INIT	#
 #############
 func _ready():
+	game = get_node('/root/Game')
 	format = get_node('/root/formats')
 	news = get_node('/root/Game/news')
 	bank = get_node('/root/Game/Bank')
@@ -522,16 +523,19 @@ func _on_fight_pressed():
 var stat_moused = null
 #0=dmg, 1=armor, 2=shields
 func _on_damage_mouse_enter():
-	stat_moused = 0
-	get_node('compop').popup()
+	if not game.is_menu_open:
+		stat_moused = 0
+		get_node('compop').popup()
 
 func _on_healthbar_mouse_enter():
-	stat_moused = 1
-	get_node('compop').popup()
+	if not game.is_menu_open:
+		stat_moused = 1
+		get_node('compop').popup()
 
 func _on_shields_mouse_enter():
-	stat_moused = 2
-	get_node('compop').popup()
+	if not game.is_menu_open:
+		stat_moused = 2
+		get_node('compop').popup()
 
 
 func _on_item_mouse_exit():

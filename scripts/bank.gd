@@ -150,7 +150,7 @@ func save():
 			},
 		},
 	}
-	
+
 	#Store grind button status
 	var active_skill = -1
 	for i in range(4):
@@ -383,8 +383,11 @@ func _draw_gui():
 #############
 var construction
 var news
+var game
 
 func _ready():
+	game = get_node('/root/Game')
+
 	buttons = [
 	get_node('Metal/use'),
 	get_node('Crystal/use'),
@@ -436,20 +439,24 @@ var current_mat_moused = null
 
 #repeat x3
 func _on_Metal_mouse_enter():
-	current_mat_moused = 0
-	get_node('skills/skillpop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 0
+		get_node('skills/skillpop').popup()
 
 func _on_Crystal_mouse_enter():
-	current_mat_moused = 1
-	get_node('skills/skillpop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 1
+		get_node('skills/skillpop').popup()
 
 func _on_Nanium_mouse_enter():
-	current_mat_moused = 2
-	get_node('skills/skillpop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 2
+		get_node('skills/skillpop').popup()
 
 func _on_Tech_mouse_enter():
-	current_mat_moused = 3
-	get_node('skills/skillpop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 3
+		get_node('skills/skillpop').popup()
 
 
 
@@ -485,20 +492,24 @@ func _on_skillpop_about_to_show():
 
 
 func _on_metal_rate_mouse_enter():
-	current_mat_moused = 0
-	get_node('ratepop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 0
+		get_node('ratepop').popup()
 
 func _on_crystal_rate_mouse_enter():
-	current_mat_moused = 1
-	get_node('ratepop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 1
+		get_node('ratepop').popup()
 
 func _on_nanium_rate_mouse_enter():
-	current_mat_moused = 2
-	get_node('ratepop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 2
+		get_node('ratepop').popup()
 
 func _on_tech_rate_mouse_enter():
-	current_mat_moused = 3
-	get_node('ratepop').popup()
+	if not game.is_menu_open:
+		current_mat_moused = 3
+		get_node('ratepop').popup()
 
 
 func _on_rate_mouse_exit():

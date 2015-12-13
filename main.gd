@@ -18,6 +18,8 @@ var autosave = true
 var autosave_timer = 0.0	#timer in sec
 var autosave_interval = 5	#in minutes
 
+var is_menu_open = false
+
 func _ready():
 	format = get_node('/root/formats')
 	#master links
