@@ -52,6 +52,7 @@ func restore(source):
 	
 	_set_max_workforce()
 	_set_current_workforce()
+	_check_current_workforce()
 	set_max_population()
 
 var worker_panels
@@ -119,8 +120,7 @@ func _change_current_population(n):
 	population['current'] += n
 	_set_max_workforce()
 
-
-func _set_current_workforce():
+func _check_current_workforce():
 	if workforce['current'] > workforce['max']:	#Handle worker overflow bug
 		for w in workers:
 			w = 0
@@ -128,9 +128,9 @@ func _set_current_workforce():
 		news.message("[b]Your workers went on strike! Whip those bots back into shape, son![/b]")
 		_refresh()
 		
-	else:
-		var total = workers[0]+workers[1]+workers[2]+workers[3]
-		workforce['current'] = total	#current workforce cannot exceed current population
+func _set_current_workforce():
+	var total = workers[0]+workers[1]+workers[2]+workers[3]
+	workforce['current'] = total	#current workforce cannot exceed current population
 
 #########################
 #	GUI DRAW FUNCTION	#
