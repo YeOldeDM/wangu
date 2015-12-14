@@ -106,7 +106,10 @@ func load_game():
 	if saveGame.file_exists('user://savegame.sav'):
 		save_game(true)
 		print("Old savegame.sav found! Converting..")
-		load_game()
+		if saveGame.file_exists('res://saves/savegame.sav'):
+			Directory.remove('user://savegame.sav')
+			print("Deleted old save")
+
 	#Make sure our file exists:
 	if not saveGame.file_exists('res://saves/savegame.sav'):
 		print("no savegame found!")
