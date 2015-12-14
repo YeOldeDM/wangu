@@ -107,8 +107,15 @@ func load_game():
 		save_game(true)
 		print("Old savegame.sav found! Converting..")
 		if saveGame.file_exists('res://saves/savegame.sav'):
-			Directory.remove('user://savegame.sav')
-			print("Deleted old save")
+			var usr = Directory.new()
+			var dir = usr.open('user://')
+			if dir == 0:
+				var file = usr.remove('user://savegame.sav')	###???
+				if file != 0:
+					print("OLD SAVE NOT PURGED!")
+					print(file)
+				else:
+					print("old save successfully purged")
 
 	#Make sure our file exists:
 	if not saveGame.file_exists('res://saves/savegame.sav'):
