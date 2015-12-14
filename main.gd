@@ -105,7 +105,7 @@ func load_game():
 	#Legacy: Check for old savegame.sav in user://
 	if saveGame.file_exists('user://savegame.sav'):
 		save_game(true)
-		print("Old savegame.sav found! Converting..")
+		print("Old savegame.sav found!  Converting..")
 		if saveGame.file_exists('res://saves/savegame.sav'):
 			var usr = Directory.new()
 			var dir = usr.open('user://')
