@@ -69,11 +69,14 @@ func _process(delta):
 #######################################
 ###		SAVE / RESTORE / NEW GAME	###
 #######################################
-func save_game():
+func save_game(legacy=false):
 	#Save the current game state
 	var saveGame = File.new()
-	#open file for writing (overwrites old file, I hope??)
-	saveGame.open("res://saves/savegame.sav", File.WRITE)
+	#open file for writing (overwrites old file)
+	if legacy:
+		saveGame.open('user://savegame.sav', File.WRITE)
+	else:
+		saveGame.open("res://saves/savegame.sav", File.WRITE)
 	#Get save data from all modules, put them into a GlobDick
 	var saveNodes = {
 		'time':			game_time,
@@ -98,6 +101,12 @@ func load_game():
 	#Load the currently-saved game state
 	#Only one save slot for now.
 	var saveGame = File.new()
+	
+	#Legacy: Check for old savegame.sav in user://
+	if saveGame.file_exists('user://savegame.sav'):
+		save_game(true)
+		print("Old savegame.sav found! Converting..")
+		load_game()
 	#Make sure our file exists:
 	if not saveGame.file_exists('res://saves/savegame.sav'):
 		print("no savegame found!")
@@ -119,7 +128,7 @@ func load_game():
 		prints("Setting game Time:",format._verbose_time(loadNodes['time']))
 		game_time = loadNodes['time']
 	else:
-		print("No game time saved! Setting to 0")
+		print("No game time saved! Setting to 0s")
 		game_time = 0
 	
 	#Restore game settings
