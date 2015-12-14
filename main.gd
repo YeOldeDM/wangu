@@ -73,7 +73,7 @@ func save_game():
 	#Save the current game state
 	var saveGame = File.new()
 	#open file for writing (overwrites old file, I hope??)
-	saveGame.open("user://savegame.sav", File.WRITE)
+	saveGame.open("res://saves/savegame.sav", File.WRITE)
 	#Get save data from all modules, put them into a GlobDick
 	var saveNodes = {
 		'time':			game_time,
@@ -99,13 +99,13 @@ func load_game():
 	#Only one save slot for now.
 	var saveGame = File.new()
 	#Make sure our file exists:
-	if !saveGame.file_exists('user://savegame.sav'):
+	if not saveGame.file_exists('res://saves/savegame.sav'):
 		print("no savegame found!")
 		return
 	#Dict to hold json lines
 	var loadNodes = {}
 	#Open file to Read
-	saveGame.open('user://savegame.sav', File.READ)
+	saveGame.open('res://saves/savegame.sav', File.READ)
 	#Go through file lines and append each line to loadNodes
 	while (!saveGame.eof_reached()):
 		loadNodes.parse_json(saveGame.get_line())
@@ -159,7 +159,7 @@ func new_game():
 
 
 func wipe_game():
-	#Clear user://savegame.sav!
+	#Clear res://saves/savegame.sav!
 	pass
 
 
