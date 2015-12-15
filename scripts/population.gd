@@ -37,6 +37,10 @@ func save():
 		2:	workers[2],
 		3:	workers[3]
 		},
+	'settings':	{
+		'index':	0,
+		'jobs':		1
+		}
 		
 	}
 	return saveDict
@@ -54,10 +58,16 @@ func restore(source):
 	_set_current_workforce()
 	_check_current_workforce()
 	
+	if 'settings' in source:
+		_on_jobs_pressed(int(source['settings']['index']),int(source['settings']['jobs']))
+	else:
+		_on_jobs_pressed(0,1)
+	
 
 var worker_panels
 var pop_panel
 
+var jobs_buttons
 
 
 #################
@@ -132,6 +142,18 @@ func _set_current_workforce():
 	var total = workers[0]+workers[1]+workers[2]+workers[3]
 	workforce['current'] = total	#current workforce cannot exceed current population
 
+func _get_total_jobs():
+	return workers[0]+workers[1]+workers[2]+workers[3]
+	
+	
+func _add_workers(mat,number):
+	var jobs = _get_total_jobs()
+	var new_total = jobs+number
+	if workforce['max'] < new_total:
+		number = workforce['max'] - jobs
+	if abs(number) > 0:
+		workers[mat] = max(0, workers[mat] + number)
+
 #########################
 #	GUI DRAW FUNCTION	#
 #########################
@@ -179,6 +201,13 @@ func _ready():
 		get_node('Nanium'),
 		get_node('Tech')]
 	pop_panel = get_node('home')
+	
+	jobs_buttons = [
+		get_node('settings/jobs/jobs1'),
+		get_node('settings/jobs/jobs10'),
+		get_node('settings/jobs/jobs50'),
+		get_node('settings/jobs/jobs100')]
+		
 	_set_max_workforce()
 	_refresh()
 
@@ -186,14 +215,18 @@ func _ready():
 #####################
 #	CHILD SIGNALS	#
 #####################
+var job_interval = 1
+
 func _on_decrease_pressed(index):
-	workers[index] -= 1
+	_add_workers(index,-job_interval)
+	#workers[index] -= 1
 	_set_current_workforce()
 	_refresh()
 
 
 func _on_increase_pressed(index):
-	workers[index] += 1
+	_add_workers(index,job_interval)
+	#workers[index] += 1
 	_set_current_workforce()
 	_refresh()
 
@@ -202,3 +235,14 @@ func _on_build_pressed():
 	population['current'] += 1
 	_set_max_workforce()
 	_refresh()
+
+
+func _on_jobs_pressed(index,jobs):
+	prints(index,jobs)
+	for i in range(4):
+		if i == index:
+			jobs_buttons[i].set_pressed(true)
+			job_interval = jobs
+		else:
+			jobs_buttons[i].set_pressed(false)
+	
