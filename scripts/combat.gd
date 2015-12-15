@@ -237,7 +237,7 @@ var news
 var construction
 
 var battle_clock = 0.0
-var turn_duration = 1.0
+var turn_duration = 1.5
 
 #Internal Links
 var army

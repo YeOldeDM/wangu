@@ -105,6 +105,7 @@ var init_structures = [
 	{'ID':	'garage',	'lvl':	0},
 	{'ID':	'hangar',	'lvl':	0},
 	{'ID':	'robodome',	'lvl':	0},
+	{'ID':	'arcology',	'lvl':	0},
 
 	{'ID':	'scrapyard',	'lvl':	0},
 	{'ID':	'crystalcaves',	'lvl':	0},
@@ -225,6 +226,21 @@ func make_robodome(l=0):
 					1:70,
 					2:100,
 			3:0}
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+func make_arcology(l=0):
+	var name = "Arcology"
+	var structID = "arcology"
+	var description = "A self-sufficient robot metropolis. Each level of Arcology increases maximum population by 100."
+	var category = "Buildings"
+	var structure_category = "Housing"
+	var level = l
+	var material = 0
+	var factor = 100
+	var base_cost = {0:1600, 
+					1:400,
+					2:800,
+					3:200}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
 
 
