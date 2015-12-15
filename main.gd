@@ -30,6 +30,9 @@ func _ready():
 	construction = get_node('construction')
 	time_label = get_node('sys_panel/time')
 	
+
+	
+	
 	set_process(true)
 	
 	if autoload:

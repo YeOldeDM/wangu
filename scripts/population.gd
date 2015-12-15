@@ -11,7 +11,7 @@ var construction
 
 var land = 0
 var population = {
-			'current': 0,
+			'current': 2,
 			'max': 10,
 			'rate': 0.01
 			}
@@ -113,7 +113,7 @@ func _set_max_workforce():
 	workforce['max'] = min(int(population['max']/2), int(population['current']))
 	var diff = workforce['max'] - old_force
 	if diff > 0:
-		news.message(str(diff)+" new jobs have opened up. Get to work!")
+		news.message(str(str(diff)," new jobs have opened up. Get to work!"))
 
 
 func _change_current_population(n):

@@ -237,7 +237,7 @@ var news
 var construction
 
 var battle_clock = 0.0
-var turn_duration = 0.5
+var turn_duration = 1.0
 
 #Internal Links
 var army
@@ -443,7 +443,7 @@ func _combat():
 		if army.is_dead:
 			#Respawn army, if ready
 			if army.combat_ready:
-				if population.workforce['current'] > army.troops:
+				if population.population['current']+(army.troops) > ceil(population.population['max']*0.5)+(army.troops*2):
 					army.new_army()
 				else:
 					population._check_current_workforce()
