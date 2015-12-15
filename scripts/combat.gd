@@ -41,10 +41,10 @@ class Mob:
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
 		#Roll for total HP and set
-		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 3)*0.16)) #+ exp(self.level*0.03))
+		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 3)*0.56)) #+ exp(self.level*0.03))
 	
 	func _damage():
-		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 3)*0.16)#+ exp(self.level*0.03)
+		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 3)*0.56)#+ exp(self.level*0.03)
 
 		if self.level%10 == 0 and self.level > 0:
 			base_damage *= 2.0
@@ -237,7 +237,7 @@ var news
 var construction
 
 var battle_clock = 0.0
-var turn_duration = 1.5
+var turn_duration = 0.75
 
 #Internal Links
 var army

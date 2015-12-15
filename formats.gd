@@ -12,17 +12,17 @@ func _verbose_time(t):
 	days -= hours*24
 
 	if days > 0:
-		days = str(days,"d, ")
+		days = str(days,"d ")
 	else:
 		days = ""
 
 	if hours > 0:
-		days = str(hours,"h, ")
+		days = str(hours,"h ")
 	else:
 		hours = ""
 
 	if minutes > 0:
-		minutes = str(minutes,"m, ")
+		minutes = str(minutes,"m ")
 	else:
 		minutes = ""
 

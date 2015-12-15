@@ -363,7 +363,14 @@ func _draw_gui():
 			var per = mat_amt/max(1,mat_max)
 
 			panels[i].get_node('fillbar').set_value(per)
-		
+			var filltime = "infinite"
+			var diff = mat_max - mat_amt
+			if diff <= 0:
+				filltime = "FULL"
+			elif mat_rate > 0:
+				filltime = "Full in " + format._verbose_time((mat_max - mat_amt) / mat_rate)
+			panels[i].get_node('fillbar/filltime').set_text(filltime)
+			
 		var show_lvl = int(skill_panels[i].get_node('lvl').get_text())
 		var real_lvl = your_skills[i]['lvl']
 		if show_lvl != real_lvl:
@@ -376,6 +383,7 @@ func _draw_gui():
 		var skill_per = xp_progress / max(1,xp_needed)
 		if show_per != skill_per:
 			skill_panels[i].get_node('fillbar').set_value(skill_per)
+
 
 
 #############
