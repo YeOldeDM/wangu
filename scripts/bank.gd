@@ -100,8 +100,8 @@ func reset():
 		your_skills[i]['xp'] = 0
 		bank[i]['producers']['you'] = 0
 		
-		if i < 3:
-			set_storage(i)
+
+		set_storage(i)
 		set_boost(i)
 	set_boost(4)
 	get_node('Metal/use').set_pressed(false)
@@ -273,16 +273,17 @@ func gain_xp(i,amt):
 		get_node(path).set_emitting(true)
 	
 func set_storage(mat):
-	#set max storage for resources
-	var amt = 100
-	for cat in construction.structures:
-		for struct in construction.structures[cat]:
-			if struct.building.category == 'Storage':
-				if struct.building.material == int(mat):
-					for l in range(struct.building.level):
-						amt *= 2
-	bank[int(mat)]['max'] = amt
-	_draw_gui()
+	if bank[mat]['max'] != null:
+		#set max storage for resources
+		var amt = 100
+		for cat in construction.structures:
+			for struct in construction.structures[cat]:
+				if struct.building.category == 'Storage':
+					if struct.building.material == int(mat):
+						for l in range(struct.building.level):
+							amt *= 2
+		bank[int(mat)]['max'] = amt
+		_draw_gui()
 
 func can_afford(mat, amt):
 	#check if there are currently enough of a resource to spend x amt
