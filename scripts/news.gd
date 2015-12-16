@@ -4,6 +4,11 @@ extends Control
 var newsbox
 var format
 
+func reset():
+	newsbox.clear()
+	
+	print("RESET NEWSBOX")
+
 func message(text,time_code=-1):
 	newsbox.newline()
 	newsbox.newline()

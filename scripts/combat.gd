@@ -41,10 +41,10 @@ class Mob:
 		var max_health = ceil(base_health*(1.0+self.health_var))
 		randomize()
 		#Roll for total HP and set
-		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 3)*0.56)) #+ exp(self.level*0.03))
+		self.total_health = round(rand_range(min_health,max_health) * ((self.level ^ 5)*0.46)) #+ exp(self.level*0.03))
 	
 	func _damage():
-		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 3)*0.56)#+ exp(self.level*0.03)
+		var base_damage = ((self.strength*0.5) * self.damage_factor) * ((self.level ^ 5)*0.56)#+ exp(self.level*0.03)
 
 		if self.level%10 == 0 and self.level > 0:
 			base_damage *= 2.0
@@ -257,6 +257,23 @@ var cell_button = preload('res://map_cell.xml')
 
 var combat_ready = false
 
+func reset():
+	map = Map.new()
+	map.own = self
+	generate_map()
+	
+	army = Army.new()
+	army.population = get_node('/root/Game/population')
+
+	mob = Mob.new()
+	mob.own = self
+	mob.rng = get_node('/root/random')
+	mob.new_mob()
+
+	draw_bots_combat_info()
+	draw_mob_combat_info()
+	draw_map_info()
+
 func save():
 	var saveDict = {
 		'sector':	map.sector,
@@ -281,9 +298,9 @@ func restore(source):
 	map.sector = int(source['sector'])
 	map.zone = int(source['zone'])
 	map.current_cell = int(source['cell'])
-	draw_map_info()
 	var l = (map.sector*1000) + (map.zone*100) + map.current_cell
 	regenerate_map(l)
+	draw_map_info()
 	
 	#RESTORE MOB
 	var smob = source['mob']

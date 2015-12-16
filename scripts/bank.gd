@@ -91,6 +91,26 @@ var your_skills = {
 			'to-next':	0},
 			}
 
+
+func reset():
+	for i in range(4):
+		set_storage(i)
+		_set_resource(i,0)
+		your_skills[i]['lvl'] = 0
+		your_skills[i]['xp'] = 0
+		bank[i]['producers']['you'] = 0
+		
+		if i < 3:
+			set_storage(i)
+		set_boost(i)
+	set_boost(4)
+	get_node('Metal/use').set_pressed(false)
+	get_node('Crystal/use').set_pressed(false)
+	get_node('Nanium/use').set_pressed(false)
+	get_node('Tech/use').set_pressed(false)
+	
+	print("RESET BANK")
+	
 #RESTORE BANK DATA
 func restore(source):
 	prints("Restoring Bank:", source.keys() )

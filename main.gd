@@ -29,14 +29,13 @@ func _ready():
 	news = get_node('news')
 	construction = get_node('construction')
 	time_label = get_node('sys_panel/time')
-	
 
-	
-	
 	set_process(true)
 	
-	if autoload:
+	if autoload == true:
 		load_game()
+	else:
+		new_game()
 
 
 #	HEARTBEAT	#
@@ -174,9 +173,14 @@ func load_game():
 
 
 func new_game():
-	#Set it all back to zero!
-	pass
+	news.reset()
+	construction.reset()
+	population.reset()
+	combat.reset()
+	bank.reset()
+	news.message("[b]GAME RESET![/b]")
 
+	game_time = 0
 
 
 

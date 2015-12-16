@@ -17,6 +17,15 @@ var structure_button = load('res://building.xml')
 #############################
 #	SAVE/RESTORE FUNCTIONS	#
 #############################
+
+#RESET
+func reset():
+	_clear_structures()
+	var new_structs = {'structures': init_structures}
+	restore(new_structs)
+	
+	print("RESET STRUCTURES")
+
 #SAVE#
 func save():
 	var saveDict = {

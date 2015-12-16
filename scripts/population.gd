@@ -27,6 +27,17 @@ var workers = {
 		3: 0,
 		}
 
+
+
+func reset():
+	land = 0
+	population['current'] = 0
+	population['max'] = 10
+	for i in range(4):
+		workers[i] = 0
+	_set_current_workforce()
+	
+
 func save():
 	var saveDict = {
 	'land':		land,
