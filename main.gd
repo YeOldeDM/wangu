@@ -21,6 +21,7 @@ var autosave_interval = 5	#in minutes
 var is_menu_open = false
 
 func _ready():
+	ready_settings()
 	format = get_node('/root/formats')
 	#master links
 	bank = get_node('Bank')
@@ -37,6 +38,18 @@ func _ready():
 	else:
 		new_game()
 
+func ready_settings():
+	var saveGame = File.new()
+	if saveGame.file_exists('res://saves/savegame.sav'):
+		var loadNodes = {}
+		#Open file to Read
+		saveGame.open('res://saves/savegame.sav', File.READ)
+		#Go through file lines and append each line to loadNodes
+		while (!saveGame.eof_reached()):
+			loadNodes.parse_json(saveGame.get_line())
+		if 'settings' in loadNodes:
+			var set = loadNodes['settings']
+			autoload = set['autoload']
 
 #	HEARTBEAT	#
 func _process(delta):

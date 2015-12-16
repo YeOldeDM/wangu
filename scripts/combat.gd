@@ -299,7 +299,7 @@ func restore(source):
 	map.zone = int(source['zone'])
 	map.current_cell = int(source['cell'])
 	var l = (map.sector*1000) + (map.zone*100) + map.current_cell
-	regenerate_map(l)
+	generate_map(l)
 	draw_map_info()
 	
 	#RESTORE MOB
