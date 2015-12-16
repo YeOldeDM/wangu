@@ -394,8 +394,9 @@ func set_troopers():
 			if struct.building.category == "Tactics":
 				value += struct.building.level
 	var troops = 1
-	for i in range(value):
+	while value > 0:
 		troops += ceil(troops * 0.25)
+		value -= 1
 	army.troops = troops
 	draw_bots_combat_info()
 

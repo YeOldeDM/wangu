@@ -32,6 +32,7 @@ func _on_options_dialog_focus_exit():
 
 func _on_autoload_check_toggled( pressed ):
 	game.autoload = pressed
+	prints("Auto-load", game.autoload)
 
 
 func _on_autosave_check_toggled( pressed ):
