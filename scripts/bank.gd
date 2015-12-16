@@ -200,6 +200,7 @@ var format
 var draw_timer = 0
 var draw_tick = 0.1
 
+var skill_bonus = 1.0
 
 #################
 #	MAIN-LOOP	#
@@ -211,7 +212,7 @@ func process(delta):
 		var mat_max = bank[i]['max']
 		
 		#Define rates & Do the maths
-		bank[i]['rate']['from_you'] = bank[i]['producers']['you'] * (your_base_skill + (your_skills[i]['lvl']*0.05))
+		bank[i]['rate']['from_you'] = bank[i]['producers']['you'] * (your_base_skill + (your_skills[i]['lvl']*skill_bonus))
 		bank[i]['rate']['from_workers'] = bank[i]['producers']['workers'] * worker_base_skill
 		
 		bank[i]['rate']['base_rate'] = bank[i]['rate']['from_you'] + bank[i]['rate']['from_workers']
@@ -232,7 +233,7 @@ func process(delta):
 			new_amt = mat_max
 		#..else don't gain xp if this bank is full!
 		else:
-			gain_xp(i, (bank[i]['rate']['from_you'] * (1.0+get_boost(i))) * delta)	
+			gain_xp(i, bank[i]['rate']['from_you'] * delta)	
 		
 		#Update the bank with the new amount
 		bank[i]['current'] = new_amt
@@ -502,7 +503,7 @@ func _on_skillpop_about_to_show():
 		var csm = current_mat_moused
 		var skill_name = skills2[csm]
 		var skill_lvl = your_skills[csm]['lvl']
-		var skill_rate = 1.0 + (skill_lvl*0.05)
+		var skill_rate = 1.0 + (skill_lvl*skill_bonus)
 		var skill_xp = [int(your_skills[csm]['xp']),
 						int(your_skills[csm]['to-next'])]
 			#Show data
