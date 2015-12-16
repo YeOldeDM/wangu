@@ -210,6 +210,9 @@ class Map:
 			self.sector = 0
 		self.own.news.message("[color=yellow]Welcome to Sector "+str(self.sector)+"[/color]")
 
+	func set_cells(cells):
+		self.cells = cells
+
 	#	PUBLIC FUNCTIONS	#
 	func next_cell():
 		self.cells[self.current_cell].status = 1
@@ -260,7 +263,7 @@ var combat_ready = false
 func reset():
 	map = Map.new()
 	map.own = self
-	generate_map()
+	regenerate_map()
 	
 	army = Army.new()
 	army.population = get_node('/root/Game/population')
@@ -299,7 +302,7 @@ func restore(source):
 	map.zone = int(source['zone'])
 	map.current_cell = int(source['cell'])
 	var l = (map.sector*1000) + (map.zone*100) + map.current_cell
-	generate_map(l)
+	regenerate_map(l)
 	draw_map_info()
 	
 	#RESTORE MOB
@@ -348,16 +351,18 @@ func generate_map(level=0):
 	var grid_panel = get_node('Battle/map/grid')
 	for cell in grid_panel.get_children():
 		cell.queue_free()
+	map.set_cells(null)
 	for i in range(100):
 		var cell = cell_button.instance()
 		cell.make_loot(level+i)
 		grid_panel.add_child(cell)
-	map.cells = grid_panel.get_children()
+	map.set_cells(grid_panel.get_children())
 	map.cells[map.current_cell].status = 2
 	map.cells[map.current_cell].change_color(2)
 
 func regenerate_map(level=0):
 	var cells = get_node('Battle/map/grid').get_children()
+	map.cells = cells
 	for i in range(cells.size()):
 		if i < map.current_cell:
 			cells[i].status = 1
