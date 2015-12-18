@@ -6,6 +6,7 @@ var options			#options gui button
 var options_dialog	#options dialog box
 
 var fullscreen = false
+
 func _set_screen_mode():
 	OS.set_window_fullscreen(fullscreen)
 

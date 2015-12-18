@@ -165,6 +165,7 @@ func load_game():
 		autosave_interval = int(set['autosave_interval'])
 		autoload = set['autoload']
 		get_node('sys_panel').fullscreen = set['fullscreen']
+		get_node('sys_panel')._set_screen_mode()
 	else:
 		print("No Game Settings found! No worries, they'll be made next time you save \n")
 

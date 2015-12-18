@@ -95,6 +95,8 @@ class Mob:
 			self._die()
 		else:
 			self.current_health = new_health
+
+
 #####################
 #	/END MOB CLASS	#
 #####################
