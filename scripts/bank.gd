@@ -337,6 +337,14 @@ func set_workers(mat, amount):
 #	PRIVATE FUNCTIONS	#
 #########################
 func _get_skill_level(L):
+	var xp = 50
+	var inc = 100
+	while L > 1:
+		xp += inc
+		L -= 1
+	return xp
+
+func _evil_get_skill_level(L):
 	var B = 50
 	var R = 100
 	if L <= 0:
