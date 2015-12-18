@@ -234,6 +234,7 @@ func process(delta):
 		#..else don't gain xp if this bank is full!
 		else:
 			gain_xp(i, bank[i]['rate']['from_you'] * delta)	
+			print(bank[i]['rate']['from_you'])
 		
 		#Update the bank with the new amount
 		bank[i]['current'] = new_amt
@@ -256,13 +257,17 @@ func process(delta):
 func gain_xp(i,amt):
 	#gain XP in i skill
 	var lvl = your_skills[i]['lvl']
-	your_skills[i]['to-next'] = _get_skill_level(lvl+1)
+	if lvl <= 0:
+		your_skills[i]['to-next'] = _get_skill_level(1)
+		your_skills[i]['lvl'] = 0
+	#your_skills[i]['to-next'] = _get_skill_level(lvl+1)
 	your_skills[i]['xp'] += amt
 	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
-		your_skills[i]['lvl'] += 1
+		lvl += 1
 		var txt = "Your skill in " + skills2[i] + " has risen to level " +str(your_skills[i]['lvl']) + "!"
 		news.message(txt)
-		your_skills[i]['to-next'] = _get_skill_level(your_skills[i]['lvl']+1)
+		your_skills[i]['lvl'] = lvl
+		your_skills[i]['to-next'] = _get_skill_level(lvl+1)
 		
 		var gui_ref = {
 			0: 'Metal',
@@ -339,9 +344,8 @@ func set_workers(mat, amount):
 func _get_skill_level(L):
 	var xp = 50
 	var inc = 100
-	while L > 1:
-		xp += inc
-		L -= 1
+	for i in range(L-1):
+		xp += inc*L
 	return xp
 
 func _evil_get_skill_level(L):
@@ -350,7 +354,7 @@ func _evil_get_skill_level(L):
 	if L <= 0:
 		return 0
 	else:
-		return _get_skill_level(L-1) + B + (R*max(0,L-2))
+		return _evil_get_skill_level(L-1) + B + (R*max(0,L-2))
 
 func _set_resource(mat,amt):
 	#set current resource value. Clamp to max resource storage
