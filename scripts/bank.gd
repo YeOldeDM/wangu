@@ -234,7 +234,7 @@ func process(delta):
 		#..else don't gain xp if this bank is full!
 		else:
 			gain_xp(i, bank[i]['rate']['from_you'] * delta)	
-			print(bank[i]['rate']['from_you'])
+
 		
 		#Update the bank with the new amount
 		bank[i]['current'] = new_amt
@@ -254,27 +254,24 @@ func process(delta):
 #########################
 
 
-func gain_xp(i,amt):
+func gain_xp(skill,amt):
 	#gain XP in i skill
-	var lvl = your_skills[i]['lvl']
-	if lvl <= 0:
-		your_skills[i]['to-next'] = _get_skill_level(1)
-		your_skills[i]['lvl'] = 0
-	#your_skills[i]['to-next'] = _get_skill_level(lvl+1)
-	your_skills[i]['xp'] += amt
-	if your_skills[i]['xp'] >= your_skills[i]['to-next']:
+	var lvl = your_skills[skill]['lvl']
+	your_skills[skill]['to-next'] = _get_skill_level(lvl+1)
+	your_skills[skill]['xp'] += amt
+	if your_skills[skill]['xp'] >= your_skills[skill]['to-next']:
 		lvl += 1
-		var txt = "Your skill in " + skills2[i] + " has risen to level " +str(your_skills[i]['lvl']) + "!"
+		var txt = "Your skill in " + skills2[skill] + " has risen to level " +str(your_skills[skill]['lvl']) + "!"
 		news.message(txt)
-		your_skills[i]['lvl'] = lvl
-		your_skills[i]['to-next'] = _get_skill_level(lvl+1)
+		your_skills[skill]['lvl'] = lvl
+		your_skills[skill]['to-next'] = _get_skill_level(lvl+1)
 		
 		var gui_ref = {
 			0: 'Metal',
 			1: 'Crystal',
 			2: 'Nanium',
 			3: 'Tech'}
-		var path = 'skills/'+gui_ref[i]+'/Lup'
+		var path = 'skills/'+gui_ref[skill]+'/Lup'
 		get_node(path).set_emitting(true)
 	
 func set_storage(mat):
@@ -342,6 +339,8 @@ func set_workers(mat, amount):
 #	PRIVATE FUNCTIONS	#
 #########################
 func _get_skill_level(L):
+	if L <= 0:
+		return 0
 	var xp = 50
 	var inc = 100
 	for i in range(L-1):
@@ -414,8 +413,11 @@ func _draw_gui():
 		
 		var xp_needed = _get_skill_level(real_lvl+1) - _get_skill_level(real_lvl)
 		var xp_progress = your_skills[i]['xp'] - _get_skill_level(real_lvl)
-		var skill_per = xp_progress / max(1,xp_needed)
+		var skill_per =  (xp_progress*1.0) / (xp_needed*1.0)  
+		if i == 0:
+			printt(_get_skill_level(real_lvl), _get_skill_level(real_lvl+1))
 		if show_per != skill_per:
+			#print(skill_per)
 			skill_panels[i].get_node('fillbar').set_value(skill_per)
 
 

@@ -249,7 +249,6 @@ func _on_build_pressed():
 
 
 func _on_jobs_pressed(index,jobs):
-	prints(index,jobs)
 	for i in range(4):
 		if i == index:
 			jobs_buttons[i].set_pressed(true)

@@ -5,14 +5,14 @@ extends Panel
 
 #links
 var population
-var equipment
+var construction = get_node('/root/Game/construction')
 
 #army attributes
-var troops = 1		#current no. of troops
-var unit_damage = 3		#base damage per trooper
-var damage_var = 0.4	#variation +- base damage
-var unit_health= 10		#base HP per trooper
-var skill = {0:0, 1:0, 2:0}
+var troops = 1				#current no. of troops
+var unit_damage = 3			#base damage per trooper
+var damage_var = 0.4		#variation +- base damage
+var unit_health= 10			#base HP per trooper
+var unit_skills = {0:0, 1:0, 2:0}	#0=damage, 1=armor, 2=shields
 
 var current_health
 var total_health
@@ -38,17 +38,34 @@ func attack():
 func take_damage(dmg):
 	pass
 
-
+func set_total_health():
+	set_armor()
+	total_health = get_total_health()
 
 func get_total_health():
-	pass
-func set_total_health():
-	pass
+	return (unit_health+unit_skills[1]) * troops
+
+## get equipment lists
+func get_weapons():
+	_get_skill(0)
+
+func get_armor():
+	_get_skill(1)
 
 func get_shields():
-	pass
+	_get_skill(2)
+
+## set equipment
+func set_weapons():
+	_set_skill(0)
+
+func set_armor():
+	_set_skill(1)
+
 func set_shields():
-	pass
+	_set_skill(2)
+
+
 
 func set_autofight(auto):
 	is_auto = auto
@@ -70,13 +87,42 @@ func _draw_shields():
 func _draw_troopers():
 	pass
 
+func _get_skill(skill):
+	var data = []
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.level > 0:
+				if struct.building.category == "Equipment":
+					if struct.building.material == skill:
+						var B = struct.building
+						data.append({'name':B.name, 'lvl':B.level, 'factor':B.factor})
+	return data
+
+func _set_skill(skill):
+	var value = 0
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == 'Equipment':
+				if struct.building.material == skill:
+					value += (struct.building.factor * struct.building.level)
+	unit_skills[int(skill)] = value
+
+
 func _set_troopers():
-	pass
-func _set_skills():
+	var value = 0
+	for cat in construction.structures:
+		for struct in construction.structures[cat]:
+			if struct.building.category == "Tactics":
+				value += struct.building.level
+	var T = 1
+	while value > 0:
+		T += ceil(troops * 0.25)
+		value -= 1
+	troops = T
+
+func _damage_range():
 	pass
 
-func _damage():
-	pass
 func _die():
 	pass
 

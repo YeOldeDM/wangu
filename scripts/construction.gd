@@ -110,38 +110,38 @@ func _clear_structures():
 #############
 
 var init_structures = [
-	{'ID':	'shack',	'lvl':	0},
-	{'ID':	'garage',	'lvl':	0},
-	{'ID':	'hangar',	'lvl':	0},
-	{'ID':	'robodome',	'lvl':	0},
-	{'ID':	'arcology',	'lvl':	0},
+	{'ID':	'shack',			'lvl':	0},
+	{'ID':	'garage',			'lvl':	0},
+	{'ID':	'hangar',			'lvl':	0},
+	{'ID':	'robodome',			'lvl':	0},
+	{'ID':	'arcology',			'lvl':	0},
 
-	{'ID':	'scrapyard',	'lvl':	0},
-	{'ID':	'crystalcaves',	'lvl':	0},
+	{'ID':	'scrapyard',		'lvl':	0},
+	{'ID':	'crystalcaves',		'lvl':	0},
 	{'ID':	'naniteservers',	'lvl':	0},
 	
-	{'ID':	'metallurgy',	'lvl':	0},
-	{'ID':	'attunement',	'lvl':	0},
-	{'ID':	'synthesis',	'lvl':	0},
-	{'ID':	'gnosis',		'lvl':	0},
+	{'ID':	'metallurgy',		'lvl':	0},
+	{'ID':	'attunement',		'lvl':	0},
+	{'ID':	'synthesis',		'lvl':	0},
+	{'ID':	'gnosis',			'lvl':	0},
 	{'ID':	'enlightenment',	'lvl':	0},
 	{'ID':	'battletactics',	'lvl':	0},
 	
 	
-	{'ID':	'shields',		'lvl':	0},
-	{'ID':	'nanoshields',	'lvl':	0},
+	{'ID':	'shields',			'lvl':	0},
+	{'ID':	'nanoshields',		'lvl':	0},
 	
-	{'ID':	'claws',		'lvl':	0},
-	{'ID':	'lasers',		'lvl':	0},
-	{'ID':	'rockets',		'lvl':	0},
-	{'ID':	'flechette',	'lvl':	0},
-	{'ID':	'laserclaws',	'lvl':	0},
+	{'ID':	'claws',			'lvl':	0},
+	{'ID':	'lasers',			'lvl':	0},
+	{'ID':	'rockets',			'lvl':	0},
+	{'ID':	'flechette',		'lvl':	0},
+	{'ID':	'laserclaws',		'lvl':	0},
 	
-	{'ID':	'hardplate',	'lvl':	0},
-	{'ID':	'nanoplate',	'lvl':	0},
-	{'ID':	'impactjelly',	'lvl':	0},
-	{'ID':	'fibershell',	'lvl':	0},
-	{'ID':	'nanomail',		'lvl':	0},
+	{'ID':	'hardplate',		'lvl':	0},
+	{'ID':	'nanoplate',		'lvl':	0},
+	{'ID':	'impactjelly',		'lvl':	0},
+	{'ID':	'fibershell',		'lvl':	0},
+	{'ID':	'nanomail',			'lvl':	0},
 	]
 
 
