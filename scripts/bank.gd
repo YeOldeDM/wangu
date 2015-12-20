@@ -200,7 +200,7 @@ var format
 var draw_timer = 0
 var draw_tick = 0.1
 
-var skill_bonus = 1.0
+var skill_bonus = 0.25
 
 #################
 #	MAIN-LOOP	#
@@ -381,15 +381,15 @@ func _draw_gui():
 	
 	for i in range(4):
 		var mat_rate = bank[i]['rate']['total_rate']
-		panels[i].get_node('rate').set_text(str("+",format._number(mat_rate),"/s"))
+		panels[i].get_node('rate').set_text(str("+",format.number(mat_rate),"/s"))
 		
 		var mat_amt = bank[i]['current']
 		var mat_max = bank[i]['max']
 		var mat_txt = ""
 		if mat_max:
-			mat_txt = str(format._number(int(mat_amt)),"/",format._number(mat_max))
+			mat_txt = str(format.number(int(mat_amt)),"/",format.number(mat_max))
 		else:
-			mat_txt = str(format._number(int(mat_amt)))
+			mat_txt = str(format.number(int(mat_amt)))
 		panels[i].get_node('bank').set_text(mat_txt)
 		
 		if i < 3:
@@ -401,7 +401,7 @@ func _draw_gui():
 			if diff <= 0:
 				filltime = "FULL"
 			elif mat_rate > 0:
-				filltime = "Full in " + format._verbose_time((mat_max - mat_amt) / mat_rate)
+				filltime = "Full in " + format.verbose_time((mat_max - mat_amt) / mat_rate)
 			panels[i].get_node('fillbar/filltime').set_text(filltime)
 			
 		var show_lvl = int(skill_panels[i].get_node('lvl').get_text())
@@ -414,10 +414,7 @@ func _draw_gui():
 		var xp_needed = _get_skill_level(real_lvl+1) - _get_skill_level(real_lvl)
 		var xp_progress = your_skills[i]['xp'] - _get_skill_level(real_lvl)
 		var skill_per =  (xp_progress*1.0) / (xp_needed*1.0)  
-		if i == 0:
-			printt(_get_skill_level(real_lvl), _get_skill_level(real_lvl+1))
 		if show_per != skill_per:
-			#print(skill_per)
 			skill_panels[i].get_node('fillbar').set_value(skill_per)
 
 
@@ -591,17 +588,17 @@ func _on_ratepop_about_to_show():
 		#Show data
 		popup.get_node('rate_name').set_text(mats[cmm]+" production")
 		
-		popup.get_node('you_base').set_text(format._number(you_base))
-		popup.get_node('you_pro').set_text("+"+format._number(you_pro))
+		popup.get_node('you_base').set_text(format.number(you_base))
+		popup.get_node('you_pro').set_text("+"+format.number(you_pro))
 		
-		popup.get_node('workers_q').set_text("x"+format._number(workers_q))
-		popup.get_node('worker_base').set_text(format._number(worker_base))
-		popup.get_node('worker_pro').set_text("+"+format._number(worker_pro))
+		popup.get_node('workers_q').set_text("x"+format.number(workers_q))
+		popup.get_node('worker_base').set_text(format.number(worker_base))
+		popup.get_node('worker_pro').set_text("+"+format.number(worker_pro))
 		
-		popup.get_node('boost_per').set_text(format._number(boost_per*100)+"%")
-		popup.get_node('boost_pro').set_text(format._number(boost_pro))
+		popup.get_node('boost_per').set_text(format.number(boost_per*100)+"%")
+		popup.get_node('boost_pro').set_text(format.number(boost_pro))
 		
-		popup.get_node('total_pro').set_text("Net Total: +"+format._number(total_pro))
+		popup.get_node('total_pro').set_text("Net Total: +"+format.number(total_pro))
 		
 		#Set position
 	var m_pos = get_tree().get_root().get_mouse_pos()

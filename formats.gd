@@ -1,6 +1,6 @@
 extends Node
 
-func _verbose_time(t):
+func verbose_time(t):
 	#convert t sec into "ad, xh, ym, zs" format
 	var seconds = int(t)
 	var minutes = int(t/60)
@@ -29,7 +29,7 @@ func _verbose_time(t):
 	seconds = str(seconds,"s")
 	return str(days,hours,minutes,seconds)
 
-func _time(t):
+func time(t):
 	#format t seconds into hr:mn:sc format
 	var seconds = int(t)
 	var minutes = int(t/60)
@@ -58,7 +58,7 @@ func _time(t):
 	return str(days,hours,":",minutes,":",seconds)
 
 
-func _number(n):
+func number(n):
 	#Attempt to clamp a number to a max of 6 characters
 	var suffix = ''
 	if n >= 1000000000:			#Billions (1,000m)
