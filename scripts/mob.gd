@@ -6,11 +6,6 @@ extends Panel
 var combat = get_node('/root/Game/combat')	#link to combat node
 var rng = get_node('/root/random')			#random name generator
 
-#components
-var healthbar = get_node('healthbar')
-var damagelabel = get_node('damage')
-var namelabel = get_node('mob')
-var levellabel = get_node('mob_lvl')
 
 #attributes
 var name = "Bob the Mob"
@@ -59,9 +54,15 @@ func _draw_name():
 	pass
 
 func _set_total_health():
-	pass
-
-func _damage():
+	var base_health = max(1.0,(vitality*0.5))*health_factor
+	if boss == 2:
+		base_health *= 5.0
+	elif boss == 1:
+		base_health *= 2.0
+	
+	var min_health = base_health * health_var
+	var max_health = base_health * (1.0+health_var)
+func _damage_range():
 	pass
 
 func _die():

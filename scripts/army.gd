@@ -31,6 +31,9 @@ func _ready():
 ### PUBLIC FUNCTIONS ###
 func new_army():
 	set_total_health()
+	_set_troopers()
+	_set_equipment()
+	_draw_panel()
 
 func attack():
 	var dmg = _damage()
@@ -90,6 +93,13 @@ func is_combat_ready():
 	return is_ready
 
 ### PRIVATE FUNCTIONS ###
+func _draw_panel():
+	_draw_troopers()
+	var per = current_health*1.0 / total_health*1.0
+	_draw_healthbar(per)
+	_draw_damage()
+	_draw_shields()
+
 func _draw_healthbar(per):
 	var bar = get_node('healthbar')
 	var show_v = bar.get_value()
@@ -116,6 +126,8 @@ func _draw_shields():
 func _draw_troopers():
 	var troop_txt = "Troopers (" +format.number(troops)+ ")"
 	get_node('troops').set_text(troop_txt)
+
+
 
 func _get_skill(skill):
 	var data = []
@@ -154,7 +166,7 @@ func _damage_range():
 	var base_unit_dmg = unit_damage + unit_skills(0)
 	var base_dmg = base_unit_damage * troops
 	var min_dmg = base_dmg * damage_var
-	var max_dmg = base_dmg * (1.0*damage_var)
+	var max_dmg = base_dmg * (1.0+damage_var)
 	return [min_dmg, max_dmg]
 
 func _die():
