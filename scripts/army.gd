@@ -4,7 +4,7 @@ extends Panel
 ### GLOBALS ###
 
 #links
-var population
+var population = get_node('/root/Game/population')
 var construction = get_node('/root/Game/construction')
 
 #army attributes
@@ -30,13 +30,21 @@ func _ready():
 
 ### PUBLIC FUNCTIONS ###
 func new_army():
-	pass
+	set_total_health()
 
 func attack():
-	pass
+	var dmg = _damage()
+	randomize()
+	return round(rand_range(dmg[0],dmg[1]))
 
 func take_damage(dmg):
-	pass
+	var damage = max(0,dmg-get_shields())
+	var new_health = self.current_health - damage
+	if new_health <= 0:
+		self.current_health = 0
+		self._die()
+	else:
+		self.current_health = new_health
 
 func set_total_health():
 	set_armor()
@@ -56,6 +64,10 @@ func get_shields():
 	_get_skill(2)
 
 ## set equipment
+func set_equipment():
+	for i in range(3):
+		_set_skill(i)
+
 func set_weapons():
 	_set_skill(0)
 
@@ -78,14 +90,32 @@ func is_combat_ready():
 	return is_ready
 
 ### PRIVATE FUNCTIONS ###
-func _draw_healthbar():
-	pass
+func _draw_healthbar(per):
+	var bar = get_node('healthbar')
+	var show_v = bar.get_value()
+	if per-0.05 < show_v < per+0.05:	#clamp to value if within threshold
+		show_v = per
+	else:	#otherwise, slide bar up or down
+		show_v += sign(per - show_v) * (abs(per - show_v)*0.05)*2
+	bar.set_value(show_v)
+
+	var health_txt = format.number(current_health) + "/" + format.number(total_health)
+	get_node('health').set_text(health_txt)
+	
+	
 func _draw_damage():
-	pass
+	var dmg = _damage_range()
+	var dmg_txt = "Damage: " +format.number(dmg[0])+ "-" +format.number(dmg[1])
+	get_node('damage').set_text(dmg_txt)
+
 func _draw_shields():
-	pass
+	var sh = _get_shields()
+	var sh_txt = "Shields: " +format.number(sh)
+	get_node('shields').set_text(sh_txt)
+
 func _draw_troopers():
-	pass
+	var troop_txt = "Troopers (" +format.number(troops)+ ")"
+	get_node('troops').set_text(troop_txt)
 
 func _get_skill(skill):
 	var data = []
@@ -121,10 +151,16 @@ func _set_troopers():
 	troops = T
 
 func _damage_range():
-	pass
+	var base_unit_dmg = unit_damage + unit_skills(0)
+	var base_dmg = base_unit_damage * troops
+	var min_dmg = base_dmg * damage_var
+	var max_dmg = base_dmg * (1.0*damage_var)
+	return [min_dmg, max_dmg]
 
 func _die():
-	pass
+	self.is_dead = true
+	if not self.is_auto:
+		self.combat_ready = false
 
 ### CHILD FUNCTIONS ###
 
