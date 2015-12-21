@@ -27,6 +27,17 @@ func _ready():
 	pass
 
 ###	COMBAT ARMY FUNCTIONS	###
+func reset():
+	pass
+
+func restore(source):
+	pass
+
+func save():
+	var saveDict = {
+	
+		}
+	return saveDict
 
 ### PUBLIC FUNCTIONS ###
 func new_army():
