@@ -44,14 +44,14 @@ func process(delta):
 func _combat():
 	if not army.is_dead and not mob.is_dead:	#both sides active
 		#Army is still living..
-		if not army.is_dead:
-			if army.is_ready:
-				var army_dmg = army.attack()	#roll damage
-				mob.take_damage(army_dmg)		#apply damage
+		if army.is_ready:
+			var army_dmg = army.attack()	#roll damage
+			mob.take_damage(army_dmg)		#apply damage
 		#Mob counters if still living
 		if not mob.is_dead:
 			var mob_dmg = mob.attack()
 			army.take_damage(mob_dmg)
+
 	else:	#army or mob is dead
 		if army.is_dead:
 			if army.is_ready:

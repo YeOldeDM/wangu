@@ -41,9 +41,10 @@ func save():
 
 ### PUBLIC FUNCTIONS ###
 func new_army():
-	set_total_health()
 	_set_troopers()
 	_set_equipment()
+	set_total_health()
+	
 	_draw_panel()
 
 func attack():

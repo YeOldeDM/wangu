@@ -25,14 +25,20 @@ func _ready():
 
 ### PUBLIC FUNCTIONS ###
 func generate_map():
-	pass
+	if grid.get_children().size > 0:
+		_clear_map()
+	for l in range(100):
+		_draw_cell(l)
 	
 func regenerate_map():
 	pass
 
 
 func next_cell():
-	pass
+	_collect_loot()
+	current_cell += 1
+	if current_cell > 99:
+		_next_zone()
 
 func set_cells(cellsList):
 	pass
@@ -46,11 +52,20 @@ func _clear_map():
 	for cell in grid.get_children():
 		cell.queue_free()
 
-func _draw_cell():
+func _draw_cell(l):
 	#instanciate a map cell
 	var cell = map_cell.instance()
 	#define cell attributes..
-	
+	var L = (sector*1000) + (zone*100) + l
+	cell.level = L
+	cell.make_loot()
+	if l == current_cell:
+		cell.make_current()
+	elif l < current_cell:
+		cell.make_conquered()
+	else:
+		cell.make_wild()
+
 	#add instance to grid
 	grid.add_child(cell)
 	
@@ -58,10 +73,17 @@ func _collect_loot():
 	pass
 	
 func _next_zone():
-	pass
+	current_cell = 0
+	zone += 1
+	if zone > 10:
+		_next_sector()
+	else:
+		generate_map()
 
 func _next_sector():
-	pass
+	zone = 1
+	sector += 1
+	generate_map()
 ### CHILD FUNCTIONS ###
 
 
