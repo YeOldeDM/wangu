@@ -36,10 +36,13 @@ func regenerate_map():
 
 func next_cell():
 	_collect_loot()
+	grid.get_children()[current_cell].make_conquered()
 	current_cell += 1
 	if current_cell > 99:
 		_next_zone()
-
+	grid.get_children()[current_cell].make_active()
+	
+	
 func set_cells(cellsList):
 	pass
 

@@ -16,15 +16,17 @@ var battle_clock = 0.0
 var turn_duration = 0.75
 
 func _ready():
-	pass
-#	army = get_node('bots')
-#	mob = get_node('mobs')
-#	map = get_node('map')
+	army = get_node('Battle/cont/bots')
+	mob = get_node('Battle/cont/mobs')
+	map = get_node('Battle/map')
 
 func reset():
-	map.generate_map()
-	army.new_army()
-	mob.new_mob()
+	if map:
+		map.generate_map()
+	if army:
+		army.new_army()
+	if mob:
+		mob.new_mob()
 
 func restore(source):
 	army.restore(source['army'])
@@ -45,23 +47,28 @@ func process(delta):
 		_combat()
 	else:
 		battle_clock += delta
-
+	if army:
+		army.blit_healthbar()
+	if mob:
+		mob.blit_healthbar()
+	
 func _combat():
 	if not army.is_dead and not mob.is_dead:	#both sides active
 		#Army is still living..
-		if army.is_ready:
+		if army.is_ready or army.is_auto:
+			printt(army.is_ready, army.is_auto)
 			var army_dmg = army.attack()	#roll damage
 			mob.take_damage(army_dmg)		#apply damage
 		#Mob counters if still living
-		if not mob.is_dead:
-			var mob_dmg = mob.attack()
-			army.take_damage(mob_dmg)
+			if not mob.is_dead:
+				var mob_dmg = mob.attack()
+				army.take_damage(mob_dmg)
 
 	else:	#army or mob is dead
 		if army.is_dead:
-			if army.is_ready:
+			if army.is_auto:
 				army.new_army()
 		elif mob.is_dead:
-			map.next_cell()
 			mob.new_mob()
+			map.next_cell()
 

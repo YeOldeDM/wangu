@@ -48,6 +48,9 @@ func new_army():
 	set_total_health()
 	current_health = total_health
 	_draw_panel()
+	
+	is_ready = false
+	is_dead = false
 
 func attack():
 	var dmg = _damage_range()
@@ -109,6 +112,11 @@ func set_combat_ready(ready):
 	
 func is_combat_ready():
 	return is_ready
+
+func blit_healthbar():
+	#slide healthbar if needed
+	var per = (current_health*1.0) / (total_health*1.0)
+	_draw_healthbar(per)
 
 ### PRIVATE FUNCTIONS ###
 func _draw_panel():
@@ -190,7 +198,14 @@ func _damage_range():
 func _die():
 	self.is_dead = true
 	if not self.is_auto:
-		self.combat_ready = false
+		self.is_ready = false
 
 ### CHILD FUNCTIONS ###
 
+
+
+func _on_fight_pressed():
+	is_ready = true
+
+func _on_auto_fight_toggled( pressed ):
+	is_auto = pressed

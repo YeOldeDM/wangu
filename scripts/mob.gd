@@ -90,7 +90,8 @@ func _damage_range():
 	return [int(min_dmg), int(max_dmg)]
 
 func _die():
-	pass
+	is_dead = true
+
 
 
 ### PUBLIC FUNCTIONS ###
@@ -100,6 +101,8 @@ func new_mob():
 	current_health = total_health
 	_draw_panel()
 	
+	is_dead = false
+
 
 func attack():
 	var dmg = _damage_range()
@@ -107,15 +110,17 @@ func attack():
 	return round(rand_range(dmg[0],dmg[1]))
 
 func take_damage(dmg):
-	var damage = max(0,dmg-get_shields())
-	var new_health = self.current_health - damage
+	var new_health = self.current_health - dmg
 	if new_health <= 0:
 		self.current_health = 0
 		self._die()
 	else:
 		self.current_health = new_health
 
-
+func blit_healthbar():
+	#slide healthbar if needed
+	var per = (current_health*1.0) / (total_health*1.0)
+	_draw_healthbar(per)
 ### CHILD FUNCTIONS ###
 
 
