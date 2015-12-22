@@ -8,7 +8,7 @@ var map_cell = preload('res://map_cell.xml')
 
 #links
 var combat = get_node('/root/Game/combat')	#link to combat node
-var grid = get_node('grid')		#link to map grid object
+var grid
 
 
 var sector = 0			#current sector
@@ -18,14 +18,14 @@ var current_cell = 0	#current zone cell
 
 ### INIT ###
 func _ready():
-	# Initialization here
-	pass
+	grid = get_node('grid')		#link to map grid object
+	get_node('/root/Game/combat').map = self
 
 ###	COMBAT MAP FUNCTIONS	###
 
 ### PUBLIC FUNCTIONS ###
 func generate_map():
-	if grid.get_children().size > 0:
+	if grid.get_children().size() > 0:
 		_clear_map()
 	for l in range(100):
 		_draw_cell(l)
@@ -44,7 +44,7 @@ func set_cells(cellsList):
 	pass
 
 func get_cell(n):
-	return cells[n].cell
+	return grid.get_children()[n]
 	
 ### PRIVATE FUNCTIONS ###
 func _clear_map():
@@ -60,7 +60,7 @@ func _draw_cell(l):
 	cell.level = L
 	cell.make_loot()
 	if l == current_cell:
-		cell.make_current()
+		cell.make_active()
 	elif l < current_cell:
 		cell.make_conquered()
 	else:

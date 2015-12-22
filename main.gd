@@ -12,9 +12,9 @@ var construction
 var time_label
 var game_time = 0.0
 
-var autoload = true
+var autoload = false
 
-var autosave = true
+var autosave = false
 var autosave_timer = 0.0	#timer in sec
 var autosave_interval = 5	#in minutes
 

@@ -2,9 +2,9 @@
 extends Control
 
 
-var army = get_node('bots')
-var mob = get_node('mobs')
-var map = get_node('map')
+var army
+var mob
+var map
 
 var format = get_node('/root/formats')
 var bank = get_node('/root/Game/Bank')
@@ -17,9 +17,14 @@ var turn_duration = 0.75
 
 func _ready():
 	pass
+#	army = get_node('bots')
+#	mob = get_node('mobs')
+#	map = get_node('map')
 
 func reset():
-	pass
+	map.generate_map()
+	army.new_army()
+	mob.new_mob()
 
 func restore(source):
 	army.restore(source['army'])
