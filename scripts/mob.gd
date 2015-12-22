@@ -67,7 +67,7 @@ func _draw_damage():
 	get_node('damage').set_text(dmg_txt)
 
 func _draw_name():
-	get_node('mob').set_text(mob_name)
+	get_node('mob').set_text(mob_name + " [STR "+str(damage_base)+"] [VIT "+str(health_base)+"]")
 
 func _draw_level():
 	get_node('mob_lvl').set_text("Level "+format.number(level))
@@ -97,6 +97,21 @@ func _die():
 ### PUBLIC FUNCTIONS ###
 func new_mob():
 	level += 1
+	
+	damage_base = 1
+	for i in range(level):
+		damage_base += round(rand_range(1,6))
+
+	health_base = 1
+	for i in range(level):
+		health_base += round(rand_range(1,6))
+	if boss == 1:	#if mini-boss
+		damage_base *= 5
+		health_base *= 5
+	elif boss == 2:	#if mega-boss
+		damage_base *= 10
+		health_base *= 10
+		
 	_set_total_health()
 	current_health = total_health
 	mob_name = rng.random_animal()
