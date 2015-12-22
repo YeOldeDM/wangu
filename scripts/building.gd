@@ -121,11 +121,13 @@ func draw_button():
 
 
 func _on_Button_mouse_enter():
+	print("ENTER "+building.name)
 	if not get_node('/root/Game').is_menu_open:
 		get_node('Popup').popup()
 
 
 func _on_Button_mouse_exit():
+	print("EXIT "+building.name)
 	get_node('Popup').hide()
 
 

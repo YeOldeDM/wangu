@@ -99,6 +99,7 @@ func new_mob():
 	level += 1
 	_set_total_health()
 	current_health = total_health
+	mob_name = rng.random_animal()
 	_draw_panel()
 	
 	is_dead = false

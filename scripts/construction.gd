@@ -154,6 +154,8 @@ func _ready():
 		else:
 			print("\n\n INVALID STRUCTURE CANNOT BE CREATED \n "+struct['ID'])
 
+func _on_cont_mouse_enter():
+	print("hit container")
 
 
 
@@ -607,3 +609,7 @@ func make_nanomail(l=0):
 			2:130,
 			3:0}
 	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+
+
+
+

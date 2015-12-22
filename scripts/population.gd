@@ -101,6 +101,9 @@ func process(delta):
 #	PUBLIC FUNCTIONS	#
 #########################
 
+func gain_land(amt):
+	land += amt
+	set_max_population()
 
 func set_max_population():
 	var pop = 10 + land

@@ -6,16 +6,22 @@ var army
 var mob
 var map
 
-var format = get_node('/root/formats')
-var bank = get_node('/root/Game/Bank')
-var population = get_node('/root/Game/population')
-var news = get_node('/root/Game/news')
-var construction = get_node('/root/Game/construction')
+var format
+var bank
+var population
+var news
+var construction
 
 var battle_clock = 0.0
 var turn_duration = 0.75
 
 func _ready():
+	format = get_node('/root/formats')
+	bank = get_node('/root/Game/Bank')
+	population = get_node('/root/Game/population')
+	news = get_node('/root/Game/news')
+	construction = get_node('/root/Game/construction')
+
 	army = get_node('Battle/cont/bots')
 	mob = get_node('Battle/cont/mobs')
 	map = get_node('Battle/map')
@@ -69,6 +75,7 @@ func _combat():
 			if army.is_auto:
 				army.new_army()
 		elif mob.is_dead:
+			var mob_name = mob.mob_name
 			mob.new_mob()
-			map.next_cell()
+			map.next_cell(mob_name)
 
