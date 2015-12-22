@@ -106,6 +106,7 @@ func is_autofighting():
 
 func set_combat_ready(ready):
 	is_ready = ready
+	
 func is_combat_ready():
 	return is_ready
 
