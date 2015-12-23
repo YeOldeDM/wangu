@@ -81,10 +81,10 @@ class Structure:
 			self.own.bank.set_boost(self.material)
 		
 		elif self.category == 'Equipment':
-			self.own.combat.army.set_equipment(self.material)
+			self.own.combat.set_equipment(self.material)
 		
 		elif self.category == 'Tactics':
-			self.own.combat.army.set_troopers()
+			self.own.combat.set_troopers()
 		
 	func upgrade(n):
 		#Try upgrading this structure by n levels

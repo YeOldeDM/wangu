@@ -44,7 +44,7 @@ func save():
 ### PUBLIC FUNCTIONS ###
 func new_army():
 	_set_troopers()
-	set_all_equipment()
+	set_equipment()
 	set_total_health()
 	current_health = total_health
 	_draw_panel()
@@ -85,12 +85,9 @@ func get_shields_list():
 	
 
 ## set equipment
-func set_all_equipment():
+func set_equipment():
 	for i in range(3):
 		_set_skill(i)
-
-func set_equipment(i):
-	_set_skill(i)
 
 func set_weapons():
 	_set_skill(0)
