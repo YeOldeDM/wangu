@@ -14,7 +14,7 @@ var damage_var = 0.4		#variation +- base damage
 var unit_health= 10			#base HP per trooper
 var unit_skills = {0:0, 1:0, 2:0}	#0=damage, 1=armor, 2=shields
 
-var current_health
+var current_health = 0
 var total_health
 
 var is_dead = true
@@ -29,23 +29,30 @@ func _ready():
 	get_node('/root/Game/combat').army = self
 
 ###	COMBAT ARMY FUNCTIONS	###
+#..we might not need any of these..#
 func reset():
 	pass
 
 func restore(source):
-	pass
+	new_army(false)
 
 func save():
 	var saveDict = {
-	
+
 		}
 	return saveDict
 
 ### PUBLIC FUNCTIONS ###
-func new_army():
+func new_army(from_pool=true):
 	_set_troopers()
-	set_equipment()
+	set_all_equipment()
 	set_total_health()
+	if from_pool == true:
+		var pop = population.population['current'] - population.workforce['current']
+		if pop >= 2:
+			population._change_current_population(-1*troops)
+		else:
+			return
 	current_health = total_health
 	_draw_panel()
 	
@@ -85,9 +92,14 @@ func get_shields_list():
 	
 
 ## set equipment
-func set_equipment():
+func set_equipment(equip):
+	_set_skill(equip)
+
+	
+func set_all_equipment():
 	for i in range(3):
 		_set_skill(i)
+
 
 func set_weapons():
 	_set_skill(0)

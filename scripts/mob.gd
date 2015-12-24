@@ -23,7 +23,7 @@ var health_factor = 4.0 #HP/vitality
 var damage_var = 0.6	#variation +- base DMG
 var health_var = 0.05	#variation +- base HP
 
-var current_health		#current HP
+var current_health = 0		#current HP
 var total_health		#max HP
 
 var is_dead = true		#Death flag
@@ -95,11 +95,22 @@ func _die():
 
 
 ### PUBLIC FUNCTIONS ###
-func new_mob():
+func new_mob(name=null):
+	#increment level
 	level += 1
+	#set base dmg and health
+	damage_base = 1
+	health_base = 1
+	for i in range(level):
+		damage_base += round(rand_range(1,6))
+		health_base += round(rand_range(1,6))
+	
 	_set_total_health()
 	current_health = total_health
-	mob_name = rng.random_animal()
+	if !name:
+		mob_name = rng.random_animal()
+	else:
+		mob_name = name
 	_draw_panel()
 	
 	is_dead = false
@@ -119,9 +130,24 @@ func take_damage(dmg):
 		self.current_health = new_health
 
 func blit_healthbar():
-	#slide healthbar if needed
-	var per = (current_health*1.0) / (total_health*1.0)
+	var per = 1.0
+	if current_health:
+		per = (current_health*1.0) / (total_health*1.0)
 	_draw_healthbar(per)
+
+#Reset/Save/Restore
+func reset():
+	pass
+
+func save():
+	var saveDict = {
+		'mob_name':		mob_name
+	}
+	return saveDict
+	
+func restore(source):
+	new_mob(source['mob_name'])
+
 ### CHILD FUNCTIONS ###
 
 

@@ -100,6 +100,25 @@ func _next_sector():
 	zone = 1
 	sector += 1
 	generate_map()
+
+
+func reset():
+	pass
+
+func save():
+	var saveDict = {
+		'sector':	sector,
+		'zone':		zone,
+		'current_cell':	current_cell
+	}
+	return saveDict
+	
+func restore(source):
+	current_cell = source['current_cell']
+	zone = source['zone']
+	sector = source['sector']
+	
+	generate_map()
 ### CHILD FUNCTIONS ###
 
 
