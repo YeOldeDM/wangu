@@ -55,6 +55,7 @@ func _draw_healthbar(per):
 
 func _draw_panel():
 	_draw_name()
+	_draw_stats()
 	_draw_level()
 	var per = current_health*1.0 / total_health*1.0
 	_draw_healthbar(per)
@@ -68,6 +69,9 @@ func _draw_damage():
 
 func _draw_name():
 	get_node('mob').set_text(mob_name)
+
+func _draw_stats():
+	get_node('mob_stats').set_text("[ STR "+format.number(damage_base)+"    VIT "+format.number(health_base)+" ]")
 
 func _draw_level():
 	get_node('mob_lvl').set_text("Level "+format.number(level))
@@ -97,7 +101,7 @@ func _die():
 ### PUBLIC FUNCTIONS ###
 func new_mob(name=null):
 	#increment level
-	level += 1
+	level = combat.map.level
 	#set base dmg and health
 	damage_base = 1
 	health_base = 1

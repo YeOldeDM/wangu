@@ -2,7 +2,7 @@
 extends Panel
 
 ### GLOBALS ###
-
+var format
 #Preloads
 var map_cell = preload('res://map_cell.xml')
 
@@ -14,6 +14,7 @@ var grid
 var sector = 0			#current sector
 var zone = 1			#current zone
 var current_cell = 0	#current zone cell
+var level = 1
 
 var material_ref = {
 	0:	'Metal',
@@ -24,16 +25,23 @@ var material_ref = {
 
 ### INIT ###
 func _ready():
+	format = get_node('/root/formats')
+	
 	combat = get_node('/root/Game/combat')	#link to combat node
 	grid = get_node('grid')		#link to map grid object
 	combat.map = self
 
+	get_node('sector_bar').set_max(format.greek_abc.size())
+	
+	_draw_sector()
+	_draw_zone()
+	
 ###	COMBAT MAP FUNCTIONS	###
 
 ### PUBLIC FUNCTIONS ###
 func generate_map():
-	if grid.get_children().size() > 0:
-		_clear_map()
+
+	_clear_map()
 	for l in range(100):
 		_draw_cell(l)
 	
@@ -48,10 +56,7 @@ func next_cell(dropper):
 	if current_cell > 99:
 		_next_zone()
 	grid.get_children()[current_cell].make_active()
-	
-	
-func set_cells(cellsList):
-	pass
+	level += 1
 
 func get_cell(n):
 	return grid.get_children()[n]
@@ -95,21 +100,39 @@ func _next_zone():
 		_next_sector()
 	else:
 		generate_map()
+	_draw_zone()
+
+func _draw_zone():
+	get_node('zone_bar').set_value(zone)
+	get_node('zone_bar/zone').set_text("Zone "+ str(zone) +"/10")
 
 func _next_sector():
 	zone = 1
 	sector += 1
+	_draw_sector()
 	generate_map()
+	
+	
+func _draw_sector():
+	get_node('sector_bar').set_value(sector)
+	get_node('sector_bar/sector').set_text(format.greek_abc[sector] +" Sector")
+
 
 
 func reset():
-	pass
+	sector = 0
+	zone = 1
+	current_cell = 0
+	level = 1
+	printt(sector, zone, current_cell, level)
+	generate_map()
 
 func save():
 	var saveDict = {
 		'sector':	sector,
 		'zone':		zone,
-		'current_cell':	current_cell
+		'current_cell':	current_cell,
+		'level':		level
 	}
 	return saveDict
 	
@@ -117,7 +140,7 @@ func restore(source):
 	current_cell = source['current_cell']
 	zone = source['zone']
 	sector = source['sector']
-	
+	level = source['level']
 	generate_map()
 ### CHILD FUNCTIONS ###
 

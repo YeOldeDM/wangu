@@ -28,11 +28,11 @@ func _ready():
 
 func reset():
 	if map:
-		map.generate_map()
+		map.reset()
 	if army:
-		army.new_army()
+		army.reset()
 	if mob:
-		mob.new_mob()
+		mob.reset()
 
 func restore(source):
 	army.restore(source['army'])
