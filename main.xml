@@ -1,33 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resource_file type="PackedScene" subresource_count="14" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
-	<ext_resource path="res://scripts/main.gd" type="Script" index="0">
-	</ext_resource>
-	<ext_resource path="res://scripts/system.gd" type="Script" index="6">
-	</ext_resource>
-	<ext_resource path="res://fonts/freesans_10.fnt" type="Font" index="11">
-	</ext_resource>
-	<ext_resource path="res://theme.xml" type="Theme" index="9">
-	</ext_resource>
-	<ext_resource path="res://fonts/freesans_18.fnt" type="Font" index="8">
-	</ext_resource>
-	<ext_resource path="res://news.xml" type="PackedScene" index="1">
-	</ext_resource>
-	<ext_resource path="res://fonts/pixop_14.fnt" type="Font" index="12">
-	</ext_resource>
-	<ext_resource path="res://fonts/pixop_24.fnt" type="Font" index="7">
-	</ext_resource>
-	<ext_resource path="res://population.xml" type="PackedScene" index="3">
-	</ext_resource>
-	<ext_resource path="res://construction.xml" type="PackedScene" index="5">
-	</ext_resource>
-	<ext_resource path="res://combat.xml" type="PackedScene" index="4">
-	</ext_resource>
-	<ext_resource path="res://fonts/freesans_16.fnt" type="Font" index="10">
-	</ext_resource>
-	<ext_resource path="res://bank.xml" type="PackedScene" index="2">
-	</ext_resource>
+	<ext_resource path="res://theme.xml" type="Theme" index="9"></ext_resource>
+	<ext_resource path="res://fonts/freesans_18.fnt" type="Font" index="8"></ext_resource>
+	<ext_resource path="res://fonts/freesans_10.fnt" type="Font" index="11"></ext_resource>
+	<ext_resource path="res://scripts/main.gd" type="Script" index="0"></ext_resource>
+	<ext_resource path="res://scripts/system.gd" type="Script" index="6"></ext_resource>
+	<ext_resource path="res://news.xml" type="PackedScene" index="1"></ext_resource>
+	<ext_resource path="res://fonts/pixop_14.fnt" type="Font" index="12"></ext_resource>
+	<ext_resource path="res://fonts/pixop_24.fnt" type="Font" index="7"></ext_resource>
+	<ext_resource path="res://population.xml" type="PackedScene" index="3"></ext_resource>
+	<ext_resource path="res://construction.xml" type="PackedScene" index="5"></ext_resource>
+	<ext_resource path="res://combat.xml" type="PackedScene" index="4"></ext_resource>
+	<ext_resource path="res://bank.xml" type="PackedScene" index="2"></ext_resource>
+	<ext_resource path="res://fonts/freesans_16.fnt" type="Font" index="10"></ext_resource>
 	<main_resource>
-
 		<dictionary name="_bundled" shared="false">
 			<string> "conn_count" </string>
 			<int> 17 </int>

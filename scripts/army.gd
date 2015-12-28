@@ -3,9 +3,13 @@ extends Panel
 
 ### GLOBALS ###
 var format
+
 #links
+var combat
 var population
 var construction
+
+
 
 #army attributes
 var troops = 1				#current no. of troops
@@ -24,6 +28,8 @@ var is_auto = false
 ### INIT ###
 func _ready():
 	format = get_node('/root/formats')
+	
+	combat = get_node('/root/Game/combat')
 	population = get_node('/root/Game/population')
 	construction = get_node('/root/Game/construction')
 	get_node('/root/Game/combat').army = self
@@ -31,10 +37,12 @@ func _ready():
 ###	COMBAT ARMY FUNCTIONS	###
 #..we might not need any of these..#
 func reset():
-	pass
+	restore(null)
 
 func restore(source):
-	new_army(false)
+	_set_troopers()
+	set_all_equipment()
+	_draw_panel()
 
 func save():
 	var saveDict = {
@@ -212,12 +220,21 @@ func _die():
 	if not self.is_auto:
 		self.is_ready = false
 
+
+
 ### CHILD FUNCTIONS ###
-
-
-
 func _on_fight_pressed():
 	is_ready = true
 
 func _on_auto_fight_toggled( pressed ):
 	is_auto = pressed
+
+
+func _on_info_mouse_enter(title,index):
+	var data = [ title, _get_skill(index) ]
+	combat.show_info(data)
+
+
+func _on_info_mouse_exit():
+	combat.info.hide()
+

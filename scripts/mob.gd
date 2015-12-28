@@ -141,7 +141,8 @@ func blit_healthbar():
 
 #Reset/Save/Restore
 func reset():
-	pass
+	new_mob()
+	_draw_panel()
 
 func save():
 	var saveDict = {
@@ -151,6 +152,7 @@ func save():
 	
 func restore(source):
 	new_mob(source['mob_name'])
+	_draw_panel()
 
 ### CHILD FUNCTIONS ###
 
