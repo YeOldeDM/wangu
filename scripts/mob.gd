@@ -24,7 +24,7 @@ var damage_var = 0.6	#variation +- base DMG
 var health_var = 0.05	#variation +- base HP
 
 var current_health = 0		#current HP
-var total_health		#max HP
+var total_health = 0		#max HP
 
 var is_dead = true		#Death flag
 

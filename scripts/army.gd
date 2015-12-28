@@ -15,7 +15,7 @@ var unit_health= 10			#base HP per trooper
 var unit_skills = {0:0, 1:0, 2:0}	#0=damage, 1=armor, 2=shields
 
 var current_health = 0
-var total_health
+var total_health = 0
 
 var is_dead = true
 var is_ready = false
