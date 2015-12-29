@@ -14,7 +14,7 @@ func message(text,time_code=-1):
 	newsbox.newline()
 	var prefix ="  "
 	if time_code >= 0:
-		prefix = "<"+format._time(time_code)+">  "
+		prefix = "<"+format.time(time_code)+">  "
 	newsbox.append_bbcode(prefix+text)
 
 func _ready():

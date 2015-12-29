@@ -409,10 +409,10 @@ func set_troopers():
 
 
 func draw_bots_combat_info():
-	var troops = str("Troopers (",format._number(army.troops),")")
+	var troops = str("Troopers (",format.number(army.troops),")")
 	var d = army._damage()
-	var damage = str("Damage: ",format._number(d[0]),"-",format._number(d[1]))
-	var shields = str("Shields: ",format._number(army._get_shields()))
+	var damage = str("Damage: ",format.number(d[0]),"-",format.number(d[1]))
+	var shields = str("Shields: ",format.number(army._get_shields()))
 
 	bots_panel.get_node('troops').set_text(troops)
 
@@ -422,7 +422,7 @@ func draw_bots_combat_info():
 func draw_mob_combat_info():
 	var d = mob._damage()
 	var level = str("Level ", mob.level)
-	var damage = str("Damage: ", format._number(d[0]),"-",format._number(d[1]))
+	var damage = str("Damage: ", format.number(d[0]),"-",format.number(d[1]))
 
 	mob_panel.get_node('mob').set_text(mob.name)
 	mob_panel.get_node('mob_lvl').set_text(level)
@@ -469,7 +469,8 @@ func _combat():
 			#Respawn army, if ready
 			if army.combat_ready:
 				if population.population['current']+(army.troops) > ceil(population.population['max']*0.5)+(army.troops*2):
-					army.new_army()
+					if (population.population['current']*1.0) / (population.population['max']*1.0) >= 0.9:
+						army.new_army()
 				else:
 					population._check_current_workforce()
 		if mob.is_dead:
@@ -489,7 +490,7 @@ func _check_bots_healthbar(per):
 	else:
 		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
 		bar.set_value(bar_per)
-	var h = str(format._number(army.current_health),"/",format._number(army.total_health))
+	var h = str(format.number(army.current_health),"/",format.number(army.total_health))
 	bar.get_node('health').set_text(h)
 
 func _check_mob_healthbar(per):
@@ -500,7 +501,7 @@ func _check_mob_healthbar(per):
 	else:
 		bar_per += (sign(per-bar_per) * (abs(per-bar_per)*0.05))*2
 		bar.set_value(bar_per)
-	var h = str(format._number(mob.current_health),"/",format._number(mob.total_health))
+	var h = str(format.number(mob.current_health),"/",format.number(mob.total_health))
 	bar.get_node('health').set_text(h)
 
 
@@ -592,15 +593,15 @@ func _compop_entry(data):
 
 		#Level
 	var l_lvl = Label.new()
-	l_lvl.set_text("x"+format._number(data.level))
+	l_lvl.set_text("x"+format.number(data.level))
 	
 		#Production factor
 	var l_fac = Label.new()
-	l_fac.set_text("+"+format._number(data.factor))
+	l_fac.set_text("+"+format.number(data.factor))
 
 		#Total
 	var l_tot = Label.new()
-	l_tot.set_text(format._number(int(data.level*data.factor)))
+	l_tot.set_text(format.number(int(data.level*data.factor)))
 	
 	grid.add_child(l_name)
 	grid.add_child(l_lvl)
@@ -634,15 +635,15 @@ func _on_compop_about_to_show():
 		grid.add_child(l_troops)
 		
 		var q_troops = Label.new()
-		q_troops.set_text("x"+format._number(army.troops))
+		q_troops.set_text("x"+format.number(army.troops))
 		grid.add_child(q_troops)
 		
 		var n_troops = Label.new()
-		n_troops.set_text("+"+format._number(v_total))
+		n_troops.set_text("+"+format.number(v_total))
 		grid.add_child(n_troops)
 
 		var t_troops = Label.new()
-		t_troops.set_text(format._number(v_total*army.troops))
+		t_troops.set_text(format.number(v_total*army.troops))
 		grid.add_child(t_troops)
 
 
