@@ -177,6 +177,11 @@ func _draw_troopers():
 
 func _get_skill(skill):
 	var data = []
+	var total = 0
+	if skill == 0:
+		data.append({'name':'base', 'lvl':1, 'factor':unit_damage})
+	elif skill == 1:
+		data.append({'name':'base', 'lvl':1, 'factor':unit_health})
 	for cat in construction.structures:
 		for struct in construction.structures[cat]:
 			if struct.building.level > 0:

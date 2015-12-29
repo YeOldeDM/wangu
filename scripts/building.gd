@@ -84,7 +84,7 @@ class Structure:
 			self.own.combat.army.set_equipment(self.material)
 		
 		elif self.category == 'Tactics':
-			self.own.combat.army.set_troopers()
+			self.own.combat.army._set_troopers()
 		
 	func upgrade(n):
 		#Try upgrading this structure by n levels

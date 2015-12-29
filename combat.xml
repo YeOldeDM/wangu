@@ -3,11 +3,11 @@
 	<ext_resource path="res://scripts/map.gd" type="Script" index="6"></ext_resource>
 	<ext_resource path="res://scripts/mob.gd" type="Script" index="5"></ext_resource>
 	<ext_resource path="res://scripts/army.gd" type="Script" index="1"></ext_resource>
+	<ext_resource path="res://scripts/combat.gd" type="Script" index="0"></ext_resource>
 	<ext_resource path="res://fonts/freesans_18.fnt" type="Font" index="2"></ext_resource>
 	<ext_resource path="res://fonts/freesans_24.fnt" type="Font" index="4"></ext_resource>
 	<ext_resource path="res://fonts/freesans_10.fnt" type="Font" index="8"></ext_resource>
 	<ext_resource path="res://fonts/freesans_12.fnt" type="Font" index="3"></ext_resource>
-	<ext_resource path="res://scripts/combat.gd" type="Script" index="0"></ext_resource>
 	<ext_resource path="res://fonts/freesans_14.fnt" type="Font" index="7"></ext_resource>
 	<resource type="Theme" path="local://1">
 		<resource name="default_font"></resource>
@@ -130,7 +130,7 @@
 						<string> "2D" </string>
 						<dictionary  shared="false">
 							<string> "ofs" </string>
-							<vector2> 459.36, 285.123 </vector2>
+							<vector2> 229.314, 61.1437 </vector2>
 							<string> "snap_grid" </string>
 							<bool> True </bool>
 							<string> "snap_offset" </string>
@@ -150,7 +150,7 @@
 							<string> "snap_step" </string>
 							<vector2> 8, 8 </vector2>
 							<string> "zoom" </string>
-							<real> 1.67018 </real>
+							<real> 0.902499 </real>
 						</dictionary>
 						<string> "3D" </string>
 						<dictionary  shared="false">
