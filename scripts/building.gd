@@ -81,10 +81,10 @@ class Structure:
 			self.own.bank.set_boost(self.material)
 		
 		elif self.category == 'Equipment':
-			self.own.combat.set_equipment(self.material)
+			self.own.combat.army.set_equipment(self.material)
 		
 		elif self.category == 'Tactics':
-			self.own.combat.set_troopers()
+			self.own.combat.army._set_troopers()
 		
 	func upgrade(n):
 		#Try upgrading this structure by n levels
@@ -115,17 +115,19 @@ func _ready():
 func draw_button():
 	if building:
 		get_node('name').set_text(building.name)
-		get_node('level').set_text(format._number(building.level))
+		get_node('level').set_text(format.number(building.level))
 
 
 
 
 func _on_Button_mouse_enter():
+	print("ENTER "+building.name)
 	if not get_node('/root/Game').is_menu_open:
 		get_node('Popup').popup()
 
 
 func _on_Button_mouse_exit():
+	print("EXIT "+building.name)
 	get_node('Popup').hide()
 
 
@@ -151,7 +153,7 @@ func _on_Popup_about_to_show():
 	panel.raise()
 	
 	panel.get_node('name').set_text(building.name)
-	panel.get_node('level').set_text(str("Level ",format._number(building.level)))
+	panel.get_node('level').set_text(str("Level ",format.number(building.level)))
 	panel.get_node('description').clear()
 	panel.get_node('description').add_text(building.description)
 	
@@ -165,7 +167,7 @@ func _on_Popup_about_to_show():
 	if cost[0] <= 0.0:
 		panel.get_node('metal_cost').set_text("")
 	else:
-		panel.get_node('metal_cost').set_text(format._number(cost[0]))
+		panel.get_node('metal_cost').set_text(format.number(cost[0]))
 #Set Crystal Cost Text
 	c = 0
 	if not bank.can_afford(1,cost[1]):
@@ -174,7 +176,7 @@ func _on_Popup_about_to_show():
 	if cost[1] <= 0.0:
 		panel.get_node('crystal_cost').set_text("")
 	else:
-		panel.get_node('crystal_cost').set_text(format._number(cost[1]))
+		panel.get_node('crystal_cost').set_text(format.number(cost[1]))
 #Set Nanium Cost Text
 	c = 0
 	if not bank.can_afford(2,cost[2]):
@@ -183,7 +185,7 @@ func _on_Popup_about_to_show():
 	if cost[2] <= 0.0:
 		panel.get_node('nanium_cost').set_text("")
 	else:
-		panel.get_node('nanium_cost').set_text(format._number(cost[2]))
+		panel.get_node('nanium_cost').set_text(format.number(cost[2]))
 #Set Tech Cost Text
 	c = 0
 	if not bank.can_afford(3,cost[3]):
@@ -192,7 +194,7 @@ func _on_Popup_about_to_show():
 	if cost[3] <= 0.0:
 		panel.get_node('tech_cost').set_text("")
 	else:
-		panel.get_node('tech_cost').set_text(format._number(cost[3]))
+		panel.get_node('tech_cost').set_text(format.number(cost[3]))
 
 	#get position for popup (lower right corner of parent)
 	var pos = get_global_pos() + get_size()
