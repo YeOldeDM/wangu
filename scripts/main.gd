@@ -56,7 +56,7 @@ func _process(delta):
 	
 	#GAME CLOCK
 	game_time += delta
-	var t = format._time(game_time)
+	var t = format.time(game_time)
 	time_label.set_text(str("Time: ",t))
 	
 	#AUTOSAVE
@@ -150,7 +150,7 @@ func load_game():
 	
 	#Restore global game time
 	if 'time' in loadNodes:
-		prints("Setting game Time:",format._verbose_time(loadNodes['time']))
+		prints("Setting game Time:",format.verbose_time(loadNodes['time']))
 		game_time = loadNodes['time']
 	else:
 		print("No game time saved! Setting to 0s")

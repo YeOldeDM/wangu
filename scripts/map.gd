@@ -3,6 +3,8 @@ extends Panel
 
 ### GLOBALS ###
 var format
+
+var bank
 #Preloads
 var map_cell = preload('res://map_cell.xml')
 
@@ -27,6 +29,7 @@ var material_ref = {
 func _ready():
 	format = get_node('/root/formats')
 	
+	bank = get_node('/root/Game/Bank')
 	combat = get_node('/root/Game/combat')	#link to combat node
 	grid = get_node('grid')		#link to map grid object
 	combat.map = self
@@ -87,7 +90,7 @@ func _draw_cell(l):
 func _collect_loot(mob_name):
 	var cell = grid.get_children()[current_cell]
 	if cell.loot_type <= 3:
-		combat.bank.gain_resource(int(cell.loot_type),int(cell.loot_amt))
+		bank.gain_resource(int(cell.loot_type),int(cell.loot_amt))
 		var loot_txt = str(cell.loot_amt) +" "+ material_ref[int(cell.loot_type)]
 		combat.news.message("The "+ mob_name +" drops [b]" +loot_txt+ "[/b]!")
 	elif cell.loot_type == 4:

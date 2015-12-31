@@ -99,7 +99,7 @@ func _die():
 
 
 ### PUBLIC FUNCTIONS ###
-func new_mob(name=null):
+func new(name=null):
 	#increment level
 	level = combat.map.level
 	#set base dmg and health
@@ -151,7 +151,7 @@ func save():
 	return saveDict
 	
 func restore(source):
-	new_mob(source['mob_name'])
+	new(source['mob_name'])
 	_draw_panel()
 
 ### CHILD FUNCTIONS ###

@@ -51,7 +51,7 @@ func save():
 	return saveDict
 
 ### PUBLIC FUNCTIONS ###
-func new_army(from_pool=true):
+func new(from_pool=true):
 	_set_troopers()
 	set_all_equipment()
 	set_total_health()
@@ -68,9 +68,12 @@ func new_army(from_pool=true):
 	is_dead = false
 
 func attack():
-	var dmg = _damage_range()
-	randomize()
-	return round(rand_range(dmg[0],dmg[1]))
+	if is_ready == true:
+		var dmg = _damage_range()
+		randomize()
+		return round(rand_range(dmg[0],dmg[1]))
+	else:
+		return null
 
 func take_damage(dmg):
 	var damage = max(0,dmg-get_shields())
@@ -237,9 +240,10 @@ func _on_auto_fight_toggled( pressed ):
 
 func _on_info_mouse_enter(title,index):
 	var data = [ title, _get_skill(index) ]
-	combat.show_info(data)
+	#combat.show_info(data)
 
 
 func _on_info_mouse_exit():
-	combat.info.hide()
+	#combat.info.hide()
+	pass
 
