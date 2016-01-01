@@ -54,20 +54,24 @@ func process(delta):
 		clock = 0
 		_combat_tick()
 
+	army.blit_healthbar()
+	mob.blit_healthbar()
+
 func _combat_tick():
-	print(army.is_dead)
-	if army.is_dead == false:
+	if not army.is_dead:
+		if army.is_auto:
+			army.is_ready = true
+		print("ATTACK \n ===============")
 		var atk = army.attack()
-		print(atk)
-		if atk != null and not mob.is_dead:
+		if atk > -1 and not mob.is_dead:
 			mob.take_damage(atk)
 	else:
 		army.new(true)
 		return
 
-	if mob.is_dead == false:
+	if not mob.is_dead:
 		var atk = mob.attack()
-		if not army.is_dead:
+		if not army.is_dead and army.is_ready:
 			army.take_damage(atk)
 	else:
 		map.next_cell(mob.mob_name)

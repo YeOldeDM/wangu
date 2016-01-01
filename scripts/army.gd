@@ -65,24 +65,28 @@ func new(from_pool=true):
 	_draw_panel()
 	
 	is_ready = false
+
 	is_dead = false
 
 func attack():
-	if is_ready == true:
+	if is_ready:
 		var dmg = _damage_range()
 		randomize()
-		return round(rand_range(dmg[0],dmg[1]))
+		var damage =  round(rand_range(dmg[0],dmg[1]))
+		return damage
+		print("Army deals "+str(damage)+" damage!")
 	else:
-		return null
+		print("Army isn't ready")
+		return -1
 
 func take_damage(dmg):
 	var damage = max(0,dmg-get_shields())
-	var new_health = self.current_health - damage
+	var new_health = current_health - damage
 	if new_health <= 0:
-		self.current_health = 0
-		self._die()
+		current_health = 0
+#		self._die()
 	else:
-		self.current_health = new_health
+		current_health = new_health
 
 func set_total_health():
 	set_armor()
@@ -152,6 +156,8 @@ func _draw_panel():
 func _draw_healthbar(per):
 	var bar = get_node('healthbar')
 	var show_v = bar.get_value()
+	if show_v <= 0.01:
+		_die()
 	if per-0.05 < show_v < per+0.05:	#clamp to value if within threshold
 		show_v = per
 	else:	#otherwise, slide bar up or down
@@ -224,9 +230,11 @@ func _damage_range():
 	return [int(min_dmg), int(max_dmg)]
 
 func _die():
-	self.is_dead = true
-	if not self.is_auto:
-		self.is_ready = false
+	is_dead = true
+	if is_auto:
+		is_ready = true
+	else:
+		is_ready = false
 
 
 

@@ -44,6 +44,8 @@ func _ready():
 func _draw_healthbar(per):
 	var bar = get_node('healthbar')
 	var show_v = bar.get_value()
+	if show_v <= 0.01:
+		_die()
 	if per-0.05 < show_v < per+0.05:	#clamp to value if within threshold
 		show_v = per
 	else:	#otherwise, slide bar up or down
@@ -126,22 +128,21 @@ func attack():
 	return round(rand_range(dmg[0],dmg[1]))
 
 func take_damage(dmg):
-	var new_health = self.current_health - dmg
+	var new_health = current_health - dmg
 	if new_health <= 0:
-		self.current_health = 0
-		self._die()
+		current_health = 0
+#		_die()
 	else:
-		self.current_health = new_health
+		current_health = new_health
+		print("Mob takes "+str(dmg)+" damage")
 
 func blit_healthbar():
-	var per = 1.0
-	if current_health:
-		per = (current_health*1.0) / (total_health*1.0)
+	var per = (current_health*1.0) / (total_health*1.0)
 	_draw_healthbar(per)
 
 #Reset/Save/Restore
 func reset():
-	new_mob()
+	new()
 	_draw_panel()
 
 func save():
