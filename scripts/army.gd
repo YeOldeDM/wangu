@@ -57,7 +57,7 @@ func new(from_pool=true):
 	set_total_health()
 	if from_pool == true:
 		var pop = population.population['current'] - population.workforce['current']
-		if pop >= 2:
+		if pop >= troops+1:
 			population._change_current_population(-1*troops)
 		else:
 			return

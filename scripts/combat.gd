@@ -3,6 +3,7 @@ extends Control
 var format
 
 var game
+var population
 var news
 
 var army
@@ -16,6 +17,7 @@ func _ready():
 	format = get_node('/root/formats')
 	
 	game = get_parent()
+	population = game.get_node('population')
 	news = game.get_node('news')
 
 
