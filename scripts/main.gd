@@ -70,6 +70,8 @@ func _process(delta):
 			save_game()
 			news.message("auto-saving...",game_time)
 	
+			#STORY EVENT PROCESS#
+	story.check_event()
 			#MODULE PROCESSES
 	#BANK
 	bank.process(delta)
