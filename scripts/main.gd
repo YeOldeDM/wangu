@@ -3,6 +3,8 @@ extends Node
 
 var format
 
+var story
+
 var bank
 var population
 var combat
@@ -24,6 +26,7 @@ func _ready():
 	ready_settings()
 	format = get_node('/root/formats')
 	#master links
+	story = get_node('Story')
 	bank = get_node('Bank')
 	population = get_node('population')
 	combat= get_node('combat')
