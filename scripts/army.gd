@@ -218,7 +218,7 @@ func _set_troopers():
 				value += struct.building.level
 	var T = 1
 	while value > 0:
-		T += ceil(troops * 0.25)
+		T += ceil(T * 0.25)
 		value -= 1
 	troops = T
 
