@@ -145,6 +145,8 @@ func restore(source):
 	sector = source['sector']
 	level = source['level']
 	generate_map()
+	_draw_sector()
+	_draw_zone()
 ### CHILD FUNCTIONS ###
 
 

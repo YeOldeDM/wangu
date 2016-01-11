@@ -43,9 +43,10 @@ func save():
 	return saveDict
 
 func restore(data):
+	map.restore(data['map'])
 	army.restore(data['army'])
 	mob.restore(data['mob'])
-	map.restore(data['map'])
+
 
 
 
