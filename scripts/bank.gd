@@ -252,7 +252,10 @@ func process(delta):
 #########################
 #	PUBLIC FUNCTIONS	#
 #########################
-
+func has_skill_level(skill,lvl):
+	if your_skills[skill]['lvl'] >= lvl:
+		return true
+	return false
 
 func gain_xp(skill,amt):
 	#gain XP in i skill
