@@ -4,6 +4,7 @@ extends Node
 var format
 
 var story
+var metrics
 
 var bank
 var population
@@ -27,6 +28,8 @@ func _ready():
 	format = get_node('/root/formats')
 	#master links
 	story = get_node('Story')
+	metrics = get_node('Metrics')
+	
 	bank = get_node('Bank')
 	population = get_node('population')
 	combat= get_node('combat')

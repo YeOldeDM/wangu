@@ -21,8 +21,8 @@ var structure_button = load('res://building.xml')
 #RESET
 func reset():
 	_clear_structures()
-	var new_structs = {'structures': init_structures}
-	restore(new_structs)
+#	var new_structs = {'structures': init_structures}
+#	restore(new_structs)
 	
 	print("RESET STRUCTURES")
 
@@ -147,12 +147,13 @@ var init_structures = [
 
 
 func _ready():
-	for struct in init_structures:
-		var call_str = "make_"+struct['ID']
-		if has_method(call_str):
-			call(call_str,int(struct['lvl']))
-		else:
-			print("\n\n INVALID STRUCTURE CANNOT BE CREATED \n "+struct['ID'])
+#	for struct in init_structures:
+#		var call_str = "make_"+struct['ID']
+#		if has_method(call_str):
+#			call(call_str,int(struct['lvl']))
+#		else:
+#			print("\n\n INVALID STRUCTURE CANNOT BE CREATED \n "+struct['ID'])
+	pass
 
 func _on_cont_mouse_enter():
 	print("hit container")

@@ -196,6 +196,7 @@ var skill_panels
 #format import
 var format
 
+
 #Draw timer (so we don't need to draw every frame)
 var draw_timer = 0
 var draw_tick = 0.1
@@ -300,6 +301,7 @@ func gain_resource(mat, amt):
 	var value = _get_resource(mat)
 	value += amt
 	_set_resource(mat, value)
+	game.metrics.gather(mat,amt)
 
 func spend_resource(mat, amt):
 	#spend resources. Assumes we can afford the cost
