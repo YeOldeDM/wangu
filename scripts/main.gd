@@ -109,6 +109,8 @@ func save_game(legacy=false):
 			'autoload':		autoload,
 			'fullscreen':	get_node('sys_panel').fullscreen
 				},
+			'story':	story.save(),
+			'metrics':	metrics.save(),
 		'bank':			bank.save(),
 		'population':	population.save(),
 		'construction': construction.save(),
@@ -176,7 +178,14 @@ func load_game():
 		get_node('sys_panel')._set_screen_mode()
 	else:
 		print("No Game Settings found! No worries, they'll be made next time you save \n")
-
+	
+	#Restore Metrics
+	if 'metrics' in loadNodes:
+		metrics.restore(loadNodes['metrics'])
+	#Restore Story events
+	if 'story' in loadNodes:
+		story.restore(loadNodes['story'])
+	
 	#1.Restore Construction/Structures
 	construction.restore(loadNodes['construction'])
 	
@@ -203,12 +212,6 @@ func new_game():
 	news.message("[b]GAME RESET![/b]")
 
 	game_time = 0
-
-
-
-func wipe_game():
-	#Clear res://saves/savegame.sav!
-	pass
 
 
 
