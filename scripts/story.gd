@@ -5,6 +5,8 @@ var game
 var current_event = 0
 var event_object = {-1: null}
 
+var DONE = false	#flag for disabling story when end of story is reached
+
 
 
 #	EVENT SENSORS
@@ -135,16 +137,17 @@ func _process_event(params):
 
 
 func check_event():
-	if int(event_object.keys()[0]) != current_event:
-		_set_event(current_event)
-		var passed = _process_event(event_object['condition'])
-		if passed:
-			game.news.message(event_object['message'],game.game_time)
-			_reward_event(current_event)
-			if current_event+1 <= events.size()-1:
+	if DONE == false:
+		if current_event < events.size():
+			_set_event(current_event)
+			var passed = _process_event(event_object['condition'])
+			if passed:
+				game.news.message(event_object['message'],game.game_time)
+				_reward_event(current_event)
 				current_event += 1
-			else:
-				game.news.message("[b]End of Story Line[/b]")
+		else:
+			DONE = true
+			game.news.message("[b]End of Story Line.[/b]")
 
 
 
@@ -184,10 +187,13 @@ func _event_5():	#add shack
 func _event_6():	#add crystalcaves
 	game.construction.make_crystalcaves()
 	game.construction.get_node('Buildings/cont').set_current_tab(1)
+	game.news.message("Now you can store [b]Crystal[/b] as well as Metal!")
 
 func _event_7():	#add garage
 	game.construction.make_garage()
 	game.construction.get_node('Buildings/cont').set_current_tab(0)
+	game.news.message("The [b]Garage[/b] will allow you to expand your Bot population even farther!")
 
 func _event_8():	#show combat map
 	game.combat.show()
+	game.news.message("Click the [b]Fight[/b] button to make your Bot fight monsters!")
