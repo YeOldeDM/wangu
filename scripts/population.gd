@@ -6,6 +6,7 @@ extends Control
 #	GLOBALS		#
 #################
 var format
+var metrics
 var news
 var construction
 
@@ -90,6 +91,8 @@ func process(delta):
 		rate = population['current'] * population['rate']
 	var new_pop = population['current'] + (rate * delta)
 	if new_pop >= int(population['current']):
+		var pop_plus = new_pop-population['current']
+		metrics.total_bots += pop_plus
 		_set_max_workforce()
 		_refresh()
 	population['current'] = clamp(new_pop, 0, population['max'])
@@ -206,6 +209,7 @@ func _refresh():
 #############
 func _ready():
 	format = get_node('/root/formats')
+	metrics = get_node('/root/Game/Metrics')
 	news = get_node('/root/Game/news')
 	construction = get_node('/root/Game/construction')
 	
@@ -247,6 +251,7 @@ func _on_increase_pressed(index):
 
 func _on_build_pressed():
 	population['current'] += 1
+	metrics.total_bots += 1
 	_set_max_workforce()
 	_refresh()
 

@@ -68,6 +68,13 @@ more spacious living arrangements, well before you start wondering why your Bots
 anything at all...
 """
 	},
+	{
+		'condition':	['population', 15],
+		'message':	"""
+[b][color=red]WARNING!! WARNING!![/color][/b] Hostile lifeforms detected in the area! Executing 
+contingency program 1x0a4: \n All automated systems in IFF range SET to Militarized_Mode ON! 
+"""
+	},
 ]
 
 
@@ -132,7 +139,7 @@ func check_event():
 		_set_event(current_event)
 		var passed = _process_event(event_object['condition'])
 		if passed:
-			game.news.message(event_object['message'],true)
+			game.news.message(event_object['message'],game.game_time)
 			_reward_event(current_event)
 			if current_event+1 <= events.size()-1:
 				current_event += 1
@@ -181,3 +188,6 @@ func _event_6():	#add crystalcaves
 func _event_7():	#add garage
 	game.construction.make_garage()
 	game.construction.get_node('Buildings/cont').set_current_tab(0)
+
+func _event_8():	#show combat map
+	game.combat.show()

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resource_file type="PackedScene" subresource_count="7" version="2.0" version_name="Godot Engine v2.0.alpha.custom_build">
-	<ext_resource path="res://scripts/news.gd" type="Script" index="1"></ext_resource>
 	<ext_resource path="res://fonts/freesans_24.fnt" type="Font" index="2"></ext_resource>
-	<ext_resource path="res://fonts/freesans_12.fnt" type="Font" index="0"></ext_resource>
 	<ext_resource path="res://fonts/freesans_10.fnt" type="Font" index="4"></ext_resource>
+	<ext_resource path="res://fonts/freesans_12.fnt" type="Font" index="0"></ext_resource>
+	<ext_resource path="res://scripts/news.gd" type="Script" index="1"></ext_resource>
 	<ext_resource path="res://fonts/freesans_10b.fnt" type="Font" index="3"></ext_resource>
 	<resource type="Theme" path="local://1">
 		<resource name="default_font" external="0">  </resource>
@@ -15,10 +15,12 @@
 			<int> 0 </int>
 			<string> "conns" </string>
 			<int_array  len="0"> 				 </int_array>
+			<string> "editable_instances" </string>
+			<array  len="0" shared="false">
+			</array>
 			<string> "names" </string>
 			<string_array  len="30">
 				<string> "news" </string>
-				<string> "Control" </string>
 				<string> "focus/ignore_mouse" </string>
 				<string> "focus/stop_mouse" </string>
 				<string> "size_flags/horizontal" </string>
@@ -26,12 +28,13 @@
 				<string> "theme/theme" </string>
 				<string> "script/script" </string>
 				<string> "__meta__" </string>
+				<string> "Control" </string>
 				<string> "cont" </string>
-				<string> "Panel" </string>
 				<string> "margin/left" </string>
 				<string> "margin/top" </string>
 				<string> "margin/right" </string>
 				<string> "margin/bottom" </string>
+				<string> "Panel" </string>
 				<string> "visibility/self_opacity" </string>
 				<string> "visibility/blend_mode" </string>
 				<string> "Label" </string>
@@ -41,17 +44,20 @@
 				<string> "percent_visible" </string>
 				<string> "lines_skipped" </string>
 				<string> "max_lines_visible" </string>
-				<string> "RichTextLabel" </string>
 				<string> "custom_fonts/bold_font" </string>
 				<string> "custom_fonts/normal_font" </string>
 				<string> "bbcode/enabled" </string>
 				<string> "bbcode/bbcode" </string>
 				<string> "visible_characters" </string>
+				<string> "RichTextLabel" </string>
 			</string_array>
 			<string> "node_count" </string>
 			<int> 5 </int>
+			<string> "node_paths" </string>
+			<array  len="0" shared="false">
+			</array>
 			<string> "nodes" </string>
-			<int_array  len="135"> 				-1, -1, 1, 0, -1, 7, 2, 0, 3, 1, 4, 2, 5, 2, 6, 3, 7, 4, 8, 5, 0, 0, 0, 10, 9, -1, 8, 11, 6, 12, 7, 13, 8, 14, 9, 2, 0, 3, 1, 4, 2, 5, 2, 0, 1, 0, 10, 10, -1, 9, 15, 10, 16, 11, 13, 12, 14, 13, 2, 0, 3, 1, 4, 2, 5, 2, 8, 14, 0, 2, 0, 17, 17, -1, 13, 11, 15, 12, 15, 13, 16, 14, 17, 2, 1, 3, 1, 4, 2, 18, 18, 19, 19, 20, 11, 21, 20, 22, 21, 23, 22, 0, 1, 0, 24, 19, -1, 13, 11, 6, 12, 23, 13, 24, 14, 25, 2, 0, 3, 1, 4, 26, 5, 26, 25, 27, 26, 28, 27, 1, 28, 29, 29, 22, 0 </int_array>
+			<int_array  len="135"> 				-1, -1, 8, 0, -1, 7, 1, 0, 2, 1, 3, 2, 4, 2, 5, 3, 6, 4, 7, 5, 0, 0, 0, 14, 9, -1, 8, 10, 6, 11, 7, 12, 8, 13, 9, 1, 0, 2, 1, 3, 2, 4, 2, 0, 1, 0, 14, 14, -1, 9, 15, 10, 16, 11, 12, 12, 13, 13, 1, 0, 2, 1, 3, 2, 4, 2, 7, 14, 0, 2, 0, 17, 17, -1, 13, 10, 15, 11, 15, 12, 16, 13, 17, 1, 1, 2, 1, 3, 2, 18, 18, 19, 19, 20, 11, 21, 20, 22, 21, 23, 22, 0, 1, 0, 29, 19, -1, 13, 10, 6, 11, 23, 12, 24, 13, 25, 1, 0, 2, 1, 3, 26, 4, 26, 24, 27, 25, 28, 26, 1, 27, 29, 28, 22, 0 </int_array>
 			<string> "variants" </string>
 			<array  len="30" shared="false">
 				<bool> False </bool>
@@ -224,7 +230,7 @@
 				<string> "" </string>
 			</array>
 			<string> "version" </string>
-			<int> 1 </int>
+			<int> 2 </int>
 		</dictionary>
 
 	</main_resource>
