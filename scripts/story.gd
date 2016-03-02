@@ -1,7 +1,7 @@
 
 extends Control
 
-var game
+onready var game = get_node('/root/Game')
 var current_event = 0
 var event_object = {-1: null}
 
@@ -84,7 +84,14 @@ Your Troopers bring word from the battlefield! A rich vein of mysterious Nanium 
 after their last tangle with the local wildlife. You roll up your sleeves begin the laborous
 task of giving out orders.
 """
-	}
+	},
+	{
+		'condition':	['miniboss_kills', 1],
+		'message':	"""
+Whoa! That was a mighty beast! You had better start researching some higher technology to begin
+dealing with future challenges. For Science!!
+"""
+	},
 ]
 
 
@@ -107,7 +114,7 @@ func restore(data):
 
 #	INIT
 func _ready():
-	game = get_node('/root/Game')
+	pass
 
 #	EVENT CONTROLLERS
 func _set_event(E):
@@ -132,6 +139,11 @@ func _process_event(params):
 	elif params[0] == 'kills':		#Requires total kills
 		var value = params[1]
 		if game.metrics.total_kills >= value:
+			return true
+	
+	elif params[0] == 'miniboss_kills':		#require miniboss kills
+		var value = params[1]
+		if game.metrics.total_miniboss_kills >= value:
 			return true
 	
 	elif params[0] == 'skill':		#require a level in resource skill
@@ -209,10 +221,20 @@ func _event_7():	#add garage
 
 func _event_8():	#show combat map
 	game.combat.show()
+	game.construction.make_claws()
+	game.construction.make_hardplate()
+	game.construction.get_node('Buildings/cont').set_current_tab(3)
 	game.news.message("Click the [b]Fight[/b] button to make your Bot fight monsters!")
 
 func _event_9():	#show Nanium workers
 	game.bank.get_node('Nanium').show()
 	game.bank.get_node('skills/Nanium').show()
 	game.population.get_node('Nanium').show()
+	game.construction.make_naniteservers()
 	game.news.message("You are now able to assign worker Bots to synthesize [b]Nanium[/b] for you!")
+
+func _event_10():	#show research
+	game.bank.get_node('Tech').show()
+	game.bank.get_node('skills/Tech').show()
+	game.population.get_node('Tech').show()
+	game.news.message("You are now able to assign worker Bots to research [b]Tech[/b] for you!")

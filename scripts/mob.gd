@@ -82,10 +82,7 @@ func _draw_level():
 
 func _set_total_health():
 	var base_health = int(health_base*health_factor) ^ int(ceil(level*0.05))
-	if boss == 2:
-		base_health *= 5.0
-	elif boss == 1:
-		base_health *= 2.0
+
 	
 	var min_health = max(1,base_health * health_var)
 	var max_health = max(1, base_health * (1.0+health_var))
@@ -111,12 +108,24 @@ func _die():
 func new(name=null):
 	#increment level
 	level = combat.map.level
+	var minibosscheck = int(level)%10 == 0
+	var megabosscheck = int(level)%100 == 0
+	prints(minibosscheck,megabosscheck)
 	#set base dmg and health
 	damage_base = 1
 	health_base = 1
 	for i in range(level):
 		damage_base += round(rand_range(1,6))
 		health_base += round(rand_range(1,6))
+	
+	if minibosscheck:
+		damage_base *= 5
+		health_base *= 4
+		boss = 1
+	elif megabosscheck:
+		damage_base *= 10
+		health_base *= 10
+		boss = 2
 	
 	_set_total_health()
 	current_health = total_health

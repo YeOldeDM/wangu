@@ -182,9 +182,7 @@ func load_game():
 	#Restore Metrics
 	if 'metrics' in loadNodes:
 		metrics.restore(loadNodes['metrics'])
-	#Restore Story events
-	if 'story' in loadNodes:
-		story.restore(loadNodes['story'])
+
 	
 	#1.Restore Construction/Structures
 	construction.restore(loadNodes['construction'])
@@ -197,6 +195,10 @@ func load_game():
 	
 	#4.Restore Combat/Map
 	combat.restore(loadNodes['combat'])
+
+	#Restore Story events
+	if 'story' in loadNodes:
+		story.restore(loadNodes['story'])
 
 	news.message("[b]Game Loaded![/b]",game_time)
 

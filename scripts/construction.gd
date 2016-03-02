@@ -57,11 +57,11 @@ func restore(source):
 				this_struct = struct
 				#print("found "+struct['ID']+" in source")
 		
-		var call_str = "make_"+this_struct['ID']
-		if has_method(call_str):
-			call(call_str,int(this_struct['lvl']))
-		else:
-			print("\n\n INVALID STRUCTURE CANNOT BE RESTORED \n "+this_struct['ID'])
+				var call_str = "make_"+this_struct['ID']
+				if has_method(call_str):
+					call(call_str,int(this_struct['lvl']))
+				else:
+					print("\n\n INVALID STRUCTURE CANNOT BE RESTORED \n "+this_struct['ID'])
 	
 
 
