@@ -77,6 +77,14 @@ anything at all...
 contingency program 1x0a4: \n All automated systems in IFF range SET to Militarized_Mode ON! 
 """
 	},
+	{
+		'condition':	['kills', 5],
+		'message':	"""
+Your Troopers bring word from the battlefield! A rich vein of mysterious Nanium has been found
+after their last tangle with the local wildlife. You roll up your sleeves begin the laborous
+task of giving out orders.
+"""
+	}
 ]
 
 
@@ -119,6 +127,11 @@ func _process_event(params):
 		var material = params[1]
 		var value  = params[2]
 		if game.bank.can_afford(material,value):
+			return true
+	
+	elif params[0] == 'kills':		#Requires total kills
+		var value = params[1]
+		if game.metrics.total_kills >= value:
 			return true
 	
 	elif params[0] == 'skill':		#require a level in resource skill
@@ -197,3 +210,9 @@ func _event_7():	#add garage
 func _event_8():	#show combat map
 	game.combat.show()
 	game.news.message("Click the [b]Fight[/b] button to make your Bot fight monsters!")
+
+func _event_9():	#show Nanium workers
+	game.bank.get_node('Nanium').show()
+	game.bank.get_node('skills/Nanium').show()
+	game.population.get_node('Nanium').show()
+	game.news.message("You are now able to assign worker Bots to synthesize [b]Nanium[/b] for you!")

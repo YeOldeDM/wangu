@@ -10,6 +10,10 @@ var total_resource_gathered = [
 
 var total_bots = 0
 
+var total_kills = 0
+var total_miniboss_kills = 0
+var total_megaboss_kills = 0
+
 func gather(mat,amt):
 	total_resource_gathered[mat] += amt
 

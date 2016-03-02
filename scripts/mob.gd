@@ -2,6 +2,8 @@
 extends Panel
 
 ### GLOBALS ###
+onready var metrics = get_node('/root/Game/Metrics')
+
 var format	#number formatting
 #links
 var combat	#combat node
@@ -97,6 +99,11 @@ func _damage_range():
 
 func _die():
 	is_dead = true
+	metrics.total_kills += 1
+	if boss == 1:
+		metrics.total_miniboss_kills += 1
+	if boss == 2:
+		metrics.total_megaboss_kills += 1
 
 
 
