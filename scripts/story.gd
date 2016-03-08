@@ -34,7 +34,7 @@ seems to show interesting energy-conduction properties.
 """
 	},
 	{	#3
-		'condition':	['bank',1,50],
+		'condition':	['bank',1,20],
 		'message':	"""
 What is this?! You come across an abandoned Bot auto-factory. If you can build a
 couple of these guys, they could help you gather resources.
@@ -55,7 +55,7 @@ in.
 """
 	},
 	{	#6
-		'condition':	['bank',1,100],
+		'condition':	['skill',1,1],
 		'message':	"""
 A curious Bot grabs your space-sleeve and drags you to a hidden location. It looks like this
 little fella has discovered a vast network of caves! For some reason, this looks like the perfect
@@ -78,7 +78,7 @@ contingency program 1x0a4: \n All automated systems in IFF range SET to Militari
 """
 	},
 	{
-		'condition':	['kills', 5],
+		'condition':	['kills', 3],
 		'message':	"""
 Your Troopers bring word from the battlefield! A rich vein of mysterious Nanium has been found
 after their last tangle with the local wildlife. You roll up your sleeves begin the laborous
@@ -90,6 +90,30 @@ task of giving out orders.
 		'message':	"""
 Whoa! That was a mighty beast! You had better start researching some higher technology to begin
 dealing with future challenges. For Science!!
+"""
+	},
+	{
+		'condition':	['bank',3,10],
+		'message':	"""
+Preliminary research has uncovered some cool new toys for your Troopers to play with!
+"""
+	},
+	{
+		'condition':	['total_kills',13],
+		'message':	"""
+Your one-bot army is impressive indeed! Not as impressive as a two-bot army, however...
+"""
+	},
+	{
+		'condition':	['population',30],
+		'message':	"""
+It's getting crowded again in your little robot city. You know what that means!
+"""
+	},
+	{
+		'condition':	['bank',3,50],
+		'message':	"""
+With a little know-how, you should be able to boost the production rates of your automated workers.
 """
 	},
 ]
@@ -111,6 +135,7 @@ func restore(data):
 	current_event = data['current_event']
 	for i in range(current_event -1):
 		_reward_event(i)
+	game.update_storybar()
 
 #	INIT
 func _ready():
@@ -170,6 +195,7 @@ func check_event():
 				game.news.message(event_object['message'],game.game_time)
 				_reward_event(current_event)
 				current_event += 1
+				game.update_storybar()
 		else:
 			DONE = true
 			game.news.message("[b]End of Story Line.[/b]")
@@ -236,5 +262,25 @@ func _event_9():	#show Nanium workers
 func _event_10():	#show research
 	game.bank.get_node('Tech').show()
 	game.bank.get_node('skills/Tech').show()
-	game.population.get_node('Tech').show()
 	game.news.message("You are now able to assign worker Bots to research [b]Tech[/b] for you!")
+
+func _event_11():	#show Shields & Lasers
+	game.construction.make_shields()
+	game.construction.make_lasers()
+	game.news.message("New Equipment discovered!  [b]Shields[/b] will soak up incoming damage. [b]Lasers[/b] will give your army much more punch.")
+	
+func _event_12():	#show Battle Tactics
+	game.construction.make_battletactics()
+	game.population.get_node('Tech').show()
+	game.combat.show_autofight()
+	game.news.message("Research [b]Battle Tactics[/b] to increase the amount of Troopers in your army. Today, Alpha Sector. Tomorrow..the world!!")
+
+func _event_13():	#Show Hangar
+	game.construction.make_hangar()
+	game.news.message("Hangars will really let you expand your population.")
+
+func _event_14():	#Show Boost researches
+	game.construction.make_metallurgy()
+	game.construction.make_attunement()
+	game.construction.make_synthesis()
+	game.news.message("Research will allow you to increase your production in that particular resource. Defeat Mini-Bosses to unlock new Research upgrades!")

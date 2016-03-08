@@ -16,7 +16,7 @@ var grid
 var sector = 0			#current sector
 var zone = 1			#current zone
 var current_cell = 0	#current zone cell
-var level = 1
+var level = 0
 
 var material_ref = {
 	0:	'Metal',

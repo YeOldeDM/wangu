@@ -35,7 +35,6 @@ func time(t):
 	var minutes = int(t/60)
 	var hours = int(minutes / 60)
 	var days = int(hours / 24)
-
 	seconds -= minutes*60
 	minutes -= hours*60
 	days -= hours*24

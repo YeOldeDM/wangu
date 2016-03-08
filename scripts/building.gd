@@ -21,6 +21,7 @@ class Structure:
 	var material = 0
 	var factor = 0
 	
+	var shots= -1
 	
 	var cost_factor = 1.75
 	var base_cost = {
@@ -94,7 +95,17 @@ class Structure:
 			_spend(cost)
 			self.level += 1
 			_apply_effects()
-
+		if self.shots > -1:
+			self.shots -= 1
+			if self.shots <= 0:
+				self.shots = 0
+				self.disable()
+	
+	func enable():
+		self.own.set_disabled(true)
+	func disable():
+		self.own.set_disabled(false)
+	
 func _init():
 	building = Structure.new()
 	building.own = self

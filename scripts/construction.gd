@@ -76,18 +76,20 @@ func _add_structure(category, structure):
 	get_node(grid).add_child(structure)
 	structure.draw_button()
 
-func _structure_factory(name, structID, description, category, structure_category, level, material, factor, base_cost):
+func _structure_factory(name, structID, description, category, structure_category, level, material, factor, base_cost,shots=-1):
 	var structure = structure_button.instance()
 	if structure.building:
-		var b = structure.building
-		b.name = name
-		b.description = description
-		b.structID = structID
-		b.category = structure_category
-		b.level = level
-		b.material = material
-		b.factor = factor
-		b.base_cost = base_cost
+		if not structID in structures[category]:
+			var b = structure.building
+			b.name = name
+			b.description = description
+			b.structID = structID
+			b.category = structure_category
+			b.level = level
+			b.material = material
+			b.factor = factor
+			b.base_cost = base_cost
+			b.shots = shots
 	else:
 		print("BUILDING OBJECT NOT CREATED!")
 	_add_structure(category,structure)
@@ -156,7 +158,8 @@ func _ready():
 	pass
 
 func _on_cont_mouse_enter():
-	print("hit container")
+	#print("hit container")
+	pass
 
 
 
@@ -330,7 +333,7 @@ func make_metallurgy(l=0):
 					1:0,
 					2:0,
 					3:10}
-	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost,1)
 
 func make_attunement(l=0):
 	var name = "Attunement"
@@ -345,7 +348,7 @@ func make_attunement(l=0):
 					1:5,
 					2:0,
 					3:12}
-	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost,1)
 
 func make_synthesis(l=0):
 	var name = "Synthesis"
@@ -360,7 +363,7 @@ func make_synthesis(l=0):
 					1:0,
 					2:6,
 					3:15}
-	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost,1)
 
 func make_gnosis(l=0):
 	var name = "Gnosis"
@@ -375,7 +378,7 @@ func make_gnosis(l=0):
 					1:0,
 					2:0,
 					3:80}
-	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost,1)
 
 func make_enlightenment(l=0):
 	var name = "Enlightenment"
@@ -390,7 +393,7 @@ func make_enlightenment(l=0):
 					1:10,
 					2:11,
 					3:35}
-	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost,1)
 
 func make_battletactics(l=0):
 	var name = "Battle Tactics"
@@ -405,7 +408,7 @@ func make_battletactics(l=0):
 					1:20,
 					2:20,
 					3:40}
-	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost)
+	_structure_factory(name,structID,description,category,structure_category,level,material,factor,base_cost,1)
 
 
 #########################

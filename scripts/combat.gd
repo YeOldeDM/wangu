@@ -48,6 +48,8 @@ func restore(data):
 	mob.restore(data['mob'])
 
 
+func show_autofight():
+	get_node('Battle/map/auto_fight').show()
 
 
 func process(delta):

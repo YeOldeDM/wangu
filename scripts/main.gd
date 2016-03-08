@@ -14,6 +14,7 @@ var construction
 
 var time_label
 var game_time = 0.0
+onready var story_bar = get_node('storybar')
 
 var autoload = true
 
@@ -36,7 +37,9 @@ func _ready():
 	news = get_node('news')
 	construction = get_node('construction')
 	time_label = get_node('sys_panel/time')
-
+	
+	story_bar.set_max(story.events.size())
+	
 	set_process(true)
 	
 	if autoload == true:
@@ -220,7 +223,8 @@ func new_game():
 func quit_game():
 	get_tree().quit()
 
-
+func update_storybar():
+	story_bar.set_value(story.current_event)
 
 
 
